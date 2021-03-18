@@ -1,18 +1,32 @@
 function Connect-SophosCentral {
     <#
     .SYNOPSIS
-        Connect to a Sophos Central using your client ID and client secret
+        Connect to a Sophos Central using your client ID and client secret, from you API credentials/service principal
     .DESCRIPTION
-        Connect to a Sophos Central using your client ID and client secret
+        Connect to a Sophos Central using your client ID and client secret, from you API credentials/service principal
 
+        Sophos customers can connect to their tenant using a client id/secret. Follow Step 1 here to create it
+        https://developer.sophos.com/getting-started-tenant
+
+        Sophos partners can use a partner client id/secret here to connect to the customers. Follow Step 1 here to create it
+        https://developer.sophos.com/getting-started
+    .PARAMETER ClientID
+        The client ID from the Sophos Central API credential/service principal
+    .PARAMETER ClientSecret
+        The client secret from the Sophos Central API credential/service principal
     .EXAMPLE
         Connect-SophosCentral -ClientID "asdkjsdfksjdf" -ClientSecret (Read-Host -AsSecureString -Prompt "Client Secret:")
     #>
     [CmdletBinding()]
     param (
+        [Parameter(Mandatory = $true)]
         [String]$ClientID,
-        [SecureString]$ClientSecret = (Read-Host -AsSecureString -Prompt "Client Secret:")
+        [SecureString]$ClientSecret
     )
+
+    if ($null -eq $ClientSecret) {
+        $ClientSecret = Read-Host -AsSecureString -Prompt "Client Secret:"
+    }
 
     $loginUri = [System.Uri]::new('https://id.sophos.com/api/v2/oauth2/token')
 
