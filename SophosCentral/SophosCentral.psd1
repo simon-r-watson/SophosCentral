@@ -27,7 +27,7 @@
     CompanyName       = 'Unknown'
 
     # Copyright statement for this module
-    Copyright         = '(c) 2019 the-sw. All rights reserved.'
+    Copyright         = '(c) '
 
     # Description of the functionality provided by this module
     Description       = 'Functions for working with the Sophos Central API'
