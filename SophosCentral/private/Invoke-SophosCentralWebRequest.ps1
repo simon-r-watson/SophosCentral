@@ -21,7 +21,12 @@ function Invoke-SophosCentralWebRequest {
     if ($method -eq 'Get') {
         #query api and return the first page
         $response = Invoke-RestMethod -Uri $uri -Headers $header
-        $response.items
+        if ($response.items) {
+            $response.items
+        } else {
+            $response
+        }
+        
         
         #loop through additional pages of results (if applicable)
         do {
