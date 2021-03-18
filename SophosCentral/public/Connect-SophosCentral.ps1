@@ -1,9 +1,9 @@
 function Connect-SophosCentral {
     <#
     .SYNOPSIS
-        Connect to a Sophos Central using your client ID and client secret, from you API credentials/service principal
+        Connect to Sophos Central using your client ID and client secret, from you API credentials/service principal
     .DESCRIPTION
-        Connect to a Sophos Central using your client ID and client secret, from you API credentials/service principal
+        Connect to Sophos Central using your client ID and client secret, from you API credentials/service principal
 
         Sophos customers can connect to their tenant using a client id/secret. Follow Step 1 here to create it
         https://developer.sophos.com/getting-started-tenant
