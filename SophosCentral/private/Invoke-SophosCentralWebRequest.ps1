@@ -4,7 +4,7 @@ function Invoke-SophosCentralWebRequest {
         [System.URI]$Uri,
         [System.Collections.Hashtable]$CustomHeader,
 
-        [ValidateSet('Get','Set')]
+        [ValidateSet('Get', 'Set')]
         [string]$Method = 'Get',
 
         [System.Collections.Hashtable]$Body
@@ -20,29 +20,31 @@ function Invoke-SophosCentralWebRequest {
 
     if ($method -eq 'Get') {
         #query api and return the first page
-        $response = Invoke-RestMethod -Uri $uri -Headers $header
+        $response = Invoke-RestMethod -Uri $uri -Headers $header -UseBasicParsing
         if ($response.items) {
             $response.items
-        } else {
+        }
+        else {
             $response
         }
-        
         
         #loop through additional pages of results (if applicable)
         do {
             if ($response.pages.nextKey) {
                 $nextUri = $uri.AbsoluteUri + '?pageFromKey=' + $response.pages.nextKey
-                $response = Invoke-RestMethod -Uri $nextUri -Headers $header
+                $response = Invoke-RestMethod -Uri $nextUri -Headers $header -UseBasicParsing
                 $response.items
             }
             else {
                 $finished = $true
             }
         } while ($finished -eq $false)
-    } elseif ($method -eq 'Post') {
+    }
+    elseif ($method -eq 'Post') {
         if ($null -eq $body) {
+            #Some API endpoints that use a 'post' request require an empty body. If no body is present it will give an error back
             $body = @{}
-            $bodyJson = $body | Convertto-Json
+            $bodyJson = $body | ConvertTo-Json
         }
         Invoke-RestMethod -Uri $uri -Headers $header -Method Post -Body $bodyJson -ContentType 'application/json'
     }
