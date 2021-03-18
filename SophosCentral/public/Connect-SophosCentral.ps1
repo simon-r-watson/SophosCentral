@@ -36,7 +36,7 @@ function Connect-SophosCentral {
         client_secret = Unprotect-Secret -Secret $ClientSecret
         scope         = 'token'
     }
-    $response = Invoke-WebRequest -Uri $loginUri -Body $body -ContentType 'application/x-www-form-urlencoded' -Method Post
+    $response = Invoke-WebRequest -Uri $loginUri -Body $body -ContentType 'application/x-www-form-urlencoded' -Method Post -UseBasicParsing
     if ($response.Content) {
         $authDetails = $response.Content | ConvertFrom-Json
         $expiresAt = (Get-Date).AddSeconds($authDetails.expires_in - 60)
