@@ -24,10 +24,10 @@
     Author            = 'Simon Watson'
 
     # Company or vendor of this module
-    CompanyName       = 'Unknown'
+    CompanyName       = ''
 
     # Copyright statement for this module
-    Copyright         = '(c) '
+    Copyright         = ''
 
     # Description of the functionality provided by this module
     Description       = 'Functions for working with the Sophos Central API'
@@ -69,7 +69,7 @@
     # NestedModules = @()
 
     # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
-    FunctionsToExport = @('Connect-SophosCentral','Connect-SophosCentralCustomerTenant','Get-SophosCentralAlerts','Get-SophosCentralAllowedItems','Get-SophosCentralBlockedItems','Get-SophosCentralCustomerTenants','Get-SophosCentralEndpoints','Get-SophosCentralTenantInfo','Invoke-SophosCentralEndpointScan')
+    FunctionsToExport = @('Connect-SophosCentral', 'Connect-SophosCentralCustomerTenant', 'Get-SophosCentralAlerts', 'Get-SophosCentralAllowedItems', 'Get-SophosCentralBlockedItems', 'Get-SophosCentralCustomerTenants', 'Get-SophosCentralEndpoints', 'Get-SophosCentralTenantInfo', 'Invoke-SophosCentralEndpointScan')
 
     # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
     CmdletsToExport   = '*'
