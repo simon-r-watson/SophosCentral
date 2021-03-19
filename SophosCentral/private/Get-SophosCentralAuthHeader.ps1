@@ -5,7 +5,7 @@ function Get-SophosCentralAuthHeader {
         [switch]$PartnerInitial
     )
 
-    if ($GLOBAL:SophosCentral) {
+    if ((Test-SophosCentralAuth) -eq $true) {
         $header = @{
             Authorization = 'Bearer ' + (Unprotect-Secret -Secret $GLOBAL:SophosCentral.access_token)
         }
