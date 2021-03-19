@@ -44,8 +44,8 @@ function Invoke-SophosCentralWebRequest {
         if ($null -eq $body) {
             #Some API endpoints that use a 'post' request require an empty body. If no body is present it will give an error back
             $body = @{}
-            $bodyJson = $body | ConvertTo-Json
         }
+        $bodyJson = $body | ConvertTo-Json
         Invoke-RestMethod -Uri $uri -Headers $header -Method Post -Body $bodyJson -ContentType 'application/json'
     }
 }
