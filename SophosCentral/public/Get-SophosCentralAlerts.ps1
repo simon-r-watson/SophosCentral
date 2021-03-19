@@ -1,4 +1,4 @@
-function Get-SophosCentralAlert {
+function Get-SophosCentralAlerts {
     <#
     .SYNOPSIS
         Get alerts listed in Sophos Central
