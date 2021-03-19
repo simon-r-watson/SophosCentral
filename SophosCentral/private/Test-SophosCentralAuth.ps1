@@ -12,6 +12,7 @@ function Test-SophosCentralAuth {
             }
             catch {
                 throw "error requesting new token"
+                return $false
             }           
         }
         else {
