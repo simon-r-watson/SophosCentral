@@ -14,7 +14,12 @@ function Invoke-SophosCentralWebRequest {
         $header = $CustomHeader
     }
     else {
-        $header = Get-SophosCentralAuthHeader
+        try {
+            $header = Get-SophosCentralAuthHeader
+        }
+        catch {
+            throw $_
+        }
     }
     $finished = $false
 
