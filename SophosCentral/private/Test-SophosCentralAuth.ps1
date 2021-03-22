@@ -1,4 +1,8 @@
 function Test-SophosCentralAuth {
+    [CmdletBinding()]
+    param (
+        
+    )
     if ($GLOBAL:SophosCentral) {
         $date = Get-Date
         if ($GLOBAL:SophosCentral.expires_at -le $date) {
@@ -6,7 +10,7 @@ function Test-SophosCentralAuth {
             #request new token
             try {
                 Write-Verbose "Attempting to obtain new access token"
-                Connect-SophosCentral -ClientID $GLOBAL:SophosCentral.client_id -ClientSecret -ClientID $GLOBAL:SophosCentral.client_secret -AccessTokenOnly
+                Connect-SophosCentral -ClientID $GLOBAL:SophosCentral.client_id -ClientSecret $GLOBAL:SophosCentral.client_secret -AccessTokenOnly
                 Write-Verbose "Testing new access token"
                 Test-SophosCentralAuth
             }
