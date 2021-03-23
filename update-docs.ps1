@@ -1,3 +1,7 @@
+if (Get-Module SophosCentral) {
+    Remove-Module SophosCentral
+}
+
 Install-Module platyps -Scope CurrentUser -Force
 Import-Module .\SophosCentral\SophosCentral.psd1
 New-MarkdownHelp -Module SophosCentral -OutputFolder .\docs -Force
