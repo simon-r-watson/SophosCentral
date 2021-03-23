@@ -11,6 +11,7 @@ function Invoke-SophosCentralEndpointScan {
     #>
     [CmdletBinding()]
     param (
+        [Parameter(Mandatory = $true)]
         [Alias("ID")]
         [string[]]$EndpointID
     )
