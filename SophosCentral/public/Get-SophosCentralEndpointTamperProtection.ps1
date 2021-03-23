@@ -5,7 +5,7 @@ function Get-SophosCentralEndpointTamperProtection {
     .DESCRIPTION
         Get Tamper Protection Status
     .EXAMPLE
-        Get-SophosCentralEndpointTamperProtection
+        Get-SophosCentralEndpointTamperProtection -EndpointID '23a920fa-9a34-4869-bc3d-a1626e50f670'
     #>
     [CmdletBinding()]
     param (
