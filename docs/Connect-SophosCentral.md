@@ -13,7 +13,8 @@ Connect to Sophos Central using your client ID and client secret, from you API c
 ## SYNTAX
 
 ```
-Connect-SophosCentral [-ClientID] <String> [[-ClientSecret] <SecureString>] [<CommonParameters>]
+Connect-SophosCentral [-ClientID] <String> [[-ClientSecret] <SecureString>] [-AccessTokenOnly]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -62,6 +63,22 @@ Aliases:
 Required: False
 Position: 2
 Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -AccessTokenOnly
+Internal use (for this module) only.
+Used to generate a new access token, when the current one expires
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
