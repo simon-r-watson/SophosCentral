@@ -23,7 +23,9 @@ function Connect-SophosCentral {
     param (
         [Parameter(Mandatory = $true)]
         [String]$ClientID,
+
         [SecureString]$ClientSecret,
+        
         [Switch]$AccessTokenOnly
     )
 
