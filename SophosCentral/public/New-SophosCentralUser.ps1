@@ -20,7 +20,7 @@ function New-SophosCentralUser {
         [string]$LastName,
         [string]$Email,
         [string]$ExchangeLogin,
-        [string[]]$GroupIDs,
+        [string[]]$GroupIDs
     )
 
     $uriChild = "/common/v1/directory/users"
@@ -29,11 +29,11 @@ function New-SophosCentralUser {
     $body = @{
         name = $Name
     }
-    if ($firstName) {$body.Add('firstName', $FirstName)}
-    if ($LastName) {$body.Add('lastName', $LastName)}
-    if ($email) {$body.Add('email', $email)}
-    if ($exchangeLogin) {$body.Add('exchangeLogin', $exchangeLogin)}
-    if ($groupIds) {$body.Add('groupIds', $groupIds)}
+    if ($firstName) { $body.Add('firstName', $FirstName) }
+    if ($LastName) { $body.Add('lastName', $LastName) }
+    if ($email) { $body.Add('email', $email) }
+    if ($exchangeLogin) { $body.Add('exchangeLogin', $exchangeLogin) }
+    if ($groupIds) { $body.Add('groupIds', $groupIds) }
 
     Invoke-SophosCentralWebRequest -Uri $uri -Method Post -Body $body
 }
