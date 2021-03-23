@@ -8,7 +8,9 @@ It currently supports:
 * Logging in using a Service Principal created within a tenant itself (for Sophos Central Customers)
 * Retrieving a list of Endpoints and their current status
 * Invoking a scan on an Endpoint (or list of Endpoints)
-* Retrieving a list of Alerts in Sophos Central
+* Retrieving a list of Alerts
+* Action a list of Alerts
+* Create a new user
 
 This module is tested on PowerShell 7.1, it should work down to Windows PowerShell 5.
 
