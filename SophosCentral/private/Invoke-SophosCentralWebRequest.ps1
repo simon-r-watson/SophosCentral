@@ -4,7 +4,7 @@ function Invoke-SophosCentralWebRequest {
         [System.URI]$Uri,
         [System.Collections.Hashtable]$CustomHeader,
 
-        [ValidateSet('Get', 'Set')]
+        [ValidateSet('Get', 'Post')]
         [string]$Method = 'Get',
 
         [System.Collections.Hashtable]$Body
