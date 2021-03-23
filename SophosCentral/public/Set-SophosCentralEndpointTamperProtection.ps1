@@ -16,11 +16,11 @@ function Set-SophosCentralEndpointTamperProtection {
         [string[]]$EndpointID,
 
         [Parameter(Mandatory = $true,
-            ParameterSetName = "Status")]
+            ParameterSetName = "Update Status")]
         [System.Boolean]$Enabled,
 
         [Parameter(Mandatory = $true,
-            ParameterSetName = "Password")]
+            ParameterSetName = "Regenerate Password")]
         [switch]$RegeneratePassword
     )
     begin {
