@@ -6,6 +6,8 @@ function Get-SophosCentralTenantInfo {
         Get information of the current tenant
     .EXAMPLE
         Get-SophosCentralTenantInfo
+    .LINK
+        https://developer.sophos.com/docs/whoami-v1/1/routes/get
     #>
     $uri = [System.Uri]::New('https://api.central.sophos.com/whoami/v1')
     $header = Get-SophosCentralAuthHeader -Initial

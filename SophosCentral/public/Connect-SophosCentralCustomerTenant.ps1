@@ -17,6 +17,8 @@ function Connect-SophosCentralCustomerTenant {
         Connect-SophosCentralCustomerTenant -CustomerTenantID (Get-SophosCentralCustomerTenants | Where-Object {$_.Name -like "*Contoso*"}).ID
     .EXAMPLE
         Connect-SophosCentralCustomerTenant -CustomerNameSearch "Contoso*"
+    .LINK
+        https://developer.sophos.com/getting-started
     #>
     [CmdletBinding()]
     param (

@@ -10,6 +10,8 @@ function New-SophosCentralUser {
         A list/array of group ID's to add them to. To determine the ID of the groups use Get-SophosCentralUserGroups
     .EXAMPLE
         New-SophosCentralUser -Name "John Smith" -FirstName "John" -LastName "Smith" -Email "jsmith@contoso.com"
+    .LINK
+        https://developer.sophos.com/docs/common-v1/1/routes/directory/users/post
     #>
     [CmdletBinding()]
     param (

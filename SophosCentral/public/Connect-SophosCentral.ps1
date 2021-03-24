@@ -18,6 +18,10 @@ function Connect-SophosCentral {
         Internal use (for this module) only. Used to generate a new access token, when the current one expires
     .EXAMPLE
         Connect-SophosCentral -ClientID "asdkjsdfksjdf" -ClientSecret (Read-Host -AsSecureString -Prompt "Client Secret:")
+    .LINK
+        https://developer.sophos.com/getting-started-tenant
+    .LINK
+        https://developer.sophos.com/getting-started
     #>
     [CmdletBinding()]
     param (
