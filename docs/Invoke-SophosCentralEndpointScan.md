@@ -1,7 +1,7 @@
 ---
 external help file: SophosCentral-help.xml
 Module Name: SophosCentral
-online version:
+online version: https://developer.sophos.com/docs/endpoint-v1/1/routes/endpoints/%7BendpointId%7D/scans/post
 schema: 2.0.0
 ---
 
@@ -34,7 +34,8 @@ Invoke-SophosCentralEndpointScan -EndpointID (Get-SophosCentralEndpoints).ID
 ## PARAMETERS
 
 ### -EndpointID
-{{ Fill EndpointID Description }}
+The ID of the Endpoint.
+Use Get-SophosCentralEndpoints to list them
 
 ```yaml
 Type: String[]
@@ -58,3 +59,6 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## NOTES
 
 ## RELATED LINKS
+
+[https://developer.sophos.com/docs/endpoint-v1/1/routes/endpoints/%7BendpointId%7D/scans/post](https://developer.sophos.com/docs/endpoint-v1/1/routes/endpoints/%7BendpointId%7D/scans/post)
+

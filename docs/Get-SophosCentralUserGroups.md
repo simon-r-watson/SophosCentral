@@ -1,7 +1,7 @@
 ---
 external help file: SophosCentral-help.xml
 Module Name: SophosCentral
-online version:
+online version: https://developer.sophos.com/docs/common-v1/1/routes/directory/user-groups/get
 schema: 2.0.0
 ---
 
@@ -18,7 +18,6 @@ Get-SophosCentralUserGroups [<CommonParameters>]
 
 ## DESCRIPTION
 Get User Groups listed in Sophos Central
-https://developer.sophos.com/docs/common-v1/1/routes/directory/user-groups/get
 
 ## EXAMPLES
 
@@ -39,3 +38,6 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## NOTES
 
 ## RELATED LINKS
+
+[https://developer.sophos.com/docs/common-v1/1/routes/directory/user-groups/get](https://developer.sophos.com/docs/common-v1/1/routes/directory/user-groups/get)
+

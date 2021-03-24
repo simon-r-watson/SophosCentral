@@ -1,7 +1,7 @@
 ---
 external help file: SophosCentral-help.xml
 Module Name: SophosCentral
-online version:
+online version: https://developer.sophos.com/docs/endpoint-v1/1/routes/endpoints/%7BendpointId%7D/tamper-protection/get
 schema: 2.0.0
 ---
 
@@ -26,10 +26,16 @@ Get Tamper Protection Status
 Get-SophosCentralEndpointTamperProtection -EndpointID '23a920fa-9a34-4869-bc3d-a1626e50f670'
 ```
 
+### EXAMPLE 2
+```
+Get-SophosCentralEndpointTamperProtection -EndpointID (Get-SophosCentralEndpoints).ID
+```
+
 ## PARAMETERS
 
 ### -EndpointID
-{{ Fill EndpointID Description }}
+The ID of the Endpoint.
+Use Get-SophosCentralEndpoints to list them
 
 ```yaml
 Type: String[]
@@ -53,3 +59,6 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## NOTES
 
 ## RELATED LINKS
+
+[https://developer.sophos.com/docs/endpoint-v1/1/routes/endpoints/%7BendpointId%7D/tamper-protection/get](https://developer.sophos.com/docs/endpoint-v1/1/routes/endpoints/%7BendpointId%7D/tamper-protection/get)
+

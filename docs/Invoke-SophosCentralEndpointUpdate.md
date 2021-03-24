@@ -1,14 +1,14 @@
 ---
 external help file: SophosCentral-help.xml
 Module Name: SophosCentral
-online version:
+online version: https://developer.sophos.com/docs/endpoint-v1/1/routes/endpoints/%7BendpointId%7D/update-checks/post
 schema: 2.0.0
 ---
 
 # Invoke-SophosCentralEndpointUpdate
 
 ## SYNOPSIS
-Trigger a update on an Endpoint in Sophos Central
+Trigger an update on an Endpoint in Sophos Central
 
 ## SYNTAX
 
@@ -17,7 +17,7 @@ Invoke-SophosCentralEndpointUpdate [-EndpointID] <String[]> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Trigger a update on an Endpoint in Sophos Central
+Trigger an update on an Endpoint in Sophos Central
 
 ## EXAMPLES
 
@@ -34,7 +34,8 @@ Invoke-SophosCentralEndpointUpdate -EndpointID (Get-SophosCentralEndpoints).ID
 ## PARAMETERS
 
 ### -EndpointID
-{{ Fill EndpointID Description }}
+The ID of the Endpoint.
+Use Get-SophosCentralEndpoints to list them
 
 ```yaml
 Type: String[]
@@ -58,3 +59,6 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## NOTES
 
 ## RELATED LINKS
+
+[https://developer.sophos.com/docs/endpoint-v1/1/routes/endpoints/%7BendpointId%7D/update-checks/post](https://developer.sophos.com/docs/endpoint-v1/1/routes/endpoints/%7BendpointId%7D/update-checks/post)
+

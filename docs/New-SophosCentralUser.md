@@ -1,7 +1,7 @@
 ---
 external help file: SophosCentral-help.xml
 Module Name: SophosCentral
-online version:
+online version: https://developer.sophos.com/docs/common-v1/1/routes/directory/users/post
 schema: 2.0.0
 ---
 
@@ -130,3 +130,6 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## NOTES
 
 ## RELATED LINKS
+
+[https://developer.sophos.com/docs/common-v1/1/routes/directory/users/post](https://developer.sophos.com/docs/common-v1/1/routes/directory/users/post)
+

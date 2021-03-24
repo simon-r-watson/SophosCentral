@@ -1,7 +1,7 @@
 ---
 external help file: SophosCentral-help.xml
 Module Name: SophosCentral
-online version:
+online version: https://developer.sophos.com/docs/endpoint-v1/1/routes/endpoints/%7BendpointId%7D/tamper-protection/post
 schema: 2.0.0
 ---
 
@@ -12,12 +12,12 @@ Update Tamper Protection settings
 
 ## SYNTAX
 
-### Status
+### Update Status
 ```
 Set-SophosCentralEndpointTamperProtection -EndpointID <String[]> -Enabled <Boolean> [<CommonParameters>]
 ```
 
-### Password
+### Regenerate Password
 ```
 Set-SophosCentralEndpointTamperProtection -EndpointID <String[]> [-RegeneratePassword] [<CommonParameters>]
 ```
@@ -40,7 +40,8 @@ Set-SophosCentralEndpointTamperProtection -EndpointID '23a920fa-9a34-4869-bc3d-a
 ## PARAMETERS
 
 ### -EndpointID
-{{ Fill EndpointID Description }}
+The ID of the Endpoint.
+Use Get-SophosCentralEndpoints to list them
 
 ```yaml
 Type: String[]
@@ -55,11 +56,11 @@ Accept wildcard characters: False
 ```
 
 ### -Enabled
-{{ Fill Enabled Description }}
+Use $true to enable Tamper Protection, $false to disable
 
 ```yaml
 Type: Boolean
-Parameter Sets: Status
+Parameter Sets: Update Status
 Aliases:
 
 Required: True
@@ -70,11 +71,11 @@ Accept wildcard characters: False
 ```
 
 ### -RegeneratePassword
-{{ Fill RegeneratePassword Description }}
+Use this switch to generate a new Tamper Protection password
 
 ```yaml
 Type: SwitchParameter
-Parameter Sets: Password
+Parameter Sets: Regenerate Password
 Aliases:
 
 Required: True
@@ -94,3 +95,6 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## NOTES
 
 ## RELATED LINKS
+
+[https://developer.sophos.com/docs/endpoint-v1/1/routes/endpoints/%7BendpointId%7D/tamper-protection/post](https://developer.sophos.com/docs/endpoint-v1/1/routes/endpoints/%7BendpointId%7D/tamper-protection/post)
+
