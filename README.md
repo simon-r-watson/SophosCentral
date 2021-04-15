@@ -47,9 +47,31 @@ foreach ($tenant in $tenants) {
 }
 ```
 
+## Example - Sophos Partner - Clear ConnectWise Control Alerts
+
+``` powershell
+$clientID = "asdkjsdfksjdf"
+$clientSecret = Read-Host -AsSecureString -Prompt "Client Secret:"
+$controlCustomerAlerts = [System.Collections.Arraylist]::New()
+
+Connect-SophosCentral -ClientID $clientID -ClientSecret $clientSecret
+
+$tenants = Get-SophosCentralCustomerTenants
+foreach ($tenant in $tenants) {
+    Connect-SophosCentralCustomerTenant -CustomerTenantID $tenant.id
+    Get-SophosCentralAlerts | Where-Object {$_.Description -like "*ScreenConnect*"} | Foreach-Object {
+        $result = Set-SophosCentralAlertAction -AlertID $_.id -Action $_.allowedActions[0]
+        $_ | Add-Member -MemberType NoteProperty -Name result -Value $result.result
+        $_ | Add-Member -MemberType NoteProperty -Name actionrequested -Value $result.action
+        $_ | Add-Member -MemberType NoteProperty -Name requestedAt -Value $result.requestedAt
+        $controlCustomerAlerts += $_
+    }
+}
+```
+
 ## Saving Credentials
 
-Please note that this is not recommended. You should use a service such as Azure Key Vault to store the client secret instead.
+Please note that this is not recommended. You should use a service such as Azure Key Vault to store the client secret instead. See [Azure Key Vault Example](./AzureKeyVaultExample.md) for further information
 
 You can save the credential object using the following. The XML file generated will be encrypted, and will only be able to be decrypted by the user 
 that created it on the same device that was used to generate it. 
