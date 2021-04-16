@@ -12,7 +12,7 @@ It currently supports:
 * Action a list of Alerts
 * Create a new user
 
-This module is tested on PowerShell 7.1, it should work down to Windows PowerShell 5.
+This module is tested on PowerShell 7.1, it may work on Windows PowerShell 5. It will not work on Windows PowerShell 4 or earlier
 
 ## Saving Credentials
 
