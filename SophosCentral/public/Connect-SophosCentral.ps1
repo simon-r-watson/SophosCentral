@@ -33,8 +33,12 @@ function Connect-SophosCentral {
         [Switch]$AccessTokenOnly
     )
 
+    if ($PSVersionTable.PSVersion.Major -lt 7) {
+        Write-Warning 'Unsupported version of PowerShell detected'
+    }
+
     if ($null -eq $ClientSecret) {
-        $ClientSecret = Read-Host -AsSecureString -Prompt "Client Secret:"
+        $ClientSecret = Read-Host -AsSecureString -Prompt 'Client Secret:'
     }
 
     $loginUri = [System.Uri]::new('https://id.sophos.com/api/v2/oauth2/token')
@@ -47,8 +51,7 @@ function Connect-SophosCentral {
     }
     try {
         $response = Invoke-WebRequest -Uri $loginUri -Body $body -ContentType 'application/x-www-form-urlencoded' -Method Post -UseBasicParsing
-    }
-    catch {
+    } catch {
         throw "Error requesting access token: $($_)"
     }
     
@@ -59,8 +62,7 @@ function Connect-SophosCentral {
         if ($AccessTokenOnly -eq $true) {
             $GLOBAL:SophosCentral.access_token = $authDetails.access_token | ConvertTo-SecureString -AsPlainText -Force
             $GLOBAL:SophosCentral.expires_at = $expiresAt
-        }
-        else {
+        } else {
             $authDetails | Add-Member -MemberType NoteProperty -Name expires_at -Value $expiresAt
             $authDetails.access_token = $authDetails.access_token | ConvertTo-SecureString -AsPlainText -Force
             $GLOBAL:SophosCentral = $authDetails

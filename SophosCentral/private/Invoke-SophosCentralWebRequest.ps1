@@ -10,14 +10,16 @@ function Invoke-SophosCentralWebRequest {
         [System.Collections.Hashtable]$Body
     )
 
+    if ($PSVersionTable.PSVersion.Major -lt 7) {
+        Write-Warning 'Unsupported version of PowerShell detected'
+    }
+    
     if ($null -ne $CustomHeader) {
         $header = $CustomHeader
-    }
-    else {
+    } else {
         try {
             $header = Get-SophosCentralAuthHeader
-        }
-        catch {
+        } catch {
             throw $_
         }
     }
@@ -28,8 +30,7 @@ function Invoke-SophosCentralWebRequest {
         $response = Invoke-RestMethod -Uri $uri -Headers $header -UseBasicParsing
         if ($response.items) {
             $response.items
-        }
-        else {
+        } else {
             $response
         }
         
@@ -39,13 +40,11 @@ function Invoke-SophosCentralWebRequest {
                 $nextUri = $uri.AbsoluteUri + '?pageFromKey=' + $response.pages.nextKey
                 $response = Invoke-RestMethod -Uri $nextUri -Headers $header -UseBasicParsing
                 $response.items
-            }
-            else {
+            } else {
                 $finished = $true
             }
         } while ($finished -eq $false)
-    }
-    elseif ($method -eq 'Post') {
+    } elseif ($method -eq 'Post') {
         if ($null -eq $body) {
             #Some API endpoints that use a 'post' request require an empty body. If no body is present it will give an error back
             $body = @{}
