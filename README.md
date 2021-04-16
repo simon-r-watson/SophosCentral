@@ -14,6 +14,10 @@ It currently supports:
 
 This module is tested on PowerShell 7.1, it should work down to Windows PowerShell 5.
 
+## Saving Credentials
+
+It is recommended to use a service such as Azure Key Vault to store the client id/secret. See [Azure Key Vault Example](./AzureKeyVaultExample.md) for an example implementation
+
 ## Example - Sophos Central Customer - Get Alerts
 
 ``` powershell
@@ -67,21 +71,4 @@ foreach ($tenant in $tenants) {
         $controlCustomerAlerts += $_
     }
 }
-```
-
-## Saving Credentials
-
-Please note that this method is not recommended. You should use a service such as Azure Key Vault to store the client secret instead. See [Azure Key Vault Example](./AzureKeyVaultExample.md) for further information
-
-You can save the credential object using the following. The XML file generated will be encrypted, and will only be able to be decrypted by the user 
-that created it on the same device that was used to generate it.
-
-``` powershell
-$GLOBAL:SophosCentral | Export-Clixml sophosauth.xml
-```
-
-And then import using the following. This will allow you to run commands without having to re-run Connect-SophosCentral
-
-``` powershell
-$GLOBAL:SophosCentral = Import-Clixml sophosauth.xml
 ```
