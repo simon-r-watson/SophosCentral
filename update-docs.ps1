@@ -11,4 +11,6 @@ New-ExternalHelp -Path .\docs -OutputPath output\SophosCentral\en-gb\ -Force
 
 Update-MarkdownHelp .\docs -Force
 
+Copy-Item .\*.md -Destination .\docs\
+
 Remove-Module SophosCentral
