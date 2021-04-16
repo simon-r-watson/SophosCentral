@@ -1,6 +1,7 @@
 # Example - Storing Secrets in Azure Key Vault
 
 This makes use of [PowerShell SecretStore module](https://github.com/PowerShell/SecretStore) and its integration into [Azure Key Vault](https://azure.microsoft.com/en-au/services/key-vault/)
+
 ## Setup Azure Key Vault and Secret Store
 
 1. Setup a new Azure Key Vault. Note down it's name, and the ID of the subscription it resides in. [PowerShell](https://docs.microsoft.com/en-au/azure/key-vault/general/quick-create-powershell) instructions. [Azure Portal](https://docs.microsoft.com/en-au/azure/key-vault/general/quick-create-portal) instructions.
