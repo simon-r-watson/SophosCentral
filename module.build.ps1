@@ -9,7 +9,7 @@ $script:Imports = ( 'private', 'public', 'classes' )
 $script:TestFile = "$PSScriptRoot\output\TestResults_PS$PSVersion`_$TimeStamp.xml"
 
 # Importing all build settings into the current scope for coveralls integration
-. ".\BuildSettings.ps1"
+. '.\BuildSettings.ps1'
 
 # Task Default Build, Pester, UpdateSource, Publish
 Task Default Build, UpdateSource
@@ -18,7 +18,7 @@ Task Pester Build, ImportModule, UnitTests, FullTests, Publish_Unit_Tests_Covera
 
 Task Clean {
     $null = Remove-Item $Output -Recurse -ErrorAction Ignore
-    $null = New-Item  -Type Directory -Path $Destination
+    $null = New-Item -Type Directory -Path $Destination
 }
 
 Task UnitTests {
@@ -57,12 +57,12 @@ Task CopyToOutput {
     Get-ChildItem $source -File | 
         Where-Object name -NotMatch "$ModuleName\.ps[dm]1" | 
             Copy-Item -Destination $Destination -Force -PassThru | 
-                ForEach-Object { "  Create [.{0}]" -f $_.fullname.replace($PSScriptRoot, '') }
+                ForEach-Object { '  Create [.{0}]' -f $_.fullname.replace($PSScriptRoot, '') }
 
     Get-ChildItem $source -Directory | 
         Where-Object name -NotIn $imports | 
             Copy-Item -Destination $Destination -Recurse -Force -PassThru | 
-                ForEach-Object { "  Create [.{0}]" -f $_.fullname.replace($PSScriptRoot, '') }
+                ForEach-Object { '  Create [.{0}]' -f $_.fullname.replace($PSScriptRoot, '') }
 }
 
 Task BuildPSM1 -Inputs (Get-Item "$source\*\*.ps1") -Outputs $ModulePath {
@@ -82,7 +82,7 @@ Task BuildPSM1 -Inputs (Get-Item "$source\*\*.ps1") -Outputs $ModulePath {
     }
     
     Write-Output "  Creating module [$ModulePath]"
-    Set-Content -Path  $ModulePath -Value $stringbuilder.ToString() 
+    Set-Content -Path $ModulePath -Value $stringbuilder.ToString() 
 }
 
 Task NextPSGalleryVersion -if (-Not ( Test-Path "$output\version.xml" ) ) -Before BuildPSD1 {
@@ -96,7 +96,7 @@ Task BuildPSD1 -inputs (Get-ChildItem $Source -Recurse -File) -Outputs $Manifest
 
     $bumpVersionType = 'Patch'
 
-    $functions = Get-ChildItem "$ModuleName\Public\*.ps1" | Where-Object { $_.name -notmatch 'Tests' } | Select-Object -ExpandProperty basename      
+    $functions = Get-ChildItem "$ModuleName\public\*.ps1" | Where-Object { $_.name -notmatch 'Tests' } | Select-Object -ExpandProperty basename      
 
     $oldFunctions = (Get-Metadata -Path $manifestPath -PropertyName 'FunctionsToExport')
 
@@ -126,8 +126,7 @@ Task ImportModule {
     if ( -Not ( Test-Path $ManifestPath ) ) {
         Write-Output "  Modue [$ModuleName] is not built, cannot find [$ManifestPath]"
         Write-Error "Could not find module manifest [$ManifestPath]. You may need to build the module first"
-    }
-    else {
+    } else {
         if (Get-Module $ModuleName) {
             Write-Output "  Unloading Module [$ModuleName] from previous import"
             Remove-Module $ModuleName
@@ -141,7 +140,7 @@ Task Publish {
     # Gate deployment
     if (
         $ENV:BHBuildSystem -ne 'Unknown' -and 
-        $ENV:BHBranchName -eq "master" -and 
+        $ENV:BHBranchName -eq 'master' -and 
         $ENV:BHCommitMessage -match '!deploy'
     ) {
         $Params = @{
@@ -150,8 +149,7 @@ Task Publish {
         }
 
         Invoke-PSDeploy @Verbose @Params
-    }
-    else {
+    } else {
         "Skipping deployment: To deploy, ensure that...`n" + 
         "`t* You are in a known build system (Current: $ENV:BHBuildSystem)`n" + 
         "`t* You are committing to the master branch (Current: $ENV:BHBranchName) `n" + 
