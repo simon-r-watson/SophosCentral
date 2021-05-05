@@ -20,7 +20,7 @@ function Set-SophosCentralAlertAction {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
-        [Alias("ID")]
+        [Alias('ID')]
         [string[]]$AlertID,
 
         [Parameter(Mandatory = $true)]
@@ -30,7 +30,7 @@ function Set-SophosCentralAlertAction {
         [string]$Message
     )
     begin {
-        $uriChild = "/common/v1/alerts/{0}/actions"
+        $uriChild = '/common/v1/alerts/{0}/actions'
         $uriString = $GLOBAL:SophosCentral.RegionEndpoint + $uriChild
     }
     process {

@@ -15,12 +15,13 @@ function Get-SophosCentralEndpointTamperProtection {
     #>
     [CmdletBinding()]
     param (
-        [Parameter(Mandatory = $true)]
-        [Alias("ID")]
+        [Parameter(Mandatory = $true,
+            ValueFromPipelineByPropertyName = $true)]
+        [Alias('ID')]
         [string[]]$EndpointID
     )
     begin {
-        $uriChild = "/endpoint/v1/endpoints/{0}/tamper-protection"
+        $uriChild = '/endpoint/v1/endpoints/{0}/tamper-protection'
         $uriString = $GLOBAL:SophosCentral.RegionEndpoint + $uriChild
     }
     process {

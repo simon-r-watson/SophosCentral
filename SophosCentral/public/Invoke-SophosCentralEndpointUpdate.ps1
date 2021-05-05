@@ -15,12 +15,13 @@ function Invoke-SophosCentralEndpointUpdate {
     #>
     [CmdletBinding()]
     param (
-        [Parameter(Mandatory = $true)]
-        [Alias("ID")]
+        [Parameter(Mandatory = $true,
+            ValueFromPipelineByPropertyName = $true)]
+        [Alias('ID')]
         [string[]]$EndpointID
     )
     begin {
-        $uriChild = "/endpoint/v1/endpoints/{0}/update-checks"
+        $uriChild = '/endpoint/v1/endpoints/{0}/update-checks'
         $uriString = $GLOBAL:SophosCentral.RegionEndpoint + $uriChild
     }
     process {

@@ -12,16 +12,14 @@ function Get-SophosCentralCustomerTenants {
         https://developer.sophos.com/getting-started
     #>
     if ($global:SophosCentral.IDType -ne 'partner') {
-        throw "You are not currently logged in using a Sophos Central Partner Service Principal"
-    }
-    else {
-        Write-Verbose "currently logged in using a Sophos Central Partner Service Principal"
+        throw 'You are not currently logged in using a Sophos Central Partner Service Principal'
+    } else {
+        Write-Verbose 'currently logged in using a Sophos Central Partner Service Principal'
     }
 
     try {
         $header = Get-SophosCentralAuthHeader -PartnerInitial
-    }
-    catch {
+    } catch {
         throw $_
     }
     $uri = [System.Uri]::New('https://api.central.sophos.com/partner/v1/tenants?pageTotal=true')

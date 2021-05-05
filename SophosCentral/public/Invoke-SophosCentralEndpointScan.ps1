@@ -15,12 +15,13 @@ function Invoke-SophosCentralEndpointScan {
     #>
     [CmdletBinding()]
     param (
-        [Parameter(Mandatory = $true)]
-        [Alias("ID")]
+        [Parameter(Mandatory = $true,
+            ValueFromPipelineByPropertyName = $true)]
+        [Alias('ID')]
         [string[]]$EndpointID
     )
     begin {
-        $uriChild = "/endpoint/v1/endpoints/{0}/scans"
+        $uriChild = '/endpoint/v1/endpoints/{0}/scans'
         $uriString = $GLOBAL:SophosCentral.RegionEndpoint + $uriChild
     }
     process {

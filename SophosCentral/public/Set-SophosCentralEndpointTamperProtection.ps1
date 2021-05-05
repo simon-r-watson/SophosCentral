@@ -19,20 +19,21 @@ function Set-SophosCentralEndpointTamperProtection {
     #>
     [CmdletBinding()]
     param (
-        [Parameter(Mandatory = $true)]
-        [Alias("ID")]
+        [Parameter(Mandatory = $true,
+            ValueFromPipelineByPropertyName = $true)]
+        [Alias('ID')]
         [string[]]$EndpointID,
 
         [Parameter(Mandatory = $true,
-            ParameterSetName = "Update Status")]
+            ParameterSetName = 'Update Status')]
         [System.Boolean]$Enabled,
 
         [Parameter(Mandatory = $true,
-            ParameterSetName = "Regenerate Password")]
+            ParameterSetName = 'Regenerate Password')]
         [switch]$RegeneratePassword
     )
     begin {
-        $uriChild = "/endpoint/v1/endpoints/{0}/tamper-protection"
+        $uriChild = '/endpoint/v1/endpoints/{0}/tamper-protection'
         $uriString = $GLOBAL:SophosCentral.RegionEndpoint + $uriChild
     }
     process {
