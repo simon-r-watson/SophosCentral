@@ -1,0 +1,18 @@
+name: build
+
+on: [workflow_dispatch]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      # Additional steps to generate documentation in "Documentation" directory
+      - run: '& $env:GITHUB_WORKSPACE/build.ps1'
+        shell: pwsh
+      - name: Upload Release
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "SophosCentral.zip"
+          token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
