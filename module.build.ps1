@@ -124,7 +124,7 @@ Task UpdateSource {
 
 Task ImportModule {
     if ( -Not ( Test-Path $ManifestPath ) ) {
-        Write-Output "  Modue [$ModuleName] is not built, cannot find [$ManifestPath]"
+        Write-Output "  Module [$ModuleName] is not built, cannot find [$ManifestPath]"
         Write-Error "Could not find module manifest [$ManifestPath]. You may need to build the module first"
     } else {
         if (Get-Module $ModuleName) {
