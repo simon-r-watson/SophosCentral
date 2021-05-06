@@ -24,6 +24,7 @@ Invoke-Build $Task -Result result
 if ($Result.Error) {
     exit 1
 } else {
+    ./update-docs.ps1
     Compress-Archive -Path ./output/SophosCentral -DestinationPath ./SophosCentral.zip
     exit 0
 }

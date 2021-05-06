@@ -1,6 +1,9 @@
 name: Documentation
 
-on: [push]
+on:
+  push:
+    tags:
+      - "*"
 
 jobs:
   build:
@@ -9,7 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       # Additional steps to generate documentation in "Documentation" directory
-      - run: '& $env:GITHUB_WORKSPACE/update-docs.ps1'
+      - run: "& $env:GITHUB_WORKSPACE/update-docs.ps1"
         shell: pwsh
       # Run Publish to Wiki
       - name: Upload Documentation to Wiki

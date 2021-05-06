@@ -1,9 +1,9 @@
 name: build
 
-on:  
+on:
   push:
-      tags:
-        - '*'
+    tags:
+      - "*"
 
 jobs:
   build:
@@ -11,9 +11,10 @@ jobs:
 
     steps:
       - uses: actions/checkout@v1
-      # Additional steps to generate documentation in "Documentation" directory
-      - run: '& $env:GITHUB_WORKSPACE/build.ps1'
+      # build
+      - run: "& $env:GITHUB_WORKSPACE/build.ps1"
         shell: pwsh
+      # upload
       - name: Upload Release
         uses: ncipollo/release-action@v1
         with:
