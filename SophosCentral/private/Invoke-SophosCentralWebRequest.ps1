@@ -1,7 +1,9 @@
 function Invoke-SophosCentralWebRequest {
     [CmdletBinding()]
     param (
+        [Parameter(Mandatory = $true)]
         [System.URI]$Uri,
+        
         [System.Collections.Hashtable]$CustomHeader,
 
         [ValidateSet('Get', 'Post')]
