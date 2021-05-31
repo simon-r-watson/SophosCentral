@@ -12,6 +12,8 @@ function Set-SophosCentralAlertAction {
         The action must be in the same capitalization as listed, otherwise it will fail
 
         Possible options: 'acknowledge', 'cleanPua', 'cleanVirus', 'authPua', 'clearThreat', 'clearHmpa', 'sendMsgPua', 'sendMsgThreat'
+    .PARAMETER Message
+        Message to send for the action.
     .EXAMPLE
         Set-SophosCentralAlertAction. -AlertID "6d41e78e-0360-4de3-8669-bb7b797ee515" -Action "clearThreat"
     .LINK
@@ -38,6 +40,9 @@ function Set-SophosCentralAlertAction {
             $uri = [System.Uri]::New($uriString -f $alert)
             $body = @{
                 action = $Action
+            }
+            if ($Message) {
+                $body.Add('message', $Message)
             }
             Invoke-SophosCentralWebRequest -Uri $uri -Method Post -Body $body
         }
