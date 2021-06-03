@@ -6,9 +6,10 @@ function Unprotect-Secret {
         $plaintextsecret = Unprotect-Secret -Secret $clientsecret
     #>
     [CmdletBinding()]
+    [OutputType([System.String])]
     param (
         [Parameter(Mandatory = $true,
-            HelpMessage = "The Secure String to convert to plain text")]
+            HelpMessage = 'The Secure String to convert to plain text')]
         [SecureString]$Secret
     )
     $BSTR = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($secret)

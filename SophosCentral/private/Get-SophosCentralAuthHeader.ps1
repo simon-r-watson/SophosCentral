@@ -1,5 +1,6 @@
 function Get-SophosCentralAuthHeader {
     [CmdletBinding()]
+    [OutputType([System.Collections.Hashtable])]
     param (
         [switch]$Initial,
         [switch]$PartnerInitial
