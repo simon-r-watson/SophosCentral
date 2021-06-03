@@ -19,7 +19,7 @@ function Set-SophosCentralAlertAction {
     .LINK
         https://developer.sophos.com/docs/common-v1/1/routes/alerts/%7BalertId%7D/actions/post
     #>
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'Medium')]
     param (
         [Parameter(Mandatory = $true)]
         [Alias('ID')]
@@ -29,14 +29,17 @@ function Set-SophosCentralAlertAction {
         [ValidateSet('acknowledge', 'cleanPua', 'cleanVirus', 'authPua', 'clearThreat', 'clearHmpa', 'sendMsgPua', 'sendMsgThreat')]
         [string]$Action,
 
-        [string]$Message
+        [string]$Message,
+
+        [switch]$Force
     )
-    begin {
+    begin {        
         $uriChild = '/common/v1/alerts/{0}/actions'
         $uriString = $GLOBAL:SophosCentral.RegionEndpoint + $uriChild
     }
     process {
         foreach ($alert in $AlertID) {
+            
             $uri = [System.Uri]::New($uriString -f $alert)
             $body = @{
                 action = $Action
@@ -44,7 +47,10 @@ function Set-SophosCentralAlertAction {
             if ($Message) {
                 $body.Add('message', $Message)
             }
-            Invoke-SophosCentralWebRequest -Uri $uri -Method Post -Body $body
+            if ($Force -or $PSCmdlet.ShouldProcess($alert, $Action)) {
+                Invoke-SophosCentralWebRequest -Uri $uri -Method Post -Body $body
+            }
+            
         }
     }
 }

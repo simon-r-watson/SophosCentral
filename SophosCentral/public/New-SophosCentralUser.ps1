@@ -13,7 +13,7 @@ function New-SophosCentralUser {
     .LINK
         https://developer.sophos.com/docs/common-v1/1/routes/directory/users/post
     #>
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'Low')]
     param (
         [Parameter(Mandatory = $true)]
         [string]$Name,
@@ -22,10 +22,11 @@ function New-SophosCentralUser {
         [string]$LastName,
         [string]$Email,
         [string]$ExchangeLogin,
-        [string[]]$GroupIDs
+        [string[]]$GroupIDs,
+        [switch]$Force
     )
 
-    $uriChild = "/common/v1/directory/users"
+    $uriChild = '/common/v1/directory/users'
     $uri = [System.Uri]::New($GLOBAL:SophosCentral.RegionEndpoint + $uriChild)
 
     $body = @{
@@ -37,5 +38,7 @@ function New-SophosCentralUser {
     if ($exchangeLogin) { $body.Add('exchangeLogin', $exchangeLogin) }
     if ($groupIds) { $body.Add('groupIds', $groupIds) }
 
-    Invoke-SophosCentralWebRequest -Uri $uri -Method Post -Body $body
+    if ($Force -or $PSCmdlet.ShouldProcess($EndpointID, ($body.keys -join ', '))) {
+        Invoke-SophosCentralWebRequest -Uri $uri -Method Post -Body $body
+    }
 }

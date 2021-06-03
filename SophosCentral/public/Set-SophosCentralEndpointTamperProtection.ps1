@@ -17,7 +17,7 @@ function Set-SophosCentralEndpointTamperProtection {
     .LINK
         https://developer.sophos.com/docs/endpoint-v1/1/routes/endpoints/%7BendpointId%7D/tamper-protection/post
     #>
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'High')]
     param (
         [Parameter(Mandatory = $true,
             ValueFromPipelineByPropertyName = $true)]
@@ -30,7 +30,9 @@ function Set-SophosCentralEndpointTamperProtection {
 
         [Parameter(Mandatory = $true,
             ParameterSetName = 'Regenerate Password')]
-        [switch]$RegeneratePassword
+        [switch]$RegeneratePassword,
+
+        [switch]$Force
     )
     begin {
         $uriChild = '/endpoint/v1/endpoints/{0}/tamper-protection'
@@ -42,7 +44,10 @@ function Set-SophosCentralEndpointTamperProtection {
             $body = @{}
             if ($Enabled) { $body.Add('enabled', $Enabled) }
             if ($RegeneratePassword) { $body.Add('regeneratePassword', $RegeneratePassword) }
-            Invoke-SophosCentralWebRequest -Uri $uri -Method Post
+            
+            if ($Force -or $PSCmdlet.ShouldProcess($EndpointID, ($body.keys -join ', '))) {
+                Invoke-SophosCentralWebRequest -Uri $uri -Method Post
+            }
         }
     }
 }
