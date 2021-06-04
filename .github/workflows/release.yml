@@ -12,7 +12,12 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       # build
-      - run: "& $env:GITHUB_WORKSPACE/build.ps1"
+      - run: |
+          Write-Host $Env:GITHUB_REF
+          $version = $Env:GITHUB_REF
+          echo "BUILD_VERSION=$version" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf-8 -Append
+          $env:GITHUB_REF | Out-File $env:GITHUB_WORKSPACE/githubref.txt -Encoding utf-8
+          & $env:GITHUB_WORKSPACE/build.ps1
         shell: pwsh
       # upload
       - name: Upload Release

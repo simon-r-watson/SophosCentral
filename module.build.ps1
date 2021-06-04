@@ -106,14 +106,20 @@ Task BuildPSD1 -inputs (Get-ChildItem $Source -Recurse -File) -Outputs $Manifest
     Set-ModuleFunctions -Name $ManifestPath -FunctionsToExport $functions
 
     # Bump the module version
-    $version = [version] (Get-Metadata -Path $manifestPath -PropertyName 'ModuleVersion')
-    $galleryVersion = Import-Clixml -Path "$output\version.xml"
-    if ( $version -lt $galleryVersion ) {
-        $version = $galleryVersion
+    if (-not (Test-Path .\githubref.txt)) {
+        $version = [version] (Get-Metadata -Path $manifestPath -PropertyName 'ModuleVersion')
+        $galleryVersion = Import-Clixml -Path "$output\version.xml"
+        if ( $version -lt $galleryVersion ) {
+            $version = $galleryVersion
+        }
+        Write-Output "  Stepping [$bumpVersionType] version [$version]"
+        $version = [version] (Step-Version $version -Type $bumpVersionType)
+        Write-Output "  Using version: $version"
+    } else {
+        #we're running on GitHub Actions, use the GitHub release tag as the version number
+        $ghRef = Get-Content .\githubref.txt -Raw
+        $version = [version]($ghRef.replace('refs/tags/v', '').replace('refs/tags/', ''))
     }
-    Write-Output "  Stepping [$bumpVersionType] version [$version]"
-    $version = [version] (Step-Version $version -Type $bumpVersionType)
-    Write-Output "  Using version: $version"
     
     Update-Metadata -Path $ManifestPath -PropertyName ModuleVersion -Value $version
 }
