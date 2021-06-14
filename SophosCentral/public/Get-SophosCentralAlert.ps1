@@ -1,4 +1,4 @@
-function Get-SophosCentralAlerts {
+function Get-SophosCentralAlert {
     <#
     .SYNOPSIS
         Get alerts listed in Sophos Central
@@ -24,6 +24,7 @@ function Get-SophosCentralAlerts {
         https://developer.sophos.com/docs/common-v1/1/routes/alerts/search/post
     #>
     [CmdletBinding()]
+    [Alias('Get-SophosCentralAlerts')]
     param (
         [Parameter(ParameterSetName = 'search')]
         [ValidateSet('other', 'endpoint', 'server', 'mobile', 'encryption', 'emailGateway', 'webGateway', 'phishThreat', 'wireless', 'iaas', 'firewall')]

@@ -21,6 +21,7 @@ function Connect-SophosCentralCustomerTenant {
         https://developer.sophos.com/getting-started
     #>
     [CmdletBinding()]
+    [Alias('Select-SophosCentralCustomerTenant')]
     param (
         [Parameter(Mandatory = $true,
             ParameterSetName = 'ByID'
@@ -39,7 +40,7 @@ function Connect-SophosCentralCustomerTenant {
     }
 
     if (-not($CustomerTenantID)) {
-        $tenantInfo = Get-SophosCentralCustomerTenants | Where-Object {
+        $tenantInfo = Get-SophosCentralCustomerTenant | Where-Object {
             $_.Name -like $CustomerNameSearch
         }
         switch ($tenantInfo.count) {
@@ -48,7 +49,7 @@ function Connect-SophosCentralCustomerTenant {
             { $PSItem -lt 1 } { throw "$PSItem customer tenants returned" }
         }
     } else {
-        $tenantInfo = Get-SophosCentralCustomerTenants | Where-Object {
+        $tenantInfo = Get-SophosCentralCustomerTenant | Where-Object {
             $_.ID -eq $CustomerTenantID
         }
     }

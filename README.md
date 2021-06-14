@@ -26,7 +26,7 @@ $clientSecret = Read-Host -AsSecureString -Prompt "Client Secret:"
 
 Connect-SophosCentral -ClientID $clientID -ClientSecret $clientSecret
 
-$alerts = Get-SophosCentralAlerts
+$alerts = Get-SophosCentralAlert
 ```
 
 ## Example - Sophos Partner - Get All Customer Alerts
@@ -38,10 +38,10 @@ $allCustomerAlerts = [System.Collections.Arraylist]::New()
 
 Connect-SophosCentral -ClientID $clientID -ClientSecret $clientSecret
 
-$tenants = Get-SophosCentralCustomerTenants
+$tenants = Get-SophosCentralCustomerTenant
 foreach ($tenant in $tenants) {
     Connect-SophosCentralCustomerTenant -CustomerTenantID $tenant.id
-    Get-SophosCentralAlerts | Foreach-Object {
+    Get-SophosCentralAlert | Foreach-Object {
         if ($null -ne $_.product) {
             $_ | Add-Member -MemberType NoteProperty -Name TenantName -Value $tenant.Name
             $_ | Add-Member -MemberType NoteProperty -Name TenantID -Value $tenant.ID
@@ -63,7 +63,7 @@ Connect-SophosCentral -ClientID $clientID -ClientSecret $clientSecret
 $tenants = Get-SophosCentralCustomerTenants
 foreach ($tenant in $tenants) {
     Connect-SophosCentralCustomerTenant -CustomerTenantID $tenant.id
-    Get-SophosCentralAlerts | Where-Object {$_.Description -like "*ScreenConnect*"} | Foreach-Object {
+    Get-SophosCentralAlert | Where-Object {$_.Description -like "*ScreenConnect*"} | Foreach-Object {
         $result = Set-SophosCentralAlertAction -AlertID $_.id -Action $_.allowedActions[0]
         $_ | Add-Member -MemberType NoteProperty -Name result -Value $result.result
         $_ | Add-Member -MemberType NoteProperty -Name actionrequested -Value $result.action
