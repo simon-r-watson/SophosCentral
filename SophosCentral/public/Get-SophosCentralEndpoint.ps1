@@ -15,6 +15,6 @@ function Get-SophosCentralEndpoint {
     )
 
     $uriChild = '/endpoint/v1/endpoints'
-    $uri = [System.Uri]::New($GLOBAL:SophosCentral.RegionEndpoint + $uriChild)
+    $uri = [System.Uri]::New($SCRIPT:SophosCentral.RegionEndpoint + $uriChild)
     Invoke-SophosCentralWebRequest -Uri $uri
 }

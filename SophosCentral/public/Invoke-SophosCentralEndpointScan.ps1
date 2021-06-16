@@ -22,7 +22,7 @@ function Invoke-SophosCentralEndpointScan {
     )
     begin {
         $uriChild = '/endpoint/v1/endpoints/{0}/scans'
-        $uriString = $GLOBAL:SophosCentral.RegionEndpoint + $uriChild
+        $uriString = $SCRIPT:SophosCentral.RegionEndpoint + $uriChild
     }
     process {
         foreach ($endpoint in $EndpointID) {

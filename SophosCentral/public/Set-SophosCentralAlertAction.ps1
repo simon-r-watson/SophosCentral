@@ -35,7 +35,7 @@ function Set-SophosCentralAlertAction {
     )
     begin {        
         $uriChild = '/common/v1/alerts/{0}/actions'
-        $uriString = $GLOBAL:SophosCentral.RegionEndpoint + $uriChild
+        $uriString = $SCRIPT:SophosCentral.RegionEndpoint + $uriChild
     }
     process {
         foreach ($alert in $AlertID) {

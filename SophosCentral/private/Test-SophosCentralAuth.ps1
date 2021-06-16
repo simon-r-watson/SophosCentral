@@ -4,14 +4,14 @@ function Test-SophosCentralAuth {
     param (
         
     )
-    if ($GLOBAL:SophosCentral) {
+    if ($SCRIPT:SophosCentral) {
         $date = Get-Date
-        if ($GLOBAL:SophosCentral.expires_at -le $date) {
+        if ($SCRIPT:SophosCentral.expires_at -le $date) {
             Write-Verbose 'Access token has expired'
             #request new token
             try {
                 Write-Verbose 'Attempting to obtain new access token'
-                Connect-SophosCentral -ClientID $GLOBAL:SophosCentral.client_id -ClientSecret $GLOBAL:SophosCentral.client_secret -AccessTokenOnly
+                Connect-SophosCentral -ClientID $SCRIPT:SophosCentral.client_id -ClientSecret $SCRIPT:SophosCentral.client_secret -AccessTokenOnly
                 Write-Verbose 'Testing new access token'
                 Test-SophosCentralAuth
             } catch {

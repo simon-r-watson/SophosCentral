@@ -15,6 +15,6 @@ function Get-SophosCentralUserGroup {
     )
     
     $uriChild = '/common/v1/directory/user-groups'
-    $uri = [System.Uri]::New($GLOBAL:SophosCentral.RegionEndpoint + $uriChild)
+    $uri = [System.Uri]::New($SCRIPT:SophosCentral.RegionEndpoint + $uriChild)
     Invoke-SophosCentralWebRequest -Uri $uri
 }

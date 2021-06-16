@@ -36,7 +36,7 @@ function Set-SophosCentralEndpointTamperProtection {
     )
     begin {
         $uriChild = '/endpoint/v1/endpoints/{0}/tamper-protection'
-        $uriString = $GLOBAL:SophosCentral.RegionEndpoint + $uriChild
+        $uriString = $SCRIPT:SophosCentral.RegionEndpoint + $uriChild
     }
     process {
         foreach ($endpoint in $EndpointID) {

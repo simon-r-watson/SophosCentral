@@ -71,21 +71,21 @@ function Connect-SophosCentral {
             $expiresAt = (Get-Date).AddSeconds($authDetails.expires_in - 60)
 
             if ($AccessTokenOnly -eq $true) {
-                $GLOBAL:SophosCentral.access_token = $authDetails.access_token | ConvertTo-SecureString -AsPlainText -Force
-                $GLOBAL:SophosCentral.expires_at = $expiresAt
+                $SCRIPT:SophosCentral.access_token = $authDetails.access_token | ConvertTo-SecureString -AsPlainText -Force
+                $SCRIPT:SophosCentral.expires_at = $expiresAt
             } else {
                 $authDetails | Add-Member -MemberType NoteProperty -Name expires_at -Value $expiresAt
                 $authDetails.access_token = $authDetails.access_token | ConvertTo-SecureString -AsPlainText -Force
-                $GLOBAL:SophosCentral = $authDetails
+                $SCRIPT:SophosCentral = $authDetails
 
                 $tenantInfo = Get-SophosCentralTenantInfo
-                $GLOBAL:SophosCentral | Add-Member -MemberType NoteProperty -Name GlobalEndpoint -Value $tenantInfo.apiHosts.global
-                $GLOBAL:SophosCentral | Add-Member -MemberType NoteProperty -Name RegionEndpoint -Value $tenantInfo.apiHosts.dataRegion
-                $GLOBAL:SophosCentral | Add-Member -MemberType NoteProperty -Name TenantID -Value $tenantInfo.id
-                $GLOBAL:SophosCentral | Add-Member -MemberType NoteProperty -Name IDType -Value $tenantInfo.idType
+                $SCRIPT:SophosCentral | Add-Member -MemberType NoteProperty -Name GlobalEndpoint -Value $tenantInfo.apiHosts.global
+                $SCRIPT:SophosCentral | Add-Member -MemberType NoteProperty -Name RegionEndpoint -Value $tenantInfo.apiHosts.dataRegion
+                $SCRIPT:SophosCentral | Add-Member -MemberType NoteProperty -Name TenantID -Value $tenantInfo.id
+                $SCRIPT:SophosCentral | Add-Member -MemberType NoteProperty -Name IDType -Value $tenantInfo.idType
 
-                $GLOBAL:SophosCentral | Add-Member -MemberType NoteProperty -Name client_id -Value $ClientID
-                $GLOBAL:SophosCentral | Add-Member -MemberType NoteProperty -Name client_secret -Value $ClientSecret
+                $SCRIPT:SophosCentral | Add-Member -MemberType NoteProperty -Name client_id -Value $ClientID
+                $SCRIPT:SophosCentral | Add-Member -MemberType NoteProperty -Name client_secret -Value $ClientSecret
             }
         }
     } elseif ($PsCmdlet.ParameterSetName -eq 'AzKeyVaultAuth') {

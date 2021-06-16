@@ -15,7 +15,7 @@ function Get-SophosCentralCustomerTenant {
     [Alias('Get-SophosCentralCustomerTenants')]
     param (
     )
-    if ($global:SophosCentral.IDType -ne 'partner') {
+    if ($SCRIPT:SophosCentral.IDType -ne 'partner') {
         throw 'You are not currently logged in using a Sophos Central Partner Service Principal'
     } else {
         Write-Verbose 'currently logged in using a Sophos Central Partner Service Principal'

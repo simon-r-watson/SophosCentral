@@ -27,7 +27,7 @@ function New-SophosCentralUser {
     )
 
     $uriChild = '/common/v1/directory/users'
-    $uri = [System.Uri]::New($GLOBAL:SophosCentral.RegionEndpoint + $uriChild)
+    $uri = [System.Uri]::New($SCRIPT:SophosCentral.RegionEndpoint + $uriChild)
 
     $body = @{
         name = $Name

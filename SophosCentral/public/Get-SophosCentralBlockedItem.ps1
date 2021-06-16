@@ -15,6 +15,6 @@ function Get-SophosCentralBlockedItem {
     )
 
     $uriChild = '/endpoint/v1/settings/blocked-items'
-    $uri = [System.Uri]::New($GLOBAL:SophosCentral.RegionEndpoint + $uriChild)
+    $uri = [System.Uri]::New($SCRIPT:SophosCentral.RegionEndpoint + $uriChild)
     Invoke-SophosCentralWebRequest -Uri $uri
 }

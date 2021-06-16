@@ -33,7 +33,7 @@ function Connect-SophosCentralCustomerTenant {
         )]
         [string]$CustomerNameSearch
     )
-    if ($global:SophosCentral.IDType -ne 'partner') {
+    if ($SCRIPT:SophosCentral.IDType -ne 'partner') {
         throw 'You are not currently logged in using a Sophos Central Partner Service Principal'
     } else {
         Write-Verbose 'currently logged in using a Sophos Central Partner Service Principal'
@@ -55,16 +55,16 @@ function Connect-SophosCentralCustomerTenant {
     }
 
     if ($null -ne $tenantInfo) {
-        $GLOBAL:SophosCentral.RegionEndpoint = $tenantInfo.apiHost
-        if ($GLOBAL:SophosCentral.CustomerTenantID) {
-            $GLOBAL:SophosCentral.CustomerTenantID = $tenantInfo.id
+        $SCRIPT:SophosCentral.RegionEndpoint = $tenantInfo.apiHost
+        if ($SCRIPT:SophosCentral.CustomerTenantID) {
+            $SCRIPT:SophosCentral.CustomerTenantID = $tenantInfo.id
         } else {
-            $GLOBAL:SophosCentral | Add-Member -MemberType NoteProperty -Name CustomerTenantID -Value $tenantInfo.id
+            $SCRIPT:SophosCentral | Add-Member -MemberType NoteProperty -Name CustomerTenantID -Value $tenantInfo.id
         }
-        if ($GLOBAL:SophosCentral.CustomerTenantName) {
-            $GLOBAL:SophosCentral.CustomerTenantName = $tenantInfo.Name
+        if ($SCRIPT:SophosCentral.CustomerTenantName) {
+            $SCRIPT:SophosCentral.CustomerTenantName = $tenantInfo.Name
         } else {
-            $GLOBAL:SophosCentral | Add-Member -MemberType NoteProperty -Name CustomerTenantName -Value $tenantInfo.Name
+            $SCRIPT:SophosCentral | Add-Member -MemberType NoteProperty -Name CustomerTenantName -Value $tenantInfo.Name
         }
     }
 }

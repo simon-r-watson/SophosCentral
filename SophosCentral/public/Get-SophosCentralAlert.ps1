@@ -40,12 +40,12 @@ function Get-SophosCentralAlert {
     )
     if ($PsCmdlet.ParameterSetName -ne 'search') {
         $uriChild = '/common/v1/alerts'
-        $uri = [System.Uri]::New($GLOBAL:SophosCentral.RegionEndpoint + $uriChild)
+        $uri = [System.Uri]::New($SCRIPT:SophosCentral.RegionEndpoint + $uriChild)
         Invoke-SophosCentralWebRequest -Uri $uri
 
     } elseif ($PsCmdlet.ParameterSetName -eq 'search') {
         $uriChild = '/common/v1/alerts/search'
-        $uri = [System.Uri]::New($GLOBAL:SophosCentral.RegionEndpoint + $uriChild)
+        $uri = [System.Uri]::New($SCRIPT:SophosCentral.RegionEndpoint + $uriChild)
 
         $searchParam = @{}
         if ($Product) { $searchParam.Add('product', $Product) }
