@@ -8,18 +8,17 @@ function Connect-SophosCentral {
         Sophos customers can connect to their tenant using a client id/secret. Follow Step 1 here to create it
         https://developer.sophos.com/getting-started-tenant
 
-        Sophos partners can use a partner client id/secret here to connect to the customers. Follow Step 1 here to create it
+        Sophos partners can use a partner client id/secret to connect to their customer tenants. Follow Step 1 here to create it
         https://developer.sophos.com/getting-started
     .PARAMETER ClientID
         The client ID from the Sophos Central API credential/service principal
     .PARAMETER ClientSecret
         The client secret from the Sophos Central API credential/service principal
     .PARAMETER SecretVault
-        Login using a client ID and client secret stored in Secret Vault.
-        Uses the Microsoft.PowerShell.SecretManagement module for retrieving secrets
+        Login using a client ID and client secret retrieved from Secret Vault (Microsoft.PowerShell.SecretManagement).
         Setup example found in https://github.com/simon-r-watson/SophosCentral/wiki/AzureKeyVaultExample
     .PARAMETER AzKeyVault
-        Use when the Secret Vault it using Azure Key Vault
+        Use when the Secret Vault is stored in Azure Key Vault
         Uses the Microsoft.PowerShell.SecretManagement and Az.KeyVault modules for retrieving secrets
         Setup example found in https://github.com/simon-r-watson/SophosCentral/wiki/AzureKeyVaultExample
     .PARAMETER AccessTokenOnly
