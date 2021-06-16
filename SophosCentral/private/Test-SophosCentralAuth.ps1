@@ -15,14 +15,14 @@ function Test-SophosCentralAuth {
                 Write-Verbose 'Testing new access token'
                 Test-SophosCentralAuth
             } catch {
-                throw 'error requesting new token'
+                Write-Error 'error requesting new token'
                 return $false
             }           
         } else {
             return $true
         }
     } else {
-        throw "You must connect with 'Connect-SophosCentral' before running any commands"
+        Write-Error "You must connect with 'Connect-SophosCentral' before running any commands"
         return $false
     }
 }
