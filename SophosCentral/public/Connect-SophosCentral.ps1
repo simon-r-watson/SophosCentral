@@ -137,7 +137,7 @@ function Connect-SophosCentral {
         #connect to Azure if using Key Vault for the Secret Vault
         if ($AzKeyVault -eq $true) {
             try { 
-                Connect-AzAccount 
+                Connect-AzAccount | Out-Null
             } catch {
                 throw 'Error connecting to Azure PowerShell'
             }
