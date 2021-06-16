@@ -14,14 +14,30 @@ function Connect-SophosCentral {
         The client ID from the Sophos Central API credential/service principal
     .PARAMETER ClientSecret
         The client secret from the Sophos Central API credential/service principal
+    .PARAMETER SecretVault
+        Login using a client ID and client secret stored in Secret Vault.
+        Uses the Microsoft.PowerShell.SecretManagement module for retrieving secrets
+        Setup example found in https://github.com/simon-r-watson/SophosCentral/wiki/AzureKeyVaultExample
     .PARAMETER AzKeyVault
-        Login using client ID and client secret stored in Azure Key Vault. Must be setup as explained in https://github.com/simon-r-watson/SophosCentral/wiki/AzureKeyVaultExample
+        Use when the Secret Vault it using Azure Key Vault
+        Uses the Microsoft.PowerShell.SecretManagement and Az.KeyVault modules for retrieving secrets
+        Setup example found in https://github.com/simon-r-watson/SophosCentral/wiki/AzureKeyVaultExample
     .PARAMETER AccessTokenOnly
         Internal use (for this module) only. Used to generate a new access token when the current one expires
     .EXAMPLE
         Connect-SophosCentral -ClientID "asdkjsdfksjdf" -ClientSecret (Read-Host -AsSecureString -Prompt "Client Secret:")
     .EXAMPLE
-        Connect-SophosCentral -AzKeyVault
+        Connect-SophosCentral -SecretVaultAuth -AzKeyVault
+
+        Connect using default values for Secret Key Vault name, Client ID name, and Client Secret name, with secret vault configured to use Azure Key Vault
+    .EXAMPLE
+        Connect-SophosCentral -SecretVaultAuth -AzKeyVault -SecretVaultName 'secrets' -SecretVaultClientIDName 'sophosclientid' -SecretVaultClientSecretName 'sophosclientsecret'
+
+        Connect using custom Secret Vault name, Client ID Name, and Client Secret Name, with secret vault configured to use Azure Key Vault
+    .EXAMPLE
+        Connect-SophosCentral -SecretVaultAuth -SecretVaultName 'secrets' -SecretVaultClientIDName 'sophosclientid' -SecretVaultClientSecretName 'sophosclientsecret'
+
+        Connect using custom Secret Vault name, Client ID Name, and Client Secret Name when using a locally stored Secret Vault (or another Microsoft.PowerShell.SecretManagement integration)
     .LINK
         https://developer.sophos.com/getting-started-tenant
     .LINK
@@ -39,8 +55,21 @@ function Connect-SophosCentral {
         [Parameter(ParameterSetName = 'StdAuth')]
         [Switch]$AccessTokenOnly,
 
-        [Parameter(ParameterSetName = 'AzKeyVaultAuth')]
-        [Switch]$AzKeyVault
+        [Parameter(Mandatory = $true,
+            ParameterSetName = 'SecretVaultAuth')]
+        [Switch]$SecretVault,
+
+        [Parameter(ParameterSetName = 'SecretVaultAuth')]
+        [Switch]$AzKeyVault,
+
+        [Parameter(ParameterSetName = 'SecretVaultAuth')]
+        [String]$SecretVaultName = 'AzKV',
+
+        [Parameter(ParameterSetName = 'SecretVaultAuth')]
+        [String]$SecretVaultClientIDName = 'SophosCentral-Partner-ClientID',
+
+        [Parameter(ParameterSetName = 'SecretVaultAuth')]
+        [String]$SecretVaultClientSecretName = 'SophosCentral-Partner-ClientSecret'
     )
 
     if ($PSVersionTable.PSVersion.Major -lt 7) {
@@ -88,23 +117,44 @@ function Connect-SophosCentral {
                 $SCRIPT:SophosCentral | Add-Member -MemberType NoteProperty -Name client_secret -Value $ClientSecret
             }
         }
-    } elseif ($PsCmdlet.ParameterSetName -eq 'AzKeyVaultAuth') {
-        try { 
-            Connect-AzAccount 
-        } catch {
-            throw 'Error connecting to Azure PowerShell'
+    } elseif ($PsCmdlet.ParameterSetName -eq 'SecretVaultAuth') {
+        #verify modules installed
+        if ($AzKeyVault -eq $true) {
+            $modules = 'Microsoft.PowerShell.SecretManagement', 'Az', 'Az.KeyVault'
+        } else {
+            $modules = 'Microsoft.PowerShell.SecretManagement'
         }
+        foreach ($module in $modules) {
+            if (-not(Get-Module $module -ListAvailable)) {
+                throw "$module PowerShell Module is not installed"
+            }
+        }
+        #verify secret vault exists
+        try {
+            $vault = Get-SecretVault -Name $SecretVaultName
+        } catch {
+            throw "$SecretVaultName is not registered as a Secret Vault in Microsoft.PowerShell.SecretManagement"
+        }
+        #connect to Azure if using Key Vault for the Secret Vault
+        if ($AzKeyVault -eq $true) {
+            try { 
+                Connect-AzAccount 
+            } catch {
+                throw 'Error connecting to Azure PowerShell'
+            }
+        }
+        #get secrets from vault
         try {
             #try twice, as sometimes the call silently fails
-            $clientID = Get-Secret 'SophosCentral-Partner-ClientID' -Vault AzKV -AsPlainText
-            $clientSecret = Get-Secret -Name 'SophosCentral-Partner-ClientSecret' -Vault AzKV
+            $clientID = Get-Secret $SecretVaultClientIDName -Vault $SecretVaultName -AsPlainText
+            $clientSecret = Get-Secret -Name $SecretVaultClientSecretName -Vault $SecretVaultName
 
-            $clientID = Get-Secret 'SophosCentral-Partner-ClientID' -Vault AzKV -AsPlainText
-            $clientSecret = Get-Secret -Name 'SophosCentral-Partner-ClientSecret' -Vault AzKV
+            $clientID = Get-Secret $SecretVaultClientIDName -Vault $SecretVaultName -AsPlainText
+            $clientSecret = Get-Secret -Name $SecretVaultClientSecretName -Vault $SecretVaultName
         } catch {
             throw "Error retrieving secrets from Azure Key Vault: $_"
         }
-        
+        #connect to Sophos Central
         Connect-SophosCentral -ClientID $clientID -ClientSecret $clientSecret
     }
 }
