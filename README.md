@@ -41,13 +41,14 @@ Connect-SophosCentral -ClientID $clientID -ClientSecret $clientSecret
 $tenants = Get-SophosCentralCustomerTenant
 foreach ($tenant in $tenants) {
     Connect-SophosCentralCustomerTenant -CustomerTenantID $tenant.id
-    Get-SophosCentralAlert | Foreach-Object {
-        if ($null -ne $_.product) {
-            $_ | Add-Member -MemberType NoteProperty -Name TenantName -Value $tenant.Name
-            $_ | Add-Member -MemberType NoteProperty -Name TenantID -Value $tenant.ID
-            $allCustomerAlerts += $_
+    Get-SophosCentralAlert | `
+        Foreach-Object {
+            if ($null -ne $_.product) {
+                $_ | Add-Member -MemberType NoteProperty -Name TenantName -Value $tenant.Name
+                $_ | Add-Member -MemberType NoteProperty -Name TenantID -Value $tenant.ID
+                $allCustomerAlerts += $_
+            }
         }
-    }
 }
 ```
 
@@ -63,12 +64,31 @@ Connect-SophosCentral -ClientID $clientID -ClientSecret $clientSecret
 $tenants = Get-SophosCentralCustomerTenants
 foreach ($tenant in $tenants) {
     Connect-SophosCentralCustomerTenant -CustomerTenantID $tenant.id
-    Get-SophosCentralAlert | Where-Object {$_.Description -like "*ScreenConnect*"} | Foreach-Object {
-        $result = Set-SophosCentralAlertAction -AlertID $_.id -Action $_.allowedActions[0]
-        $_ | Add-Member -MemberType NoteProperty -Name result -Value $result.result
-        $_ | Add-Member -MemberType NoteProperty -Name actionrequested -Value $result.action
-        $_ | Add-Member -MemberType NoteProperty -Name requestedAt -Value $result.requestedAt
-        $controlCustomerAlerts += $_
-    }
+    Get-SophosCentralAlert | `
+        Where-Object { $_.Description -like "*ScreenConnect*" } | `
+            Foreach-Object {
+                $result = Set-SophosCentralAlertAction -AlertID $_.id -Action $_.allowedActions[0]
+                $_ | Add-Member -MemberType NoteProperty -Name result -Value $result.result
+                $_ | Add-Member -MemberType NoteProperty -Name actionrequested -Value $result.action
+                $_ | Add-Member -MemberType NoteProperty -Name requestedAt -Value $result.requestedAt
+                $controlCustomerAlerts += $_
+            }
 }
+```
+
+## Example - Enable Tamper Protection
+
+``` powershell
+Get-SophosCentralEndpoint | `
+    Where-Object {$_.tamperprotectionenabled -ne $true} | `
+        ForEach-Object { 
+            Set-SophosCentralEndpointTamperProtection -EndpointID $_.id -Enabled $true -Force
+        }
+```
+
+## Example - Get Endpoints with Tamper Protection disabled
+
+``` powershell
+Get-SophosCentralEndpoint | `
+    Where-Object {$_.tamperprotectionenabled -ne $true}
 ```
