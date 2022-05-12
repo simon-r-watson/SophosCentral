@@ -61,7 +61,7 @@ $controlCustomerAlerts = [System.Collections.Arraylist]::New()
 
 Connect-SophosCentral -ClientID $clientID -ClientSecret $clientSecret
 
-$tenants = Get-SophosCentralCustomerTenants
+$tenants = Get-SophosCentralCustomerTenant
 foreach ($tenant in $tenants) {
     Connect-SophosCentralCustomerTenant -CustomerTenantID $tenant.id
     Get-SophosCentralAlert | `
