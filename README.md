@@ -54,6 +54,8 @@ foreach ($tenant in $tenants) {
 
 ## Example - Sophos Partner - Clear ConnectWise Control Alerts
 
+Be very careful with this example. This should only be done when Sophos is blocking ConnectWise Control from updating.
+
 ``` powershell
 $clientID = "asdkjsdfksjdf"
 $clientSecret = Read-Host -AsSecureString -Prompt "Client Secret:"
@@ -91,4 +93,35 @@ Get-SophosCentralEndpoint | `
 ``` powershell
 Get-SophosCentralEndpoint | `
     Where-Object {$_.tamperprotectionenabled -ne $true}
+```
+
+## Example - Review User Sync Settings
+
+``` powershell
+$tenants = Get-SophosCentralCustomerTenant
+
+$sources = foreach ($tenant in $tenants) {
+    $connectionSuccessful = $true
+    try {
+        Connect-SophosCentralCustomerTenant -CustomerTenantID $tenant.id
+    } catch {
+        $connectionSuccessful = $false
+    }
+    
+    if ($connectionSuccessful -eq $true) {
+        $sourceHash = @{
+            Tenant = $tenant.Name
+        }
+        $users = Get-SophosCentralUser | Where-Object { $_.source.type -eq 'activeDirectory' }
+        foreach ($user in $users) {
+            if ($sourceHash.keys -contains $user.source.type) {
+                $sourceHash[$user.source.type] += 1
+            } else {
+                $sourceHash.Add($user.source.type, 1)
+            }
+        }
+        [PSCustomObject]$sourceHash
+    }
+}
+$sources | Format-List *
 ```

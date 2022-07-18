@@ -1,11 +1,17 @@
 function Get-SophosCentralEndpointPolicy {
     <#
     .SYNOPSIS
-        Get Endpoints in Sophos Central (Workstations, Servers)
+        Get Policies
     .DESCRIPTION
-        Get Endpoints in Sophos Central (Workstations, Servers)
+        Get Policies
     .EXAMPLE
-        Get-SophosCentralEndpoint
+        Get-SophosCentralEndpointPolicy -All
+
+        Get all policies
+    .EXAMPLE
+        Get-SophosCentralEndpointPolicy -BasePolicy
+
+        Get base policies
     .LINK
         https://developer.sophos.com/endpoint-policies#get-all-policies
     #>
