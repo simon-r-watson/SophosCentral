@@ -15,7 +15,7 @@ function Set-SophosCentralAlertAction {
     .PARAMETER Message
         Message to send for the action.
     .EXAMPLE
-        Set-SophosCentralAlertAction. -AlertID "6d41e78e-0360-4de3-8669-bb7b797ee515" -Action "clearThreat"
+        Set-SophosCentralAlertAction -AlertID "6d41e78e-0360-4de3-8669-bb7b797ee515" -Action "clearThreat"
     .LINK
         https://developer.sophos.com/docs/common-v1/1/routes/alerts/%7BalertId%7D/actions/post
     #>

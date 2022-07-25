@@ -5,7 +5,7 @@ function Get-SophosCentralAllowedItem {
     .DESCRIPTION
         Get Endpoint allowed Items
     .EXAMPLE
-        Get-SophosCentralAllowedItems
+        Get-SophosCentralAllowedItem
     .LINK
         https://developer.sophos.com/docs/endpoint-v1/1/routes/settings/allowed-items/get
     #>
