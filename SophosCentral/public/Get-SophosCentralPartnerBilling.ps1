@@ -30,10 +30,8 @@ function Get-SophosCentralPartnerBilling {
         [switch]$LastMonth
     )
 
-    if ($SCRIPT:SophosCentral.IDType -ne 'partner') {
+    if ((Test-SophosPartner) -eq $false) {
         throw 'You are not currently logged in using a Sophos Central Partner Service Principal'
-    } else {
-        Write-Verbose 'currently logged in using a Sophos Central Partner Service Principal'
     }
 
     if ($LastMonth) {
@@ -42,7 +40,12 @@ function Get-SophosCentralPartnerBilling {
         $Month = $date.Month
     }
 
-    $header = Get-SophosCentralAuthHeader -PartnerInitial
+    try {
+        $header = Get-SophosCentralAuthHeader -PartnerInitial
+    } catch {
+        throw $_
+    }
+    
     $uri = [System.Uri]::New("https://api.central.sophos.com/partner/v1/billing/usage/$year/$month")
     Invoke-SophosCentralWebRequest -Uri $uri -CustomHeader $header
 }
