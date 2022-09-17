@@ -1,15 +1,13 @@
 function Get-SophosCentralFirewallUpdate {
     <#
     .SYNOPSIS
-        Trigger an update on an Endpoint in Sophos Central
+        Get firmware updates available on a firewall
     .DESCRIPTION
-        Trigger an update on an Endpoint in Sophos Central
-    .PARAMETER EndpointID
-        The ID of the Endpoint. Use Get-SophosCentralEndpoints to list them
+        Get firmware updates available on a firewall
+    .PARAMETER FirewallID
+        The ID of the firewall. Use Get-SophosCentralFirewall to list them
     .EXAMPLE
         Get-SophosCentralFirewallUpdate -FirewallID "6d41e78e-0360-4de3-8669-bb7b797ee515"
-    .EXAMPLE
-        Get-SophosCentralFirewallUpdate -EndpointID (Get-SophosCentralEndpoint).ID
     .LINK
         https://developer.sophos.com/docs/firewall-v1/1/routes/firewalls/actions/firmware-upgrade-check/post
     #>
