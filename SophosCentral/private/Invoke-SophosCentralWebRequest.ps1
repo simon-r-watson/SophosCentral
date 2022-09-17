@@ -6,7 +6,7 @@ function Invoke-SophosCentralWebRequest {
         
         [System.Collections.Hashtable]$CustomHeader,
 
-        [ValidateSet('Get', 'Post')]
+        [ValidateSet('Get', 'Post', 'Delete')]
         [string]$Method = 'Get',
 
         [System.Collections.Hashtable]$Body
@@ -70,6 +70,27 @@ function Invoke-SophosCentralWebRequest {
             if ($response.pages.nextKey) {
                 $nextUri = $uri.AbsoluteUri + '?pageFromKey=' + $response.pages.nextKey
                 $response = Invoke-RestMethod -Uri $nextUri -Headers $header -Method Post -Body $bodyJson -ContentType 'application/json' -UseBasicParsing 
+                $response.items
+            } else {
+                $finished = $true
+            }
+        } while ($finished -eq $false)
+    }
+
+    #Delete request
+    if ($method -eq 'Delete') {        
+        #query api and return the first page
+        $response = Invoke-RestMethod -Uri $uri -Headers $header -Method Delete -ContentType 'application/json' -UseBasicParsing 
+        if ($null -ne $response.items) {
+            $response.items
+        } else {
+            $response
+        }
+        #loop through additional pages of results (if applicable)
+        do {
+            if ($response.pages.nextKey) {
+                $nextUri = $uri.AbsoluteUri + '?pageFromKey=' + $response.pages.nextKey
+                $response = Invoke-RestMethod -Uri $nextUri -Headers $header -Method Delete -ContentType 'application/json' -UseBasicParsing 
                 $response.items
             } else {
                 $finished = $true
