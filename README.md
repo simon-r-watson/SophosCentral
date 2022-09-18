@@ -24,7 +24,7 @@ Sophos partners can use a partner client id/secret to connect to their customer 
 
 ## Saving Credentials
 
-It is recommended to use a service such as Azure Key Vault to store the client id/secret. See [Azure Key Vault Example](./AzureKeyVaultExample.md) for an example implementation
+It is recommended to use a service such as Azure Key Vault to store the client id/secret. See [Azure Key Vault Example](./Examples/Azure%20Key%20Vault%20Example.md) for an example implementation
 
 ## Importing the module
 
@@ -40,46 +40,33 @@ If your downloading the 'SophosCentral.zip' from the releases, you can use the .
 Import-Module .\SophosCentral.psd1
 ```
 
-This is due to me being lazy and not updating the psd often enough in the repo. The copy in the releases zip files will have the correct entries in there, as it's automatically generated
+This is due to me not updating the psd1 often enough in the repo. The copy in the releases zip files will have the correct entries in there, as it's automatically generated.
 
-## Example - Sophos Central Customer - Get Alerts
+## Function Documentation
+
+See <https://github.com/simon-r-watson/SophosCentral/wiki>. This is automatically updated after each release. Due to this, it may not be up to date for newly added or modified functions in the main branch of this repo.
+
+## Examples
+
+See [Examples](./Examples/) for further examples
+
+### Connect to Sophos Central
+
+* The Client Secret is set to a secure string, to make it harder for people to accidentally enter the secret into the PowerShell console in plain text (which ends up on disk in plain text due to the command history feature, and also in the transcription logging if that is enabled)
 
 ``` powershell
-$clientID = "asdkjsdfksjdf"
-$clientSecret = Read-Host -AsSecureString -Prompt "Client Secret:"
+$ClientID = Read-Host -Prompt 'Client ID'
+$ClientSecret = Read-Host -AsSecureString -Prompt 'Client Secret'
+Connect-SophosCentral -ClientID $ClientID -ClientSecret $ClientSecret
+```
 
-Connect-SophosCentral -ClientID $clientID -ClientSecret $clientSecret
+### Get Alerts
 
+``` powershell
 $alerts = Get-SophosCentralAlert
 ```
 
-## Example - Sophos Partner - Clear ConnectWise Control Alerts
-
-Be very careful with this example. This should only be done when Sophos is blocking ConnectWise Control from updating.
-
-``` powershell
-$clientID = "asdkjsdfksjdf"
-$clientSecret = Read-Host -AsSecureString -Prompt "Client Secret:"
-$controlCustomerAlerts = [System.Collections.Arraylist]::New()
-
-Connect-SophosCentral -ClientID $clientID -ClientSecret $clientSecret
-
-$tenants = Get-SophosCentralCustomerTenant
-foreach ($tenant in $tenants) {
-    Connect-SophosCentralCustomerTenant -CustomerTenantID $tenant.id
-    Get-SophosCentralAlert | `
-        Where-Object { $_.Description -like "*ScreenConnect*" } | `
-            Foreach-Object {
-                $result = Set-SophosCentralAlertAction -AlertID $_.id -Action $_.allowedActions[0]
-                $_ | Add-Member -MemberType NoteProperty -Name result -Value $result.result
-                $_ | Add-Member -MemberType NoteProperty -Name actionrequested -Value $result.action
-                $_ | Add-Member -MemberType NoteProperty -Name requestedAt -Value $result.requestedAt
-                $controlCustomerAlerts += $_
-            }
-}
-```
-
-## Example - Enable Tamper Protection
+### Enable Tamper Protection
 
 ``` powershell
 Get-SophosCentralEndpoint | `
@@ -89,44 +76,13 @@ Get-SophosCentralEndpoint | `
         }
 ```
 
-## Example - Get Endpoints with Tamper Protection disabled
+### Get Endpoints with Tamper Protection disabled
 
 ``` powershell
 Get-SophosCentralEndpoint | `
     Where-Object {$_.tamperprotectionenabled -ne $true}
 ```
 
-## Example - Review User Sync Source
+### Audit Customer Tenant Settings
 
-``` powershell
-$tenants = Get-SophosCentralCustomerTenant
-
-$sources = foreach ($tenant in $tenants) {
-    $connectionSuccessful = $true
-    try {
-        Connect-SophosCentralCustomerTenant -CustomerTenantID $tenant.id
-    } catch {
-        $connectionSuccessful = $false
-    }
-    
-    if ($connectionSuccessful -eq $true) {
-        $sourceHash = @{
-            Tenant = $tenant.Name
-        }
-        $users = Get-SophosCentralUser | Where-Object { $_.source.type -eq 'activeDirectory' }
-        foreach ($user in $users) {
-            if ($sourceHash.keys -contains $user.source.type) {
-                $sourceHash[$user.source.type] += 1
-            } else {
-                $sourceHash.Add($user.source.type, 1)
-            }
-        }
-        [PSCustomObject]$sourceHash
-    }
-}
-$sources | Format-List *
-```
-
-## Example - Audit Customer Tenant Settings
-
-See [AuditTenantSettings.ps1](AuditTenantSettings.ps1)
+See [AuditTenantSettings.ps1](./Examples/AuditTenantSettings.ps1)
