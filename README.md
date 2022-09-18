@@ -53,29 +53,6 @@ Connect-SophosCentral -ClientID $clientID -ClientSecret $clientSecret
 $alerts = Get-SophosCentralAlert
 ```
 
-## Example - Sophos Partner - Get All Customer Alerts
-
-``` powershell
-$clientID = "asdkjsdfksjdf"
-$clientSecret = Read-Host -AsSecureString -Prompt "Client Secret:"
-$allCustomerAlerts = [System.Collections.Arraylist]::New()
-
-Connect-SophosCentral -ClientID $clientID -ClientSecret $clientSecret
-
-$tenants = Get-SophosCentralCustomerTenant
-foreach ($tenant in $tenants) {
-    Connect-SophosCentralCustomerTenant -CustomerTenantID $tenant.id
-    Get-SophosCentralAlert | `
-        Foreach-Object {
-            if ($null -ne $_.product) {
-                $_ | Add-Member -MemberType NoteProperty -Name TenantName -Value $tenant.Name
-                $_ | Add-Member -MemberType NoteProperty -Name TenantID -Value $tenant.ID
-                $allCustomerAlerts += $_
-            }
-        }
-}
-```
-
 ## Example - Sophos Partner - Clear ConnectWise Control Alerts
 
 Be very careful with this example. This should only be done when Sophos is blocking ConnectWise Control from updating.
