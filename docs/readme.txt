@@ -1,1 +1,0 @@
-See Wiki - https://github.com/simon-r-watson/SophosCentral/wiki

@@ -60,3 +60,9 @@ $clientID = Get-Secret 'SophosCentral-Partner-ClientID' -Vault AzKV -AsPlainText
 $clientSecret = Get-Secret -Name 'SophosCentral-Partner-ClientSecret' -Vault AzKV
 Connect-SophosCentral -ClientID $clientID -ClientSecret $clientSecret
 ```
+
+Or, if you have used the same Secret Vault name (AzKV) and Secret Names as this example you can just run
+
+```powershell
+Connect-SophosCentral -SecretVault -AzKeyVault
+```
