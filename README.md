@@ -95,7 +95,7 @@ Get-SophosCentralEndpoint | `
     Where-Object {$_.tamperprotectionenabled -ne $true}
 ```
 
-## Example - Review User Sync Settings
+## Example - Review User Sync Source
 
 ``` powershell
 $tenants = Get-SophosCentralCustomerTenant
@@ -125,3 +125,7 @@ $sources = foreach ($tenant in $tenants) {
 }
 $sources | Format-List *
 ```
+
+## Example - Audit Customer Tenant Settings
+
+See [AuditTenantSettings.ps1](AuditTenantSettings.ps1)
