@@ -26,6 +26,22 @@ Sophos partners can use a partner client id/secret to connect to their customer 
 
 It is recommended to use a service such as Azure Key Vault to store the client id/secret. See [Azure Key Vault Example](./AzureKeyVaultExample.md) for an example implementation
 
+## Importing the module
+
+If your cloning this repo using Git, import the module using one of the *.psm1 files in .\SophosCentral\
+
+```pwsh
+Import-Module .\SophosCentral\SophosCentral.psm1
+```
+
+If your downloading the 'SophosCentral.zip' from the releases, you can use the .psd1
+
+```pwsh
+Import-Module .\SophosCentral.psd1
+```
+
+This is due to me being lazy and not updating the psd often enough in the repo. The copy in the releases zip files will have the correct entries in there, as it's automatically generated
+
 ## Example - Sophos Central Customer - Get Alerts
 
 ``` powershell
