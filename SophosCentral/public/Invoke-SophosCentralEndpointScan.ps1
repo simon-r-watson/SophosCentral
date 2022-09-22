@@ -9,7 +9,7 @@ function Invoke-SophosCentralEndpointScan {
     .EXAMPLE
         Invoke-SophosCentralEndpointScan -EndpointID "6d41e78e-0360-4de3-8669-bb7b797ee515"
     .EXAMPLE
-        Invoke-SophosCentralEndpointScan -EndpointID (Get-SophosCentralEndpoints).ID
+        Invoke-SophosCentralEndpointScan -EndpointID (Get-SophosCentralEndpoint).ID
     .LINK
         https://developer.sophos.com/docs/endpoint-v1/1/routes/endpoints/%7BendpointId%7D/scans/post
     #>
