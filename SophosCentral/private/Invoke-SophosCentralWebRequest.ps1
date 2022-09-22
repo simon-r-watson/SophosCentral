@@ -40,7 +40,7 @@ function Invoke-SophosCentralWebRequest {
         #loop through additional pages of results (if applicable)
         do {
             if ($response.pages.nextKey) {
-                if ($uri.AbsoluteUri -like '*?*') {
+                if ($uri.AbsoluteUri -like '*``?*') {
                     $nextUri = $uri.AbsoluteUri + '&pageFromKey=' + $response.pages.nextKey
                 } else {
                     $nextUri = $uri.AbsoluteUri + '?pageFromKey=' + $response.pages.nextKey
