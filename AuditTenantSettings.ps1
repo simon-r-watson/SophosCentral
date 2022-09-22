@@ -1,9 +1,14 @@
 $clientID = Get-Secret 'SophosCentral-Partner-ClientID' -Vault AzKV -AsPlainText
 $clientSecret = Get-Secret -Name 'SophosCentral-Partner-ClientSecret' -Vault AzKV
-
 Connect-SophosCentral -ClientID $clientID -ClientSecret $clientSecret
-
 $tenants = Get-SophosCentralCustomerTenant
+
+<#
+custom settings to audit, and their values to audit against
+do not include settings that have a 'recommendedValue' returned by the API, as those will automatically be audited (this is mainly under threat-protection)
+
+settings reference: https://developer.sophos.com/endpoint-policy-settings-all
+#>
 $types = @{
     'agent-updating'                   = @{
         Enabled = $true
@@ -28,8 +33,6 @@ $types = @{
         'endpoint.web-control.categories.19.action'   = 'block' #hacking
         'endpoint.web-control.categories.1.action'    = 'block' #adult
         'endpoint.web-control.categories.0.action'    = 'warn'  #uncategorized
-
-
     }
     'server-agent-updating'            = @{
         Enabled = $true
@@ -62,10 +65,21 @@ $types = @{
         'endpoint.web-control.categories.19.action'   = 'block' #hacking
         'endpoint.web-control.categories.1.action'    = 'block' #adult
     }
+    'server-windows-firewall'          = @{
+        'endpoint.windows-firewall.profiles.domain-networks'  = 'block'
+        'endpoint.windows-firewall.monitoring-only.enabled'   = 'false'
+        'endpoint.windows-firewall.profiles.private-networks' = 'block'
+        'endpoint.windows-firewall.profiles.public-networks'  = 'blockall'
+    }
+    'windows-firewall'                 = @{
+        'endpoint.windows-firewall.profiles.domain-networks'  = 'block'
+        'endpoint.windows-firewall.monitoring-only.enabled'   = 'false'
+        'endpoint.windows-firewall.profiles.private-networks' = 'block'
+        'endpoint.windows-firewall.profiles.public-networks'  = 'blockall'
+    }
 }
 
 $results = foreach ($tenant in $tenants) {
-    
     $connectionSuccessful = $true
     try {
         Connect-SophosCentralCustomerTenant -CustomerTenantID $tenant.id
@@ -77,11 +91,11 @@ $results = foreach ($tenant in $tenants) {
         $policies = Get-SophosCentralEndpointPolicy -All
         foreach ($type in $types.Keys) {
             $typePolicies = $policies | Where-Object { $_.type -eq $type }
-    
             $typeProps = $types[$type]
     
             foreach ($prop in $typeProps.Keys) {
                 if ($prop -notlike '*.*') {
+                    #audit top level settings on the policy, such as '$typePolicy.enabled'
                     foreach ($typePolicy in $typePolicies) {
                         if ($typePolicy."$prop" -ne $typeProps[$prop]) {
                             $result = [PSCustomObject]@{
@@ -97,6 +111,7 @@ $results = foreach ($tenant in $tenants) {
                         }
                     }
                 } else {
+                    #audit settings under 'settings'. such as '$typePolicy.settings.endpoint.threat-protection.web-control.tls-decryption.enabled'
                     foreach ($typePolicy in $typePolicies) {
                         if ($typePolicy.settings."$prop".value -ne $typeProps[$prop]) {
                             $result = [PSCustomObject]@{
@@ -113,6 +128,8 @@ $results = foreach ($tenant in $tenants) {
                     }
                 }
             }
+
+            #audit settings with a recommendedValue provided by the API
             foreach ($typePolicy in $typePolicies) {
                 foreach ($setting in ($typePolicy.settings | Get-Member | Where-Object { $_.MemberType -eq 'NoteProperty' }).Name) {
                     if ($typePolicy.settings."$setting".recommendedValue) {
@@ -135,6 +152,7 @@ $results = foreach ($tenant in $tenants) {
     }
 }
 
+#export to csv and open in default app
 $filePath = "$($env:LOCALAPPDATA)\temp\$((New-Guid).guid).csv"
 $results | Export-Csv -Path $filePath -NoTypeInformation
 Start-Process $filePath
