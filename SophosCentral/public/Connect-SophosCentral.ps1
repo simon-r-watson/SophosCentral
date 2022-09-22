@@ -26,15 +26,15 @@ function Connect-SophosCentral {
     .EXAMPLE
         Connect-SophosCentral -ClientID "asdkjsdfksjdf" -ClientSecret (Read-Host -AsSecureString -Prompt "Client Secret:")
     .EXAMPLE
-        Connect-SophosCentral -SecretVaultAuth -AzKeyVault
+        Connect-SophosCentral -SecretVault -AzKeyVault
 
         Connect using default values for Secret Key Vault name, Client ID name, and Client Secret name, with secret vault configured to use Azure Key Vault
     .EXAMPLE
-        Connect-SophosCentral -SecretVaultAuth -AzKeyVault -SecretVaultName 'secrets' -SecretVaultClientIDName 'sophosclientid' -SecretVaultClientSecretName 'sophosclientsecret'
+        Connect-SophosCentral -SecretVault -AzKeyVault -SecretVaultName 'secrets' -SecretVaultClientIDName 'sophosclientid' -SecretVaultClientSecretName 'sophosclientsecret'
 
         Connect using custom Secret Vault name, Client ID Name, and Client Secret Name, with secret vault configured to use Azure Key Vault
     .EXAMPLE
-        Connect-SophosCentral -SecretVaultAuth -SecretVaultName 'secrets' -SecretVaultClientIDName 'sophosclientid' -SecretVaultClientSecretName 'sophosclientsecret'
+        Connect-SophosCentral -SecretVault -SecretVaultName 'secrets' -SecretVaultClientIDName 'sophosclientid' -SecretVaultClientSecretName 'sophosclientsecret'
 
         Connect using custom Secret Vault name, Client ID Name, and Client Secret Name when using a locally stored Secret Vault (or another Microsoft.PowerShell.SecretManagement integration)
     .LINK
