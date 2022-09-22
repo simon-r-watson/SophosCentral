@@ -46,7 +46,7 @@ function Set-SophosCentralEndpointTamperProtection {
             if ($RegeneratePassword) { $body.Add('regeneratePassword', $RegeneratePassword) }
             
             if ($Force -or $PSCmdlet.ShouldProcess($EndpointID, ($body.keys -join ', '))) {
-                Invoke-SophosCentralWebRequest -Uri $uri -Method Post
+                Invoke-SophosCentralWebRequest -Uri $uri -Method Post -Body $body
             }
         }
     }
