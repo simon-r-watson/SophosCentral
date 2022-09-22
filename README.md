@@ -14,6 +14,14 @@ It currently supports:
 
 This module is tested on PowerShell 7.1, it may work on Windows PowerShell 5. It will not work on Windows PowerShell 4 or earlier
 
+## API Credentials/Service Principal
+
+Sophos customers can connect to their tenant using a client id/secret. Follow Step 1 here to create it
+<https://developer.sophos.com/getting-started-tenant>
+
+Sophos partners can use a partner client id/secret to connect to their customer tenants. Follow Step 1 here to create it
+<https://developer.sophos.com/getting-started>
+
 ## Saving Credentials
 
 It is recommended to use a service such as Azure Key Vault to store the client id/secret. See [Azure Key Vault Example](./AzureKeyVaultExample.md) for an example implementation
