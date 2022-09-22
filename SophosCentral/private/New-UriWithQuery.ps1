@@ -12,11 +12,12 @@ function New-UriWithQuery {
     $uriBuilder = [System.UriBuilder]::New($Uri.AbsoluteUri)
     
     $blockedKeys = 'Verbose', 'Force', 'Debug', 'WhatIf'
-    $keys = $OriginalPsBoundParameters.Keys | Where-Object { $blockedKeys -notcontains $_ }
+    $keys = $OriginalPsBoundParameters.Keys | Where-Object { $blockedKeys -notcontains $_ } 
     
     foreach ($param in $keys) {
-        if ($null -ne $OriginalPsBoundParameters[$param]) {
-            $queryPart = $param + '=' + $OriginalPsBoundParameters[$param]
+        if (($null -ne $OriginalPsBoundParameters[$param]) -and ($null -ne $param)) {
+            $paraCaseSensitive = $param.ToString()[0].ToString().ToLower() + $param.ToString().Substring(1)
+            $queryPart = $paraCaseSensitive + '=' + $OriginalPsBoundParameters[$param]
             if (($null -eq $uriBuilder.Query) -or ($uriBuilder.Query.Length -le 1 )) {
                 $uriBuilder.Query = $queryPart
             } else {
