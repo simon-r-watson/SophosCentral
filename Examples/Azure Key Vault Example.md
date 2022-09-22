@@ -1,4 +1,4 @@
-# Example - Storing Secrets in Azure Key Vault
+# Storing Secrets in Azure Key Vault
 
 This makes use of [PowerShell SecretStore module](https://github.com/PowerShell/SecretStore) and its integration into [Azure Key Vault](https://azure.microsoft.com/en-au/services/key-vault/)
 
