@@ -8,6 +8,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      pwshgallery: ${{ secrets.GALLERY}}
 
     steps:
       - uses: actions/checkout@v1

@@ -26,5 +26,6 @@ if ($Result.Error) {
 } else {
     ./update-docs.ps1
     Compress-Archive -Path ./output/SophosCentral -DestinationPath ./SophosCentral.zip
+    Publish-Module -Path ./output/SophosCentral -NuGetApiKey $env:pwshgallery
     exit 0
 }
