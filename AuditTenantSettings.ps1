@@ -1,3 +1,7 @@
+$clientID = Get-Secret 'SophosCentral-Partner-ClientID' -Vault AzKV -AsPlainText
+$clientSecret = Get-Secret -Name 'SophosCentral-Partner-ClientSecret' -Vault AzKV
+
+Connect-SophosCentral -ClientID $clientID -ClientSecret $clientSecret
 
 $tenants = Get-SophosCentralCustomerTenant
 $types = @{
@@ -61,8 +65,7 @@ $types = @{
 }
 
 $results = foreach ($tenant in $tenants) {
-    $policies = Get-SophosCentralEndpointPolicies -All
-
+    
     $connectionSuccessful = $true
     try {
         Connect-SophosCentralCustomerTenant -CustomerTenantID $tenant.id
@@ -71,6 +74,7 @@ $results = foreach ($tenant in $tenants) {
     }
     
     if ($connectionSuccessful -eq $true) {
+        $policies = Get-SophosCentralEndpointPolicy -All
         foreach ($type in $types.Keys) {
             $typePolicies = $policies | Where-Object { $_.type -eq $type }
     
@@ -110,7 +114,7 @@ $results = foreach ($tenant in $tenants) {
                 }
             }
             foreach ($typePolicy in $typePolicies) {
-                foreach ($setting in $typePolicy.settings | Get-Member | Where-Object { $_.MemberType -eq 'NoteProperty' }) {
+                foreach ($setting in ($typePolicy.settings | Get-Member | Where-Object { $_.MemberType -eq 'NoteProperty' }).Name) {
                     if ($typePolicy.settings."$setting".recommendedValue) {
                         if ($typePolicy.settings."$setting".recommendedValue -ne $typePolicy.settings."$setting".value) {
                             $result = [PSCustomObject]@{
