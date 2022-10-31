@@ -15,9 +15,11 @@ function Invoke-SophosCentralEndpointMigrationSend {
     .PARAMETER MigrationToken
         token returned from Invoke-SophosCentralEndpointMigrationReceive
     .EXAMPLE
-        $jobDetails = Invoke-SophosCentralEndpointMigrationSend -EndpointID '6d41e78e-0360-4de3-8669-bb7b797ee515' -SourceTenantID 'c4ce7035-d6c1-44b9-9b11-b4a8b13e979b' -MigrationID 'bbc35a7e-860b-43bc-b668-d48b57cb38ed' -MigrationToken 'eyJ0b2tlbiI6ICJUaGlzIGlzIG9ubHkgYSBzYW1wbGUgdG9rZW4uIn0='
+        $jobDetails = Invoke-SophosCentralEndpointMigrationSend -EndpointID '6d41e78e-0360-4de3-8669-bb7b797ee515','245fe806-9ff8-4da1-b136-eea2a1d14812' -SourceTenantID 'c4ce7035-d6c1-44b9-9b11-b4a8b13e979b' -MigrationID 'bbc35a7e-860b-43bc-b668-d48b57cb38ed' -MigrationToken 'eyJ0b2tlbiI6ICJUaGlzIGlzIG9ubHkgYSBzYW1wbGUgdG9rZW4uIn0='
     .EXAMPLE
         $jobDetails = Invoke-SophosCentralEndpointMigrationSend -EndpointID (Get-SophosCentralEndpoint).ID -SourceTenantID 'c4ce7035-d6c1-44b9-9b11-b4a8b13e979b'
+
+        With this example you would connect to the source tenant first, so that '(Get-SophosCentralEndpoint).ID' runs in its context
     .LINK
         https://developer.sophos.com/docs/endpoint-v1/1/routes/migrations/%7BmigrationJobId%7D/put
     .LINK

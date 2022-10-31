@@ -16,6 +16,8 @@ function Invoke-SophosCentralEndpointMigrationReceive {
         $jobDetails = Invoke-SophosCentralEndpointMigrationReceive -EndpointID '6d41e78e-0360-4de3-8669-bb7b797ee515' -SourceTenantID 'c4ce7035-d6c1-44b9-9b11-b4a8b13e979b' -DestinationTenantID 'c924009e-1fac-4174-aace-8ccbe4296f95'
     .EXAMPLE
         $jobDetails = Invoke-SophosCentralEndpointMigrationReceive -EndpointID (Get-SophosCentralEndpoint).ID -SourceTenantID 'c4ce7035-d6c1-44b9-9b11-b4a8b13e979b' -DestinationTenantID 'c924009e-1fac-4174-aace-8ccbe4296f95'
+
+        With this example you would connect to the source tenant first, so that '(Get-SophosCentralEndpoint).ID' runs in its context
     .LINK
         https://developer.sophos.com/docs/endpoint-v1/1/routes/migrations/post
     .LINK
