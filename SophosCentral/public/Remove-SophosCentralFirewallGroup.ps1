@@ -16,7 +16,9 @@ function Remove-SophosCentralFirewallGroup {
         [Parameter(Mandatory = $true,
             ValueFromPipelineByPropertyName = $true)]
         [Alias('ID')]
-        [string[]]$GroupID
+        [string[]]$GroupID,
+
+        [switch]$Force
     )
 
     foreach ($group in $GroupID) {
