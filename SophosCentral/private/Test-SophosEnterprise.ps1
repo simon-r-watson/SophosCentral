@@ -1,4 +1,9 @@
 function Test-SophosEnterprise {
+    [CmdletBinding()]
+    [OutputType([bool])]
+    param (
+        
+    )
     if ($SCRIPT:SophosCentral.IDType -ne 'organization') {
         return $false
     } else {

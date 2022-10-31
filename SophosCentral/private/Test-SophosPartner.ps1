@@ -1,4 +1,9 @@
 function Test-SophosPartner {
+    [CmdletBinding()]
+    [OutputType([bool])]
+    param (
+        
+    )
     if ($SCRIPT:SophosCentral.IDType -ne 'partner') {
         return $false
     } else {
