@@ -22,6 +22,9 @@ Sophos customers can connect to their tenant using a client id/secret. Follow St
 Sophos partners can use a partner client id/secret to connect to their customer tenants. Follow Step 1 here to create it
 <https://developer.sophos.com/getting-started>
 
+Sophos Enterprise customers can connect to their tenants using a client/secret. Follow Step 1 here to create it
+<https://developer.sophos.com/getting-started-organization>
+
 ## Saving Credentials
 
 It is recommended to use a service such as Azure Key Vault to store the client id/secret. See [Azure Key Vault Example](./Examples/Azure%20Key%20Vault%20Example.md) for an example implementation
