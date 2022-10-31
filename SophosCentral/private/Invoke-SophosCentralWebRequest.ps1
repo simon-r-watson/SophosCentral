@@ -37,20 +37,35 @@ function Invoke-SophosCentralWebRequest {
             $response
         }
         
-        #loop through additional pages of results (if applicable)
-        do {
-            if ($response.pages.nextKey) {
-                if ($uri.AbsoluteUri -like '*``?*') {
-                    $nextUri = $uri.AbsoluteUri + '&pageFromKey=' + $response.pages.nextKey
+        if ($response.pages.total -gt 1) {
+            #enterprise/partner tenant pagination - based on total returned from the initial lookup
+            #see here for details on pagination https://developer.sophos.com/getting-started > step 4
+            #doco says the initial page is 1, so the following pages start at 2 onwards
+            for ($i = 2; $i -lt $response.pages.total; $i++) {
+                $nextUri = $uri.AbsoluteUri.Replace('pageTotal=true', 'page=') + $i.ToString()
+                $responseLoop = Invoke-RestMethod -Uri $nextUri -Headers $header -UseBasicParsing
+                if ($null -ne $response.items) {
+                    $responseLoop.items
                 } else {
-                    $nextUri = $uri.AbsoluteUri + '?pageFromKey=' + $response.pages.nextKey
+                    $responseLoop
                 }
-                $response = Invoke-RestMethod -Uri $nextUri -Headers $header -UseBasicParsing
-                $response.items
-            } else {
-                $finished = $true
             }
-        } while ($finished -eq $false)
+        } else {
+            #standard pagination - based on nextKey value returned from the previous lookup
+            do {
+                if ($response.pages.nextKey) {
+                    if ($uri.AbsoluteUri -like '*``?*') {
+                        $nextUri = $uri.AbsoluteUri + '&pageFromKey=' + $response.pages.nextKey
+                    } else {
+                        $nextUri = $uri.AbsoluteUri + '?pageFromKey=' + $response.pages.nextKey
+                    }
+                    $response = Invoke-RestMethod -Uri $nextUri -Headers $header -UseBasicParsing
+                    $response.items
+                } else {
+                    $finished = $true
+                }
+            } while ($finished -eq $false)
+        }
         
     }
 
