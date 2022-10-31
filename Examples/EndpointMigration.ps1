@@ -18,7 +18,7 @@ $jobDetails = Invoke-SophosCentralEndpointMigrationReceive -EndpointID ($Endpoin
 $jobDetails
 
 #Create the send job in the source tenant
-$jobSendDetails = Invoke-SophosCentralEndpointMigrationSend -EndpointID ($Endpoints).id -SourceTenantID 'c4ce7035-d6c1-44b9-9b11-b4a8b13e979b' -MigrationID $jobDetails.id -MigrationToken $jobDetails.token
+$jobSendDetails = Invoke-SophosCentralEndpointMigrationSend -EndpointID ($Endpoints).id -SourceTenantID $SourceTenantID -MigrationID $jobDetails.id -MigrationToken $jobDetails.token
 $jobSendDetails
 
 #Get status of the endpoint migration
