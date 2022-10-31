@@ -1,11 +1,11 @@
 function Connect-SophosCentralCustomerTenant {
     <#
     .SYNOPSIS
-        Connect to a Customer tenant (for Sophos partners only)
+        Connect to a Customer tenant (for Sophos partners/enterprise customers only)
     .DESCRIPTION
-        Connect to a Customer tenant (for Sophos partners only). You must connect with "Connect-SophosCentral" first using a Partner service principal
+        Connect to a Customer tenant (for Sophos partners/enterprise customers only). You must connect with "Connect-SophosCentral" first using a partners/enterprise service principal
 
-        To find the customer tenant ID, use the "Get-SophosCentralCustomerTenants" function
+        To find the customer tenant ID, use the "Get-SophosCentralCustomerTenant" function
     .PARAMETER CustomerTenantID
         The Customers tenant ID
     .PARAMETER CustomerNameSearch
@@ -21,7 +21,7 @@ function Connect-SophosCentralCustomerTenant {
         https://developer.sophos.com/getting-started
     #>
     [CmdletBinding()]
-    [Alias('Select-SophosCentralCustomerTenant')]
+    [Alias('Select-SophosCentralCustomerTenant', 'Select-SophosCentralEnterpriseTenant', 'Connect-SophosCentralEnterpriseTenant')]
     param (
         [Parameter(Mandatory = $true,
             ParameterSetName = 'ByID'
@@ -33,10 +33,10 @@ function Connect-SophosCentralCustomerTenant {
         )]
         [string]$CustomerNameSearch
     )
-    if ($SCRIPT:SophosCentral.IDType -ne 'partner') {
-        throw 'You are not currently logged in using a Sophos Central Partner Service Principal'
+    if ((Test-SophosPartner) -or (Test-SophosEnterprise)) {
+        throw 'You are not currently logged in using a Sophos Central Partner/Enterprise Service Principal'
     } else {
-        Write-Verbose 'currently logged in using a Sophos Central Partner Service Principal'
+        Write-Verbose 'currently logged in using a Sophos Central Partner/Enterprise  Service Principal'
     }
 
     if (-not($CustomerTenantID)) {

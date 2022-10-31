@@ -18,10 +18,21 @@ function Get-SophosCentralAuthHeader {
                 'tenant' {
                     $header.Add('X-Tenant-ID', $SCRIPT:SophosCentral.TenantID)
                 }
+                'organization' {
+                    $header.Add('X-Tenant-ID', $SCRIPT:SophosCentral.CustomerTenantID)
+                }
             }
         }
         if ($PartnerInitial) {
-            $header.Add('X-Partner-ID', $SCRIPT:SophosCentral.TenantID)
+            switch ($SCRIPT:SophosCentral.IDType) {
+                'partner' {
+                    $header.Add('X-Partner-ID', $SCRIPT:SophosCentral.TenantID)
+                }
+                'organization' {
+                    $header.Add('X-Organization-ID', $SCRIPT:SophosCentral.TenantID)
+                }
+            }
+            
         }
         $header
     }
