@@ -33,7 +33,7 @@ function Connect-SophosCentralCustomerTenant {
         )]
         [string]$CustomerNameSearch
     )
-    if ((Test-SophosPartner) -or (Test-SophosEnterprise)) {
+    if (((Test-SophosPartner) -or (Test-SophosEnterprise)) -eq $false) {
         throw 'You are not currently logged in using a Sophos Central Partner/Enterprise Service Principal'
     } else {
         Write-Verbose 'currently logged in using a Sophos Central Partner/Enterprise  Service Principal'
