@@ -18,7 +18,7 @@ function Get-SophosCentralCustomerTenant {
     param (
     )
     
-    if (((Test-SophosPartner) -and (Test-SophosEnterprise)) -eq $false) {
+    if (((Test-SophosPartner) -or (Test-SophosEnterprise)) -eq $false) {
         throw 'You are not currently logged in using a Sophos Central Partner/Enterprise Service Principal'
     }
 
