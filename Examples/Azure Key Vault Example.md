@@ -1,8 +1,10 @@
-# Storing Secrets in Azure Key Vault
+# Azure Key Vault
+
+## Storing Secrets in Azure Key Vault
 
 This makes use of [PowerShell SecretStore module](https://github.com/PowerShell/SecretStore) and its integration into [Azure Key Vault](https://azure.microsoft.com/en-au/services/key-vault/)
 
-## Setup Azure Key Vault and Secret Store
+### Setup Azure Key Vault and Secret Store
 
 1. Setup a new Azure Key Vault. Note down it's name, and the ID of the subscription it resides in. [PowerShell](https://docs.microsoft.com/en-au/azure/key-vault/general/quick-create-powershell) instructions. [Azure Portal](https://docs.microsoft.com/en-au/azure/key-vault/general/quick-create-portal) instructions.
 2. Assign permissions to the Key Vault, so that your user account can read/write to it
@@ -28,7 +30,7 @@ $subID = '23993d24-af33-4002-8451-a348d906cadc'
 Register-SecretVault -Module Az.KeyVault -Name AzKV -VaultParameters @{ AZKVaultName = $vaultName; SubscriptionId = $subID }
 ```
 
-## Store the Secrets in Azure Key Vault
+### Store the Secrets in Azure Key Vault
 
 1. Login to Azure, if you haven't already
 
@@ -45,7 +47,7 @@ Set-Secret -Name 'SophosCentral-Partner-ClientSecret' -Secret $clientSecret -Vau
 Set-Secret -Name 'SophosCentral-Partner-ClientID' -Secret $clientID -Vault AzKV
 ```
 
-## Retrieve the Secrets and Connect to Sophos Central
+### Retrieve the Secrets and Connect to Sophos Central
 
 1. Login to Azure, if you haven't already
 
@@ -65,4 +67,30 @@ Or, if you have used the same Secret Vault name (AzKV) and Secret Names as this 
 
 ```powershell
 Connect-SophosCentral -SecretVault -AzKeyVault
+```
+
+## Configuring vault on another computer (after initial setup)
+
+### Install and configure the modules
+
+Install and configure the module as below, and then use the connection steps from above.
+
+``` powershell
+#Install/Update the required modules
+$modules = 'Microsoft.PowerShell.SecretManagement', 'Microsoft.PowerShell.SecretStore', 'Az', 'Az.KeyVault'
+foreach ($module in $modules) {
+    if (-not(Get-Module $module -ListAvailable)) {
+        Install-Module $module -Scope CurrentUser -Force
+    } else {
+        Update-Module $module -Force
+    }
+}
+
+#Update this to match the name of a Azure KeyVault you've already created
+$vaultName = 'SECRETS'
+#Update this to match the ID of your Azure subscription
+$subID = '23993d24-af33-4002-8451-a348d906cadc'
+
+#Register the secret vault
+Register-SecretVault -Module Az.KeyVault -Name AzKV -VaultParameters @{ AZKVaultName = $vaultName; SubscriptionId = $subID }
 ```
