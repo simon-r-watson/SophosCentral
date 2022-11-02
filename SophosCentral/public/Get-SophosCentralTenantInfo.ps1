@@ -1,9 +1,9 @@
 function Get-SophosCentralTenantInfo {
     <#
     .SYNOPSIS
-        Get information of the current tenant
+        Get information of the tenant the service principal resides in
     .DESCRIPTION
-        Get information of the current tenant
+        Get information of the tenant the service principal resides in
     .EXAMPLE
         Get-SophosCentralTenantInfo
     .LINK
