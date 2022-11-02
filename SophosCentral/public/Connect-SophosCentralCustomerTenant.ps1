@@ -5,18 +5,27 @@ function Connect-SophosCentralCustomerTenant {
     .DESCRIPTION
         Connect to a Customer tenant (for Sophos partners/enterprise customers only). You must connect with "Connect-SophosCentral" first using a partners/enterprise service principal
 
-        To find the customer tenant ID, use the "Get-SophosCentralCustomerTenant" function
+        To find the customer tenant ID, use the "Get-SophosCentralCustomerTenant" function.
+
+        Enterprise customers must have the following set within the sub estates/tenants your connecting to - https://support.sophos.com/support/s/article/KB-000036994?language=en_US
+        Partners should follow similar instructions in the customer tenants - this is enabled by default for trials/new accounts created from the Partner Dashboard
     .PARAMETER CustomerTenantID
         The Customers tenant ID
     .PARAMETER CustomerNameSearch
         Search the tenants you have access to by their name in Sophos Central, use "*" as a wildcard. For example, if you want to connect to "Contoso Legal" `
         you could enter "Contoso*" here.
+    .PARAMETER SkipConnectionTest
+        Setting this will skip the connection test to the tenant. The connection test currently works by doing a test call to the alerts API, as all Sophos Central tenants should have this feature enabled.
     .EXAMPLE
-        Connect-SophosCentralCustomerTenant -CustomerTenantID "asdkjdfjkwetkjdfs"
+        Connect-SophosCentralCustomerTenant -CustomerTenantID "7d565595-e281-4128-9711-c97eb1d202c5"
     .EXAMPLE
         Connect-SophosCentralCustomerTenant -CustomerTenantID (Get-SophosCentralCustomerTenants | Where-Object {$_.Name -like "*Contoso*"}).ID
     .EXAMPLE
         Connect-SophosCentralCustomerTenant -CustomerNameSearch "Contoso*"
+    .EXAMPLE
+        Connect-SophosCentralCustomerTenant -CustomerNameSearch "Contoso*" -SkipConnectionTest
+
+        Connect to Contoso and skip the connection test
     .LINK
         https://developer.sophos.com/getting-started
     #>
@@ -31,7 +40,9 @@ function Connect-SophosCentralCustomerTenant {
         [Parameter(Mandatory = $true,
             ParameterSetName = 'BySearchString'
         )]
-        [string]$CustomerNameSearch
+        [string]$CustomerNameSearch,
+
+        [switch]$SkipConnectionTest
     )
     if (((Test-SophosPartner) -or (Test-SophosEnterprise)) -eq $false) {
         throw 'You are not currently logged in using a Sophos Central Partner/Enterprise Service Principal'
@@ -66,5 +77,17 @@ function Connect-SophosCentralCustomerTenant {
         } else {
             $SCRIPT:SophosCentral | Add-Member -MemberType NoteProperty -Name CustomerTenantName -Value $tenantInfo.Name
         }
+
+        if (-not($SkipConnectionTest)) {
+            try {
+                [Diagnostics.CodeAnalysis.SuppressMessageAttribute('UseDeclaredVarsMoreThanAssignments', '', Justification = 'Used for checking permissions to the tenant')]
+                $alertTest = Get-SophosCentralAlert
+            } catch {
+                throw "Unable to connect to the tenant, you may not have permissions to the tenant.`n`n $($_)"
+            }
+        }
+        
+    } else {
+        Write-Error 'Tenant does not exist'
     }
 }
