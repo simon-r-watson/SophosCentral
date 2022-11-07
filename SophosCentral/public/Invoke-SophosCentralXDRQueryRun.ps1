@@ -66,7 +66,7 @@ function Invoke-SophosCentralXDRQueryRun {
         [hashtable]$CustomBody
     )
     
-    Show-UntestedWarning
+   
     
     $uri = [System.Uri]::New($SCRIPT:SophosCentral.RegionEndpoint + '/xdr-query/v1/queries/runs')
     Invoke-SophosCentralWebRequest -Uri $uri -Method Post -Body $CustomBody

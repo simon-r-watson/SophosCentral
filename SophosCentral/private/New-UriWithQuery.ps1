@@ -17,7 +17,11 @@ function New-UriWithQuery {
     foreach ($param in $keys) {
         if (($null -ne $OriginalPsBoundParameters[$param]) -and ($null -ne $param)) {
             $paraCaseSensitive = $param.ToString()[0].ToString().ToLower() + $param.ToString().Substring(1)
-            $queryPart = $paraCaseSensitive + '=' + $OriginalPsBoundParameters[$param]
+            if ( $OriginalPsBoundParameters[$param] -is [array]) {
+                $queryPart = $paraCaseSensitive + '=' + ($OriginalPsBoundParameters[$param] -join ",")
+            } else {
+                $queryPart = $paraCaseSensitive + '=' + $OriginalPsBoundParameters[$param]
+            }
             if (($null -eq $uriBuilder.Query) -or ($uriBuilder.Query.Length -le 1 )) {
                 $uriBuilder.Query = $queryPart
             } else {

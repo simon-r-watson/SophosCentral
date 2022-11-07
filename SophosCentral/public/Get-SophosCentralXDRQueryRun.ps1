@@ -17,19 +17,16 @@ function Get-SophosCentralXDRQueryRun {
     .LINK
         https://developer.sophos.com/docs/xdr-query-v1/1/routes/queries/runs/%7BrunId%7D/results/get
     #>
-    [CmdletBinding()]
+    [CmdletBinding(DefaultParameterSetName='nullParam')]
     param (
-        [Parameter(Mandatory = $false,
-            ParameterSetName = 'Run ID', 'Results')]
+        [Parameter(Mandatory = $true, ParameterSetName = 'Run ID')]
+        [Parameter(Mandatory = $true, ParameterSetName = 'Results')]
         [string]$RunID,
 
-        [Parameter(Mandatory = $false,
-            ParameterSetName = 'Results')]
+        [Parameter(Mandatory = $true, ParameterSetName = 'Results')]
         [switch]$Results
     )
     
-    Show-UntestedWarning
-
     $uriChild = '/xdr-query/v1/queries/runs'
     if ($null -ne $RunID) {
         $uriChild = $uriChild + '/' + $RunID
