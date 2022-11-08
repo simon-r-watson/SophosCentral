@@ -4,11 +4,17 @@
     .DESCRIPTION
         Manually run tests, long term these will be moved to a GitHub action
 
+        To run these tests, first update testConfig.json with the your Azure Key Vault name, Azure Key Vault client id/secret name, 
+        Azure subscription id, and the sub tenant to use for testing (it must have the name and ID, otherwise those tests will fail).
+
+        These tests need the following modules
+            Az.Accounts
+            Az.KeyVault
+            Pester
+
     .EXAMPLE
         Invoke-Pester .\SophosCentral.Tests.ps1
 #>
-
-#set config
 
 BeforeAll {
     $config = Get-Content "$($PSScriptRoot)\testConfig.json" | ConvertFrom-Json
