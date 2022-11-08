@@ -14,8 +14,8 @@ function Connect-SophosCentralCustomerTenant {
     .PARAMETER CustomerNameSearch
         Search the tenants you have access to by their name in Sophos Central, use "*" as a wildcard. For example, if you want to connect to "Contoso Legal" `
         you could enter "Contoso*" here.
-    .PARAMETER SkipConnectionTest
-        Setting this will skip the connection test to the tenant. The connection test currently works by doing a test call to the alerts API, as all Sophos Central tenants should have this feature enabled.
+    .PARAMETER PerformConnectionTest
+        Setting this will perform a connection test to the tenant. The connection test currently works by doing a test call to the alerts API, as all Sophos Central tenants should have this feature enabled.
     .EXAMPLE
         Connect-SophosCentralCustomerTenant -CustomerTenantID "7d565595-e281-4128-9711-c97eb1d202c5"
     .EXAMPLE
@@ -23,9 +23,9 @@ function Connect-SophosCentralCustomerTenant {
     .EXAMPLE
         Connect-SophosCentralCustomerTenant -CustomerNameSearch "Contoso*"
     .EXAMPLE
-        Connect-SophosCentralCustomerTenant -CustomerNameSearch "Contoso*" -SkipConnectionTest
+        Connect-SophosCentralCustomerTenant -CustomerNameSearch "Contoso*" -PerformConnectionTest
 
-        Connect to Contoso and skip the connection test
+        Connect to Contoso and perform connection test
     .LINK
         https://developer.sophos.com/getting-started
     #>
@@ -42,7 +42,9 @@ function Connect-SophosCentralCustomerTenant {
         )]
         [string]$CustomerNameSearch,
 
-        [switch]$SkipConnectionTest
+        [switch]$SkipConnectionTest,
+
+        [switch]$PerformConnectionTest
     )
     if (((Test-SophosPartner) -or (Test-SophosEnterprise)) -eq $false) {
         throw 'You are not currently logged in using a Sophos Central Partner/Enterprise Service Principal'
@@ -78,7 +80,7 @@ function Connect-SophosCentralCustomerTenant {
             $SCRIPT:SophosCentral | Add-Member -MemberType NoteProperty -Name CustomerTenantName -Value $tenantInfo.Name
         }
 
-        if (-not($SkipConnectionTest)) {
+        if (($PerformConnectionTest -eq $true) -and ($SkipConnectionTest -eq $false)) {
             try {
                 [Diagnostics.CodeAnalysis.SuppressMessageAttribute('UseDeclaredVarsMoreThanAssignments', '', Justification = 'Used for checking permissions to the tenant')]
                 $alertTest = Get-SophosCentralAlert
