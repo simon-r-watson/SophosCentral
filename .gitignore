@@ -1,4 +1,4 @@
 /output/
 SophosCentral.zip
 /docs/*.md
-/SophosCentral.Tests/testConfig.json
+/SophosCentral.Tests/*.json
