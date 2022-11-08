@@ -45,7 +45,7 @@ function Invoke-SophosCentralWebRequest {
     }
 
     if ($Method -notin ('Delete', 'Get')) {
-        $Body.Add('ContentType', 'application/json')
+        $webRequest.Add('ContentType', 'application/json')
     }
 
     #query api and return the first page
