@@ -90,6 +90,6 @@ function Connect-SophosCentralCustomerTenant {
         }
         
     } else {
-        Write-Error 'Tenant does not exist'
+        throw'Tenant does not exist'
     }
 }
