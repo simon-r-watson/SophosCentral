@@ -5,7 +5,7 @@ function Get-SophosCentralLiveDiscoverQueryRun {
     .DESCRIPTION
         Get the list of query runs, or return the results of one run
     .EXAMPLE
-         Get-SophosCentralLiveDiscoverQueryRun
+        Get-SophosCentralLiveDiscoverQueryRun
     .EXAMPLE
         Get-SophosCentralLiveDiscoverQueryRun -RunID 'a9a5c6a3-5467-4bf3-87b0-ebdd4022056a'
     .EXAMPLE
@@ -17,11 +17,11 @@ function Get-SophosCentralLiveDiscoverQueryRun {
     .LINK
         https://developer.sophos.com/docs/live-discover-v1/1/routes/queries/runs/%7BrunId%7D/results/get
     #>
-    [CmdletBinding(DefaultParameterSetName='nullParam')]
+    [CmdletBinding(DefaultParameterSetName = 'nullParam')]
     param (
         [Parameter(Mandatory = $false, ParameterSetName = 'Results')]
         [Parameter(Mandatory = $false, ParameterSetName = 'Endpoints')]
-        [Parameter(Mandatory = $false,  ParameterSetName = 'Default')]
+        [Parameter(Mandatory = $false, ParameterSetName = 'Default')]
         [array]$Sort,
 
         [Parameter(Mandatory = $false, ParameterSetName = 'Default')]
@@ -71,9 +71,9 @@ function Get-SophosCentralLiveDiscoverQueryRun {
     $uriChild = $uriChild + '?pageTotal=true'
     
     $uriTemp = [System.Uri]::New($SCRIPT:SophosCentral.RegionEndpoint + $uriChild)
-    $filteredPsBoundParameters=$PsBoundParameters
+    $filteredPsBoundParameters = $PsBoundParameters
     #filter out parameters not needed for Query
-    $null=("Results","Endpoints","RunID")|foreach-object {$filteredPsBoundParameters.Remove($_)}
+    $null = ('Results', 'Endpoints', 'RunID') | ForEach-Object { $filteredPsBoundParameters.Remove($_) }
     $uri = New-UriWithQuery -Uri $uriTemp -OriginalPsBoundParameters $filteredPsBoundParameters
     Invoke-SophosCentralWebRequest -Uri $uri
 }

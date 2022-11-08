@@ -5,7 +5,7 @@ function Get-SophosCentralLiveDiscoverQueryCategories {
     .DESCRIPTION
         Get queries matching the given filters.
     .EXAMPLE
-        Get-SophosCentralXDRQuery
+       Get-SophosCentralLiveDiscoverQueryCategories
     .LINK
         https://developer.sophos.com/docs/live-discover-v1/1/routes/queries/get
     #>

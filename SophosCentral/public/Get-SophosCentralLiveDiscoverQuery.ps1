@@ -5,7 +5,7 @@ function Get-SophosCentralLiveDiscoverQuery {
     .DESCRIPTION
         Get queries matching the given filters.
     .EXAMPLE
-        Get-SophosCentralXDRQuery
+        Get-SophosCentralLiveDiscoverQuery
     .LINK
         https://developer.sophos.com/docs/live-discover-v1/1/routes/queries/get
     .LINK
@@ -23,7 +23,7 @@ function Get-SophosCentralLiveDiscoverQuery {
         [array]$searchFields,        
         
         [Parameter(Mandatory = $false)]
-        [ValidateSet('categories','code','createdAt','dataSource','description','id','name','performance','supportedOSes','template','type','variables')]
+        [ValidateSet('categories', 'code', 'createdAt', 'dataSource', 'description', 'id', 'name', 'performance', 'supportedOSes', 'template', 'type', 'variables')]
         [array]$Fields,
 
         [Parameter(Mandatory = $false)]
@@ -39,5 +39,4 @@ function Get-SophosCentralLiveDiscoverQuery {
     $uriTemp = [System.Uri]::New($SCRIPT:SophosCentral.RegionEndpoint + $uriChild)
     $uri = New-UriWithQuery -Uri $uriTemp -OriginalPsBoundParameters $PsBoundParameters
     Invoke-SophosCentralWebRequest -Uri $uri
-    
 }
