@@ -41,7 +41,7 @@ function Invoke-SophosCentralWebRequest {
     } elseif (($null -ne $Body) -and ($Method -eq 'Get')) {
         $webRequest.Add('Body', $Body)
     } elseif ($null -ne $Body) {
-        $webRequest.Add('Body', ($Body | ConvertTo-Json))
+        $webRequest.Add('Body', ($Body | ConvertTo-Json -Depth 5))
     }
 
     if ($Method -notin ('Delete', 'Get')) {
