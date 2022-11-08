@@ -76,7 +76,7 @@ function Invoke-SophosCentralWebRequest {
         #standard pagination - based on nextKey value returned from the previous lookup
         do {
             if ($response.pages.nextKey) {
-                if ($uri.AbsoluteUri -like '*``?*') {
+                if ($uri.AbsoluteUri -like '*`?*') {
                     $webRequest['Uri'] = $uri.AbsoluteUri + '&pageFromKey=' + $response.pages.nextKey
                 } else {
                     $webRequest['Uri'] = $uri.AbsoluteUri + '?pageFromKey=' + $response.pages.nextKey
