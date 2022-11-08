@@ -1,8 +1,9 @@
 {
-  "AzKeyVaultClientIDName": "enter in the name of the client ID secret in key vault",
-  "AzKeyVaultName": "enter in the name of the key vault",
-  "AzKeyVaultClientSecretName": "enter in the name of the client secret secret in key vault",
+  "AzKeyVaultClientIDName": "Enter in the name of the client ID secret in Azure Key Vault",
+  "AzKeyVaultClientSecretName": "Enter in the name of the client secret secret in Azure Key Vault",
+  "AzKeyVaultName": "Enter in the name of the Azure Key Vault",
+  "AzSubscriptionID": "Enter in the Azure Subscription id",
   "UsingPartnerEnterpriseServicePrinicpal": true,
-  "CustomerTenantName": "enter in the name of the subtenant if using a Partner/Enterprise Service Prinipcal",
-  "CustomerTenantID": "enter in the id of the subtenant if using a Partner/Enterprise Service Prinipcal"
+  "CustomerTenantName": "Enter in the name of the subtenant to test with if using a Partner/Enterprise Service Prinipcal",
+  "CustomerTenantID": "Enter in the id of the subtenant to test with if using a Partner/Enterprise Service Prinipcal"
 }
