@@ -18,14 +18,20 @@ function Connect-SophosCentralCustomerTenant {
         Setting this will perform a connection test to the tenant. The connection test currently works by doing a test call to the alerts API, as all Sophos Central tenants should have this feature enabled.
     .EXAMPLE
         Connect-SophosCentralCustomerTenant -CustomerTenantID "7d565595-e281-4128-9711-c97eb1d202c5"
-    .EXAMPLE
-        Connect-SophosCentralCustomerTenant -CustomerTenantID (Get-SophosCentralCustomerTenants | Where-Object {$_.Name -like "*Contoso*"}).ID
+
+        Connect to the tenant with an ID of "7d565595-e281-4128-9711-c97eb1d202c5"
     .EXAMPLE
         Connect-SophosCentralCustomerTenant -CustomerNameSearch "Contoso*"
+
+        Connect to Contoso
     .EXAMPLE
         Connect-SophosCentralCustomerTenant -CustomerNameSearch "Contoso*" -PerformConnectionTest
 
         Connect to Contoso and perform connection test
+    .EXAMPLE
+        Connect-SophosCentralCustomerTenant -CustomerNameSearch "Contoso*" 
+
+        Connect to Contoso whilst refreshing the cache of tenants stored in memory
     .LINK
         https://developer.sophos.com/getting-started
     #>
@@ -44,7 +50,9 @@ function Connect-SophosCentralCustomerTenant {
 
         [switch]$SkipConnectionTest,
 
-        [switch]$PerformConnectionTest
+        [switch]$PerformConnectionTest,
+
+        [switch]$ForceTenantRefresh
     )
     if (((Test-SophosPartner) -or (Test-SophosEnterprise)) -eq $false) {
         throw 'You are not currently logged in using a Sophos Central Partner/Enterprise Service Principal'
@@ -52,8 +60,16 @@ function Connect-SophosCentralCustomerTenant {
         Write-Verbose 'currently logged in using a Sophos Central Partner/Enterprise  Service Principal'
     }
 
+    if ((-not($SCRIPT:SophosCentralCustomerTenants)) -or ($ForceTenantRefresh -eq $true)) {
+        try {
+            $SCRIPT:SophosCentralCustomerTenants = Get-SophosCentralCustomerTenant
+        } catch {
+            throw 'Unable to retrieve customer/enterprise tenants using Get-SophosCentralCustomerTenant'
+        }
+    }
+
     if (-not($CustomerTenantID)) {
-        $tenantInfo = Get-SophosCentralCustomerTenant | Where-Object {
+        $tenantInfo = $SCRIPT:SophosCentralCustomerTenants | Where-Object {
             $_.Name -like $CustomerNameSearch
         }
         switch ($tenantInfo.count) {
@@ -62,7 +78,7 @@ function Connect-SophosCentralCustomerTenant {
             { $PSItem -lt 1 } { throw "$PSItem customer tenants returned" }
         }
     } else {
-        $tenantInfo = Get-SophosCentralCustomerTenant | Where-Object {
+        $tenantInfo = $SCRIPT:SophosCentralCustomerTenants | Where-Object {
             $_.ID -eq $CustomerTenantID
         }
     }
@@ -90,6 +106,6 @@ function Connect-SophosCentralCustomerTenant {
         }
         
     } else {
-        throw'Tenant does not exist'
+        throw 'Tenant does not exist'
     }
 }
