@@ -104,9 +104,7 @@ Describe 'Get-SophosCentralAuthHeader' {
         $header.keys | Should -Contain 'X-Tenant-ID'
         $header.keys | Should -Contain 'Authorization'
     }
-}
 
-Describe 'Get-SophosCentralAuthHeader' {
     It 'Given Partner Initial it should return a header with X-Partner-ID/X-Organization-ID and Authorization' {
         if ((Test-SophosPartner) -or (Test-SophosEnterprise)) {
             $header = Get-SophosCentralAuthHeader -PartnerInitial
