@@ -33,7 +33,9 @@ function Set-SophosCentralAlertAction {
 
         [switch]$Force
     )
-    begin {        
+    begin {   
+        Test-SophosCentralConnected
+         
         $uriChild = '/common/v1/alerts/{0}/actions'
         $uriString = $SCRIPT:SophosCentral.RegionEndpoint + $uriChild
     }

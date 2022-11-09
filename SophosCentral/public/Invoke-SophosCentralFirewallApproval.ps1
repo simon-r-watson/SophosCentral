@@ -21,6 +21,8 @@ function Invoke-SophosCentralFirewallApproval {
         [switch]$Force
     )
     begin {
+        Test-SophosCentralConnected
+    
         $uriTemp = $SCRIPT:SophosCentral.RegionEndpoint + '/firewall/v1/firewalls/{0}/action '
         $body = @{
             action = 'approveManagement'

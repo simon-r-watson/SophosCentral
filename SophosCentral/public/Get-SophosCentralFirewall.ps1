@@ -12,7 +12,8 @@ function Get-SophosCentralFirewall {
     [CmdletBinding()]
     param (
     )
-
+    Test-SophosCentralConnected
+    
     $uri = [System.Uri]::New($SCRIPT:SophosCentral.RegionEndpoint + '/firewall/v1/firewalls')
     Invoke-SophosCentralWebRequest -Uri $uri
 }

@@ -67,10 +67,7 @@ function Get-SophosCentralUser {
         
         [string]$Domain
     )
-
-    if (-not(Test-SophosCentralAuth)) { 
-        throw $_
-    }
+    Test-SophosCentralConnected
 
     $body = @{}
     if ($ID) { $body.Add('ids', $id) }

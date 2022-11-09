@@ -14,6 +14,7 @@ function Get-SophosCentralEndpointMigrationStatus {
         [Parameter(Mandatory = $true)]
         [string]$MigrationID
     )
+    Test-SophosCentralConnected
     
     Show-UntestedWarning
     

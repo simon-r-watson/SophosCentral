@@ -13,6 +13,7 @@ function Get-SophosCentralAllowedItem {
     [Alias('Get-SophosCentralAllowedItems')]
     param (
     )
+    Test-SophosCentralConnected
     
     $uriChild = '/endpoint/v1/settings/allowed-items'
     $uri = [System.Uri]::New($SCRIPT:SophosCentral.RegionEndpoint + $uriChild)

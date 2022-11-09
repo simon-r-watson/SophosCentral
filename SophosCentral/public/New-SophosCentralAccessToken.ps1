@@ -20,7 +20,8 @@ function New-SophosCentralAccessToken {
 
         [datetime]$ExipresAt
     )
-
+    Test-SophosCentralConnected
+    
     $body = @{
         label = $Label
         type  = $Type

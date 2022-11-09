@@ -32,6 +32,8 @@ function Set-SophosCentralEndpointIsolation {
         [switch]$Force
     )
     begin {
+        Test-SophosCentralConnected
+    
         $uri = [System.Uri]::New($SCRIPT:SophosCentral.RegionEndpoint + '/endpoint/v1/endpoints/isolation')
     }
     process {

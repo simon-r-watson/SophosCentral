@@ -15,7 +15,8 @@ function Remove-SophosCentralUser {
         [Alias('UserID')]
         [string[]]$ID
     )
-
+    Test-SophosCentralConnected
+    
     foreach ($idTmp in $ID) {
         $uri = [System.Uri]::New("$($SCRIPT:SophosCentral.RegionEndpoint)/common/v1/directory/users/$($idTmp)")
         if ($Force -or $PSCmdlet.ShouldProcess('Remove user', $idTmp)) {

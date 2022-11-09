@@ -55,6 +55,7 @@ function Get-SophosCentralEndpoint {
 
         [string]$MacAddresses 
     )
+    Test-SophosCentralConnected
     
     $uriTemp = [System.Uri]::New($SCRIPT:SophosCentral.RegionEndpoint + '/endpoint/v1/endpoints')
     $uri = New-UriWithQuery -Uri $uriTemp -OriginalPsBoundParameters $PsBoundParameters

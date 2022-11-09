@@ -38,6 +38,7 @@ function Invoke-SophosCentralEndpointMigrationReceive {
 
         [switch]$Force
     )
+    Test-SophosCentralConnected
         
     Show-UntestedWarning
     

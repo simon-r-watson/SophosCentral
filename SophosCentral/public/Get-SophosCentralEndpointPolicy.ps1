@@ -34,7 +34,8 @@ function Get-SophosCentralEndpointPolicy {
             ParameterSetName = 'All')]
         [switch]$All
     )
-
+    Test-SophosCentralConnected
+    
     if ($BasePolicy) {
         $PolicyId = 'base'
     }

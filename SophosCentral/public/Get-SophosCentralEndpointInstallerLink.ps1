@@ -12,7 +12,8 @@ function Get-SophosCentralEndpointInstallerLink {
     [CmdletBinding()]
     param (
     )
-
+    Test-SophosCentralConnected
+    
     $uriChild = '/endpoint/v1/downloads'
     $uri = [System.Uri]::New($SCRIPT:SophosCentral.RegionEndpoint + $uriChild)
     Invoke-SophosCentralWebRequest -Uri $uri

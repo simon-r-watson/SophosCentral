@@ -56,7 +56,8 @@ function New-SophosCentralCustomerTenant {
         
         [switch]$Force
     )
-
+    Test-SophosCentralConnected
+    
     if ((Test-SophosPartner) -eq $false) {
         throw 'You are not currently logged in using a Sophos Central Partner Service Principal'
     }

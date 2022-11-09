@@ -12,6 +12,7 @@ function Get-SophosCentralEndpointMigration {
     [CmdletBinding()]
     param (
     )
+    Test-SophosCentralConnected
     
     Show-UntestedWarning
     

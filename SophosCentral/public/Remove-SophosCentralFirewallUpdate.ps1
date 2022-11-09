@@ -20,7 +20,8 @@ function Remove-SophosCentralFirewallUpdate {
 
         [switch]$Force
     )
-
+    Test-SophosCentralConnected
+    
     foreach ($firewall in $FirewallID) {
         $uri = [System.Uri]::New($SCRIPT:SophosCentral.RegionEndpoint + '/firewall/v1/firewalls/actions/firmware-upgrade?ids=' + $firewall)
         if ($Force -or $PSCmdlet.ShouldProcess('Cancel update', $firewall )) {

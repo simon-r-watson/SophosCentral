@@ -12,7 +12,8 @@ function Get-SophosCentralEndpointGroup {
     [CmdletBinding()]
     param (
     )
-
+    Test-SophosCentralConnected
+    
     $uri = [System.Uri]::New($SCRIPT:SophosCentral.RegionEndpoint + '/endpoint/v1/endpoint-groups')
     Invoke-SophosCentralWebRequest -Uri $uri
 }

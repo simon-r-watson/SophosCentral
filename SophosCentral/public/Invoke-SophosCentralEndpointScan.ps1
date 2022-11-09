@@ -21,6 +21,8 @@ function Invoke-SophosCentralEndpointScan {
         [string[]]$EndpointID
     )
     begin {
+        Test-SophosCentralConnected
+    
         $uriChild = '/endpoint/v1/endpoints/{0}/scans'
         $uriString = $SCRIPT:SophosCentral.RegionEndpoint + $uriChild
     }

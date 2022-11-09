@@ -29,7 +29,8 @@ function Get-SophosCentralPartnerBilling {
             ParameterSetName = 'LastMonth')]
         [switch]$LastMonth
     )
-
+    Test-SophosCentralConnected
+    
     if ((Test-SophosPartner) -eq $false) {
         throw 'You are not currently logged in using a Sophos Central Partner Service Principal'
     }

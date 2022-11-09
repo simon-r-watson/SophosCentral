@@ -12,7 +12,8 @@ function Get-SophosCentralAdmin {
     [CmdletBinding()]
     param (
     )
-
+    Test-SophosCentralConnected
+    
     $uriChild = '/common/v1/admins'
     $uri = [System.Uri]::New($SCRIPT:SophosCentral.RegionEndpoint + $uriChild)
     Invoke-SophosCentralWebRequest -Uri $uri

@@ -38,6 +38,8 @@ function Get-SophosCentralAlert {
         [ValidateSet('low', 'medium', 'high')]
         [string[]]$Severity
     )
+    Test-SophosCentralConnected
+    
     if ($PsCmdlet.ParameterSetName -ne 'search') {
         $uriChild = '/common/v1/alerts'
         $uri = [System.Uri]::New($SCRIPT:SophosCentral.RegionEndpoint + $uriChild)

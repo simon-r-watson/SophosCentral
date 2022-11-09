@@ -25,7 +25,8 @@ function New-SophosCentralUser {
         [string[]]$GroupIDs,
         [switch]$Force
     )
-
+    Test-SophosCentralConnected
+    
     $uriChild = '/common/v1/directory/users'
     $uri = [System.Uri]::New($SCRIPT:SophosCentral.RegionEndpoint + $uriChild)
 

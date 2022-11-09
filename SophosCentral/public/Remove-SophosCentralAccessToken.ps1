@@ -15,7 +15,8 @@ function Remove-SophosCentralAccessToken {
         [Alias('ID')]
         [string[]]$TokenID
     )
-
+    Test-SophosCentralConnected
+    
     foreach ($token in $TokenID) {
         $uri = [System.Uri]::New("$($SCRIPT:SophosCentral.GlobalEndpoint)/accounts/v1/access-tokens/$($token)")
         if ($Force -or $PSCmdlet.ShouldProcess('Remove access token', $token)) {

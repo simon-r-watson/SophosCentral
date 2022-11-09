@@ -29,6 +29,8 @@ function Invoke-SophosCentralEndpointInstallerDownload {
             })]
         [System.IO.FileInfo]$FilePath
     )
+    Test-SophosCentralConnected
+    
     $links = Get-SophosCentralEndpointInstallerLink
     foreach ($installers in $links.installers) {
         if (($installers.supportedProducts -contains $RequestedProduct) -and ($installers.platform -eq $Platform)) {
