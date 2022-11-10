@@ -73,7 +73,6 @@ function Get-SophosCentralLiveDiscoverQueryRun {
     $uriTemp = [System.Uri]::New($SCRIPT:SophosCentral.RegionEndpoint + $uriChild)
     $filteredPsBoundParameters = $PsBoundParameters
     #filter out parameters not needed for Query
-    $null = ('Results', 'Endpoints', 'RunID') | ForEach-Object { $filteredPsBoundParameters.Remove($_) }
-    $uri = New-UriWithQuery -Uri $uriTemp -OriginalPsBoundParameters $filteredPsBoundParameters
+    $uri = New-UriWithQuery -Uri $uriTemp -OriginalPsBoundParameters $filteredPsBoundParameters -filteredParmeters ('Results', 'Endpoints', 'RunID')
     Invoke-SophosCentralWebRequest -Uri $uri
 }

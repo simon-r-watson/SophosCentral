@@ -6,12 +6,14 @@ function New-UriWithQuery {
         [System.Uri]$Uri,
 
         [Parameter(Mandatory = $true)]
-        [hashtable]$OriginalPsBoundParameters
+        [hashtable]$OriginalPsBoundParameters,
+
+        [Parameter(Mandatory = $false)]
+        [array]$filteredParmeters
     )
 
     $uriBuilder = [System.UriBuilder]::New($Uri.AbsoluteUri)
-    
-    $blockedKeys = 'Verbose', 'Force', 'Debug', 'WhatIf'
+    $blockedKeys = 'Verbose', 'Force', 'Debug', 'WhatIf' + $filteredParmeters
     $keys = $OriginalPsBoundParameters.Keys | Where-Object { $blockedKeys -notcontains $_ } 
     
     foreach ($param in $keys) {
