@@ -86,6 +86,12 @@ Get-SophosCentralEndpoint | `
     Where-Object {$_.tamperprotectionenabled -ne $true}
 ```
 
+### Get Endpoint not seen in over 90 days
+
+``` powershell
+Get-SophosCentralEndpoint -LastSeenBefore '-P90D'
+```
+
 ### Audit Customer Tenant Settings
 
 See [AuditTenantSettings.ps1](./Examples/AuditTenantSettings.ps1)

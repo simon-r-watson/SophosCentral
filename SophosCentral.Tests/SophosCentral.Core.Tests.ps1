@@ -22,7 +22,14 @@ BeforeAll {
     Import-Module $modulePath
 
     try {
-        Connect-AzAccount -Subscription $config.AzSubscriptionID
+        $context = Get-AzContext
+        if ($null -eq $context.Account) {
+            Connect-AzAccount -Subscription $config.AzSubscriptionID
+        }
+        if ($context.Subscription -ne $config.AzSubscriptionID) {
+            Set-AzContext -Subscription $config.AzSubscriptionID
+        }
+        
         $clientID = Get-AzKeyVaultSecret -VaultName $config.AzKeyVaultName -Name $config.AzKeyVaultClientIDName -AsPlainText
         $clientSecret = Get-AzKeyVaultSecret -VaultName $config.AzKeyVaultName -Name $config.AzKeyVaultClientSecretName -AsPlainText | ConvertTo-SecureString -AsPlainText -Force
     } catch {
@@ -132,7 +139,7 @@ Describe 'Get-SophosCentralEndpoint' {
         $endpointsUnique.count | Should -BeExactly $endpoints.count
     }
 
-
+    #Health
     It 'Given HealthStatus is sus, it lists less than total the endpoints' {
         $endpointsTotal = Get-SophosCentralEndpoint
         $endpoints = Get-SophosCentralEndpoint -HealthStatus suspicious
@@ -157,6 +164,18 @@ Describe 'Get-SophosCentralEndpoint' {
         $endpointsUnique.count | Should -BeExactly $endpoints.count
     }
 
+    It 'Given HealthStatus is bad and sus, it lists less than total the endpoints' {
+        $endpointsTotal = Get-SophosCentralEndpoint
+        $endpoints = Get-SophosCentralEndpoint -HealthStatus bad, suspicious
+        $endpoints.count | Should -BeLessThan $endpointsTotal.count
+    }
+
+    It 'Given HealthStatus is bad and sus, it does not return duplicate endpoints' {
+        $endpoints = Get-SophosCentralEndpoint -HealthStatus bad, suspicious
+        $endpointsUnique = $endpoints | Select-Object id -Unique
+        $endpointsUnique.count | Should -BeExactly $endpoints.count
+    }
+    #Type
     It 'Given Type is server, it lists less than total the endpoints' {
         $endpointsTotal = Get-SophosCentralEndpoint
         $endpoints = Get-SophosCentralEndpoint -Type server
@@ -169,16 +188,91 @@ Describe 'Get-SophosCentralEndpoint' {
         $endpointsUnique.count | Should -BeExactly $endpoints.count
     }
 
+    It 'Given Type is server and securityVM, it lists less than total the endpoints' {
+        $endpointsTotal = Get-SophosCentralEndpoint
+        $endpoints = Get-SophosCentralEndpoint -Type server, securityVm
+        $endpoints.count | Should -BeLessThan $endpointsTotal.count
+    }
+
+    It 'Given Type is server and securityVM, it does not return duplicate endpoints' {
+        $endpoints = Get-SophosCentralEndpoint -Type server, securityVm
+        $endpointsUnique = $endpoints | Select-Object id -Unique
+        $endpointsUnique.count | Should -BeExactly $endpoints.count
+    }
+
+    #Tamper Protection
     It 'Given TamperProtection is $false, it lists less than the total endpoints' {
         $endpointsTotal = Get-SophosCentralEndpoint
         $endpoints = Get-SophosCentralEndpoint -TamperProtectionEnabled $false
         $endpoints.count | Should -BeLessThan $endpointsTotal.count
     }
 
-    It 'Given TamperProtection is $false, it does not return duplicate endpoints' {
+    It 'Given TamperProtection is $false , it does not return duplicate endpoints' {
         $endpoints = Get-SophosCentralEndpoint -TamperProtectionEnabled $false
         $endpointsUnique = $endpoints | Select-Object id -Unique
         $endpointsUnique.count | Should -BeExactly $endpoints.count
+    }
+
+    #Last Seen After
+    It 'Given LastSeenAfter is "-P1D", it lists less than the total endpoints' {
+        $endpointsTotal = Get-SophosCentralEndpoint
+        $endpoints = Get-SophosCentralEndpoint -LastSeenAfter '-P1D'
+        $endpoints.count | Should -BeLessThan $endpointsTotal.count
+    }
+
+    It 'Given LastSeenAfter is "-P1D", it does not return duplicate endpoints' {
+        $endpoints = Get-SophosCentralEndpoint -LastSeenAfter '-P1D'
+        $endpointsUnique = $endpoints | Select-Object id -Unique
+        $endpointsUnique.count | Should -BeExactly $endpoints.count
+    }
+
+    It 'Given LastSeenAfter is "(Get-Date).AddDays(-1)", it lists less than the total endpoints' {
+        $endpointsTotal = Get-SophosCentralEndpoint
+        $endpoints = Get-SophosCentralEndpoint -LastSeenAfter (Get-Date).AddDays(-1)
+        $endpoints.count | Should -BeLessThan $endpointsTotal.count
+    }
+
+    It 'Given LastSeenAfter is "(Get-Date).AddDays(-1)", it does not return duplicate endpoints' {
+        $endpoints = Get-SophosCentralEndpoint -LastSeenAfter (Get-Date).AddDays(-1)
+        $endpointsUnique = $endpoints | Select-Object id -Unique
+        $endpointsUnique.count | Should -BeExactly $endpoints.count
+    }
+
+    It 'Given LastSeenAfter as "(Get-Date).AddDays(-1)" and "-P1D", it returns the same amount of endpoints' {
+        $endpointsDateTime = Get-SophosCentralEndpoint -LastSeenAfter (Get-Date).AddDays(-1)
+        $endpoints = Get-SophosCentralEndpoint -LastSeenAfter '-P1D'
+        $endpoints.count | Should -BeExactly $endpointsDateTime.count
+    }
+
+    #Last Seen Before
+    It 'Given LastSeenBefore is "-P90D", it lists less than the total endpoints' {
+        $endpointsTotal = Get-SophosCentralEndpoint
+        $endpoints = Get-SophosCentralEndpoint -LastSeenBefore '-P90D'
+        $endpoints.count | Should -BeLessThan $endpointsTotal.count
+    }
+
+    It 'Given LastSeenBefore is "-P90D", it does not return duplicate endpoints' {
+        $endpoints = Get-SophosCentralEndpoint -LastSeenBefore '-P90D'
+        $endpointsUnique = $endpoints | Select-Object id -Unique
+        $endpointsUnique.count | Should -BeExactly $endpoints.count
+    }
+
+    It 'Given LastSeenBefore is "(Get-Date).AddDays(-90)", it lists less than the total endpoints' {
+        $endpointsTotal = Get-SophosCentralEndpoint
+        $endpoints = Get-SophosCentralEndpoint -LastSeenBefore (Get-Date).AddDays(-90)
+        $endpoints.count | Should -BeLessThan $endpointsTotal.count
+    }
+
+    It 'Given LastSeenBefore is "(Get-Date).AddDays(-90)", it does not return duplicate endpoints' {
+        $endpoints = Get-SophosCentralEndpoint -LastSeenBefore (Get-Date).AddDays(-90)
+        $endpointsUnique = $endpoints | Select-Object id -Unique
+        $endpointsUnique.count | Should -BeExactly $endpoints.count
+    }
+
+    It 'Given LastSeenBefore as "(Get-Date).AddDays(-90)" and "-P90D", it returns the same amount of endpoints' {
+        $endpointsDateTime = Get-SophosCentralEndpoint -LastSeenBefore (Get-Date).AddDays(-90)
+        $endpoints = Get-SophosCentralEndpoint -LastSeenBefore '-P90D'
+        $endpoints.count | Should -BeExactly $endpointsDateTime.count
     }
 }
 
@@ -357,5 +451,17 @@ Describe 'Unprotect-Secret' {
         $text = (New-Guid).Guid
         $secret = $text | ConvertTo-SecureString -AsPlainText -Force
         Unprotect-Secret -Secret $secret | Should -BeExactly $text
+    }
+}
+
+Describe 'New-UriWithQuery' {
+    It 'Given valid hash table, returns expected uri' {
+        $uri = 'https://example.com'
+        $uriExpected = 'https://example.com/?aaa=zzz'
+        $hash = @{
+            aaa = 'zzz'
+        }
+        $uriTest = New-UriWithQuery -OriginalPsBoundParameters $hash -Uri $uri
+        $uriTest.AbsoluteUri.ToString() | Should -BeExactly $uriExpected
     }
 }
