@@ -254,7 +254,7 @@ Describe 'Get-SophosCentralUser' {
         $users.count | Should -BeLessOrEqual $usersTotal.count
     }
 
-    It 'Given source type is "azureActiveDirectory", all users have azureActiveDirectoryas the source' {
+    It 'Given source type is "azureActiveDirectory", all users have azureActiveDirectory as the source' {
         $source = 'azureActiveDirectory'
         $users = Get-SophosCentralUser -SourceType $source
         $sourceCount = 0
@@ -279,7 +279,7 @@ Describe 'Get-SophosCentralUser' {
         $users.count | Should -BeLessOrEqual $usersTotal.count
     }
 
-    It 'Given source type is "azureActiveDirectory", all users have custom as the source' {
+    It 'Given source type is "custom", all users have custom as the source' {
         $source = 'custom'
         $users = Get-SophosCentralUser -SourceType $source
         $sourceCount = 0
