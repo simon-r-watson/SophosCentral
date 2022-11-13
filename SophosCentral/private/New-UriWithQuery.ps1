@@ -9,18 +9,19 @@ function New-UriWithQuery {
         [hashtable]$OriginalPsBoundParameters,
 
         [Parameter(Mandatory = $false)]
-        [array]$filteredParmeters
+        [Alias('filteredParmeters')]
+        [array]$FilteredParameters
     )
 
     $uriBuilder = [System.UriBuilder]::New($Uri.AbsoluteUri)
-    $blockedKeys = 'Verbose', 'Force', 'Debug', 'WhatIf' + $filteredParmeters
+    $blockedKeys = 'Verbose', 'Force', 'Debug', 'WhatIf' + $FilteredParameters
     $keys = $OriginalPsBoundParameters.Keys | Where-Object { $blockedKeys -notcontains $_ } 
     
     foreach ($param in $keys) {
         if (($null -ne $OriginalPsBoundParameters[$param]) -and ($null -ne $param)) {
             $paraCaseSensitive = $param.ToString()[0].ToString().ToLower() + $param.ToString().Substring(1)
             if ( $OriginalPsBoundParameters[$param] -is [array]) {
-                $queryPart = $paraCaseSensitive + '=' + ($OriginalPsBoundParameters[$param] -join ",")
+                $queryPart = $paraCaseSensitive + '=' + ($OriginalPsBoundParameters[$param] -join ',')
             } else {
                 $queryPart = $paraCaseSensitive + '=' + $OriginalPsBoundParameters[$param]
             }
