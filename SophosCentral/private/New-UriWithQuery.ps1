@@ -23,6 +23,10 @@ function New-UriWithQuery {
             if ( $OriginalPsBoundParameters[$param] -is [array]) {
                 $queryPart = $paraCaseSensitive + '=' + ($OriginalPsBoundParameters[$param] -join ',')
             } else {
+                #convert time time to ISO 8601 Universal Format Specifier
+                if ($OriginalPsBoundParameters[$param].GetType().Name -eq 'DateTime') {
+                    $OriginalPsBoundParameters[$param] = $OriginalPsBoundParameters[$param].ToUniversalTime().ToString('u').Replace(' ', 'T')
+                }
                 $queryPart = $paraCaseSensitive + '=' + $OriginalPsBoundParameters[$param]
             }
             if (($null -eq $uriBuilder.Query) -or ($uriBuilder.Query.Length -le 1 )) {
