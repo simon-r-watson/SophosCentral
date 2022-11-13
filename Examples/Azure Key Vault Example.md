@@ -73,7 +73,7 @@ Connect-SophosCentral -SecretVault -AzKeyVault
 
 ### Install and configure the modules
 
-Install and configure the module as below, and then use the connection steps from above.
+Install and configure the module as below
 
 ``` powershell
 #Install/Update the required modules
@@ -93,4 +93,26 @@ $subID = '23993d24-af33-4002-8451-a348d906cadc'
 
 #Register the secret vault
 Register-SecretVault -Module Az.KeyVault -Name AzKV -VaultParameters @{ AZKVaultName = $vaultName; SubscriptionId = $subID }
+```
+
+### Retrieve the Secrets and Connect to Sophos Central
+
+1. Login to Azure, if you haven't already
+
+``` powershell
+Connect-AzAccount
+```
+
+2. Retrieve the secrets and connect to Sophos Central
+
+``` powershell
+$clientID = Get-Secret 'SophosCentral-Partner-ClientID' -Vault AzKV -AsPlainText
+$clientSecret = Get-Secret -Name 'SophosCentral-Partner-ClientSecret' -Vault AzKV
+Connect-SophosCentral -ClientID $clientID -ClientSecret $clientSecret
+```
+
+Or, if you have used the same Secret Vault name (AzKV) and Secret Names as this example you can just run
+
+```powershell
+Connect-SophosCentral -SecretVault -AzKeyVault
 ```

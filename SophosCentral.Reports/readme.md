@@ -8,8 +8,6 @@ Test scripts for dumping data in Azure SQL, MS SQL and SQLite, for use with tool
 
 Requires the EFPosh module - <https://github.com/Ryan2065/EFPosh>
 
-Azure SQL - Tested using the serverless tier.
-SQLite - Tested.
-MS SQL - Untested, but should work.
-
-## 
+* Azure SQL - Tested using the serverless tier.
+* SQLite - Tested.
+* MS SQL - Untested, but should work.

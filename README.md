@@ -31,13 +31,13 @@ It is recommended to use a service such as Azure Key Vault to store the client i
 
 ## Importing the module
 
-If your cloning this repo using Git, import the module using one of the *.psm1 files in .\SophosCentral\
+If your cloning this repo using Git, import the module using one of the *.psm1 files in .\SophosCentral\, instead of using the psd1 file
 
 ```pwsh
 Import-Module .\SophosCentral\SophosCentral.psm1
 ```
 
-If your downloading the 'SophosCentral.zip' from the releases, you can use the .psd1
+If your downloading the 'SophosCentral.zip' file from the releases, you can use the .psd1
 
 ```pwsh
 Import-Module .\SophosCentral.psd1
@@ -63,27 +63,60 @@ $ClientSecret = Read-Host -AsSecureString -Prompt 'Client Secret'
 Connect-SophosCentral -ClientID $ClientID -ClientSecret $ClientSecret
 ```
 
+### Connect to a customer tenant (partners) or sub estate (enterprise)
+
+``` powershell
+Connect-SophosCentralCustomerTenant -CustomerNameSearch "Contoso*" 
+```
+
 ### Get Alerts
 
 ``` powershell
 $alerts = Get-SophosCentralAlert
 ```
 
-### Enable Tamper Protection
+### Get Account Health Check
 
 ``` powershell
-Get-SophosCentralEndpoint | `
-    Where-Object {$_.tamperprotectionenabled -ne $true} | `
-        ForEach-Object { 
-            Set-SophosCentralEndpointTamperProtection -EndpointID $_.id -Enabled $true -Force
-        }
+$health = Get-SophosCentralAccountHealthCheck
+#servers/workstations status
+$health.endpoint.protection
+#endpoint policies
+$health.endpoint.policy.computer
+#server polices
+$health.endpoint.policy.server
+#exclusions
+$health.endpoint.exclusions
+#tamper protection
+$health.endpoint.tamperProtection
+```
+
+### Get Endpoints install links
+
+``` powershell
+$installers = Get-SophosCentralEndpointInstallerLink
+$installers.installers
+```
+
+### Get Endpoints with status that needs investigating
+
+``` powershell
+Get-SophosCentralEndpoint -HealthStatus 'bad', 'suspicious', 'unknown'
+```
+
+
+### Enable Tamper Protection on all endpoints
+
+* It should also be enabled Globally in the tenant too
+
+``` powershell
+Get-SophosCentralEndpoint -TamperProtectionEnabled $false | Set-SophosCentralEndpointTamperProtection -Enabled $true
 ```
 
 ### Get Endpoints with Tamper Protection disabled
 
 ``` powershell
-Get-SophosCentralEndpoint | `
-    Where-Object {$_.tamperprotectionenabled -ne $true}
+Get-SophosCentralEndpoint -TamperProtectionEnabled $false
 ```
 
 ### Get Endpoint not seen in over 90 days
