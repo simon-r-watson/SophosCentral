@@ -1,4 +1,8 @@
-/output/
+output/
 SophosCentral.zip
-/docs/*.md
-/SophosCentral.Tests/*.json
+docs/*.md
+SophosCentral.Tests/*.json
+SophosCentral.Reports/sophos.sqlite
+SophosCentral.Reports/sophos.sqlite-shm
+SophosCentral.Reports/sophos.sqlite-wal
+*.json
