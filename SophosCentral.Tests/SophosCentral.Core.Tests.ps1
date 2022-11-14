@@ -18,6 +18,9 @@
 
 BeforeAll {
     $config = Get-Content "$($PSScriptRoot)\testConfig.json" | ConvertFrom-Json
+    if (Get-Module 'SophosCentral-Debug') {
+        Remove-Module 'SophosCentral-Debug'
+    }
     $modulePath = $PSScriptRoot.Replace('.Tests', '\SophosCentral-Debug.psm1')
     Import-Module $modulePath
 
@@ -175,6 +178,13 @@ Describe 'Get-SophosCentralEndpoint' {
         $endpointsUnique = $endpoints | Select-Object id -Unique
         $endpointsUnique.count | Should -BeExactly $endpoints.count
     }
+
+    It 'Given HealthStatus is xxx, it throws an exception' {
+        {   
+            Get-SophosCentralEndpoint -HealthStatus xxx
+        } | Should -Throw
+    }
+
     #Type
     It 'Given Type is server, it lists less than total the endpoints' {
         $endpointsTotal = Get-SophosCentralEndpoint
@@ -200,6 +210,12 @@ Describe 'Get-SophosCentralEndpoint' {
         $endpointsUnique.count | Should -BeExactly $endpoints.count
     }
 
+    It 'Given Type is xxx, it throws an exception' {
+        {   
+            Get-SophosCentralEndpoint -Type xxx
+        } | Should -Throw
+    }
+
     #Tamper Protection
     It 'Given TamperProtection is $false, it lists less than the total endpoints' {
         $endpointsTotal = Get-SophosCentralEndpoint
@@ -211,6 +227,12 @@ Describe 'Get-SophosCentralEndpoint' {
         $endpoints = Get-SophosCentralEndpoint -TamperProtectionEnabled $false
         $endpointsUnique = $endpoints | Select-Object id -Unique
         $endpointsUnique.count | Should -BeExactly $endpoints.count
+    }
+
+    It 'Given TamperProtection is xxx, it throws an exception' {
+        {   
+            Get-SophosCentralEndpoint -TamperProtection xxx
+        } | Should -Throw
     }
 
     #Last Seen After
@@ -244,6 +266,17 @@ Describe 'Get-SophosCentralEndpoint' {
         $endpoints.count | Should -BeExactly $endpointsDateTime.count
     }
 
+    It 'Given LastSeenAfter as "yesterday" it throws an exception' {
+        {
+            Get-SophosCentralEndpoint -LastSeenAfter 'yesterday' | Out-Null
+        } | Should -Throw "Cannot validate argument on parameter 'LastSeenAfter'. See 'Get-Help Get-SophosCentralEndpoint -Examples' for some examples"
+    }
+    It 'Given LastSeenAfter as "-P90DA" (invalid) it throws an exception' {
+        {
+            Get-SophosCentralEndpoint -LastSeenAfter '-P90DA' | Out-Null
+        } | Should -Throw "Cannot validate argument on parameter 'LastSeenAfter'. See 'Get-Help Get-SophosCentralEndpoint -Examples' for some examples"
+    }
+
     #Last Seen Before
     It 'Given LastSeenBefore is "-P90D", it lists less than the total endpoints' {
         $endpointsTotal = Get-SophosCentralEndpoint
@@ -273,6 +306,17 @@ Describe 'Get-SophosCentralEndpoint' {
         $endpointsDateTime = Get-SophosCentralEndpoint -LastSeenBefore (Get-Date).AddDays(-90)
         $endpoints = Get-SophosCentralEndpoint -LastSeenBefore '-P90D'
         $endpoints.count | Should -BeExactly $endpointsDateTime.count
+    }
+
+    It 'Given LastSeenBefore as "yesterday" it throws an exception' {
+        {
+            Get-SophosCentralEndpoint -LastSeenBefore 'yesterday' | Out-Null
+        } | Should -Throw "Cannot validate argument on parameter 'LastSeenBefore'. See 'Get-Help Get-SophosCentralEndpoint -Examples' for some examples"
+    }
+    It 'Given LastSeenBefore as "-P90DA" (invalid) it throws an exception' {
+        {
+            Get-SophosCentralEndpoint -LastSeenBefore '-P90DA' | Out-Null
+        } | Should -Throw "Cannot validate argument on parameter 'LastSeenBefore'. See 'Get-Help Get-SophosCentralEndpoint -Examples' for some examples"
     }
 }
 
@@ -460,6 +504,20 @@ Describe 'New-UriWithQuery' {
         $uriExpected = 'https://example.com/?aaa=zzz'
         $hash = @{
             aaa = 'zzz'
+        }
+        $uriTest = New-UriWithQuery -OriginalPsBoundParameters $hash -Uri $uri
+        $uriTest.AbsoluteUri.ToString() | Should -BeExactly $uriExpected
+    }
+
+    It 'Given valid hash table with an array, returns expected uri' {
+        $uri = 'https://example.com'
+        $uriExpected = 'https://example.com/?aaa=zzz,xxx,ccc'
+        $hash = @{
+            aaa = @(
+                'zzz',
+                'xxx',
+                'ccc'
+            )
         }
         $uriTest = New-UriWithQuery -OriginalPsBoundParameters $hash -Uri $uri
         $uriTest.AbsoluteUri.ToString() | Should -BeExactly $uriExpected

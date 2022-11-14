@@ -18,6 +18,9 @@
 
 BeforeAll {
     $config = Get-Content "$($PSScriptRoot)\testConfig.json" | ConvertFrom-Json
+    if (Get-Module 'SophosCentral-Debug') {
+        Remove-Module 'SophosCentral-Debug'
+    }
     $modulePath = $PSScriptRoot.Replace('.Tests', '\SophosCentral-Debug.psm1')
     Import-Module $modulePath
 
