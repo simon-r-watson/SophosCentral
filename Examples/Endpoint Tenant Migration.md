@@ -1,6 +1,7 @@
 # Endpoint Migration Between Tenants
 
 * Based on this - <https://developer.sophos.com/endpoint-migrations>
+* Make sure endpoint migrations are enabled in the tenants (see the above link)
 
 1. Connect as a partner or enterprise customer
 
