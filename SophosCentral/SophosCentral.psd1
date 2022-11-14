@@ -69,7 +69,7 @@
     # NestedModules = @()
 
     # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
-    FunctionsToExport = @('Connect-SophosCentral', 'Connect-SophosCentralCustomerTenant', 'Get-SophosCentralLiveDiscoverQuery', 'Get-SophosCentralLiveDiscoverQueryCategories', 'Get-SophosCentralLiveDiscoverQueryRun', 'Invoke-SophosCentralLiveDiscoverQueryRun', 'Get-SophosCentralAlerts', 'Get-SophosCentralAllowedItems', 'Get-SophosCentralBlockedItems', 'Get-SophosCentralEndpoint', 'Get-SophosCentralCustomerTenants', 'Get-SophosCentralCustomerTenant', 'Get-SophosCentralEndpoints', 'Get-SophosCentralEndpointTamperProtection', 'Get-SophosCentralTenantInfo', 'Get-SophosCentralUserGroups', 'Get-SophosCentralUsers', 'Invoke-SophosCentralEndpointScan', 'Invoke-SophosCentralEndpointUpdate', 'New-SophosCentralUser', 'Set-SophosCentralAlertAction', 'Set-SophosCentralEndpointTamperProtection','Invoke-SophosCentralXDRQueryRun','Get-SophosCentralXDRQueryRun')
+    FunctionsToExport = @('Connect-SophosCentral', 'Connect-SophosCentralCustomerTenant', 'Get-SophosCentralLiveDiscoverQuery', 'Get-SophosCentralLiveDiscoverQueryCategories', 'Get-SophosCentralLiveDiscoverQueryRun', 'Invoke-SophosCentralLiveDiscoverQueryRun', 'Get-SophosCentralAlerts', 'Get-SophosCentralAllowedItems', 'Get-SophosCentralBlockedItems', 'Get-SophosCentralEndpoint', 'Get-SophosCentralCustomerTenants', 'Get-SophosCentralCustomerTenant', 'Get-SophosCentralEndpoints', 'Get-SophosCentralEndpointTamperProtection', 'Get-SophosCentralTenantInfo', 'Get-SophosCentralUserGroups', 'Get-SophosCentralUsers', 'Invoke-SophosCentralEndpointScan', 'Invoke-SophosCentralEndpointUpdate', 'New-SophosCentralUser', 'Set-SophosCentralAlertAction', 'Set-SophosCentralEndpointTamperProtection', 'Invoke-SophosCentralXDRQueryRun', 'Get-SophosCentralXDRQueryRun')
 
     # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
     CmdletsToExport   = '*'
@@ -95,26 +95,26 @@
         PSData = @{
 
             # Tags applied to this module. These help with module discovery in online galleries.
-            # Tags = @()
+            Tags         = @('Sophos Central')
 
             # A URL to the license for this module.
-            # LicenseUri = ''
+            LicenseUri   = 'https://github.com/simon-r-watson/SophosCentral'
 
             # A URL to the main website for this project.
-            # ProjectUri = ''
+            ProjectUri   = 'https://github.com/simon-r-watson/SophosCentral'
 
             # A URL to an icon representing this module.
             # IconUri = ''
 
             # ReleaseNotes of this module
-            # ReleaseNotes = ''
+            ReleaseNotes = 'https://github.com/simon-r-watson/SophosCentral/releases'
 
         } # End of PSData hashtable
 
     } # End of PrivateData hashtable
 
     # HelpInfo URI of this module
-    # HelpInfoURI = ''
+    HelpInfoURI       = 'https://github.com/simon-r-watson/SophosCentral/wiki'
 
     # Default prefix for commands exported from this module. Override the default prefix using Import-Module -Prefix.
     # DefaultCommandPrefix = ''
