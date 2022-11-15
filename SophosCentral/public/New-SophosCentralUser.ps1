@@ -39,7 +39,7 @@ function New-SophosCentralUser {
     if ($exchangeLogin) { $body.Add('exchangeLogin', $exchangeLogin) }
     if ($groupIds) { $body.Add('groupIds', $groupIds) }
 
-    if ($Force -or $PSCmdlet.ShouldProcess($EndpointID, ($body.keys -join ', '))) {
+    if ($Force -or $PSCmdlet.ShouldProcess('Create user', ($Name))) {
         Invoke-SophosCentralWebRequest -Uri $uri -Method Post -Body $body
     }
 }
