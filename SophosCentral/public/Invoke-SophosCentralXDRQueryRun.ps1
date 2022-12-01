@@ -107,39 +107,39 @@ function Invoke-SophosCentralXDRQueryRun {
         [Parameter(Mandatory = $false, ParameterSetName = 'CustomQuery')]
         [Parameter(Mandatory = $false, ParameterSetName = 'SavedQuery')]
         [ValidateScript({
-            if ($_.GetType().Name -eq 'DateTime') {
-                return $true
-            } else {
-                #match this duration format https://en.wikipedia.org/wiki/ISO_8601#Durations
-                $regex = '^[-+]?P(?!$)(([-+]?\d+Y)|([-+]?\d+\.\d+Y$))?(([-+]?\d+M)|([-+]?\d+\.\d+M$))?(([-+]?\d+W)|([-+]?\d+\.\d+W$))?(([-+]?\d+D)|([-+]?\d+\.\d+D$))?(T(?=[\d+-])(([-+]?\d+H)|([-+]?\d+\.\d+H$))?(([-+]?\d+M)|([-+]?\d+\.\d+M$))?([-+]?\d+(\.\d+)?S)?)??$'
-                if ($_ -match $regex) {
+                if ($_.GetType().Name -eq 'DateTime') {
                     return $true
                 } else {
-                    throw "Invaid From time - should be either a [datetime] or a ISO_8601 duration"
+                    #match this duration format https://en.wikipedia.org/wiki/ISO_8601#Durations
+                    $regex = '^[-+]?P(?!$)(([-+]?\d+Y)|([-+]?\d+\.\d+Y$))?(([-+]?\d+M)|([-+]?\d+\.\d+M$))?(([-+]?\d+W)|([-+]?\d+\.\d+W$))?(([-+]?\d+D)|([-+]?\d+\.\d+D$))?(T(?=[\d+-])(([-+]?\d+H)|([-+]?\d+\.\d+H$))?(([-+]?\d+M)|([-+]?\d+\.\d+M$))?([-+]?\d+(\.\d+)?S)?)??$'
+                    if ($_ -match $regex) {
+                        return $true
+                    } else {
+                        throw 'Invaid From time - should be either a [datetime] or a ISO_8601 duration'
+                    }
                 }
-            }
-        })]
+            })]
         $From,
 
         [Parameter(Mandatory = $false, ParameterSetName = 'CustomQuery')]
         [Parameter(Mandatory = $false, ParameterSetName = 'SavedQuery')]
         [ValidateScript({
-            if ($_.GetType().Name -eq 'DateTime') {
-                return $true
-            } else {
-                #match this duration format https://en.wikipedia.org/wiki/ISO_8601#Durations
-                $regex = '^[-+]?P(?!$)(([-+]?\d+Y)|([-+]?\d+\.\d+Y$))?(([-+]?\d+M)|([-+]?\d+\.\d+M$))?(([-+]?\d+W)|([-+]?\d+\.\d+W$))?(([-+]?\d+D)|([-+]?\d+\.\d+D$))?(T(?=[\d+-])(([-+]?\d+H)|([-+]?\d+\.\d+H$))?(([-+]?\d+M)|([-+]?\d+\.\d+M$))?([-+]?\d+(\.\d+)?S)?)??$'
-                if ($_ -match $regex) {
+                if ($_.GetType().Name -eq 'DateTime') {
                     return $true
                 } else {
-                    throw "Invaid To time - should be either a [datetime] or a ISO_8601 duration"
+                    #match this duration format https://en.wikipedia.org/wiki/ISO_8601#Durations
+                    $regex = '^[-+]?P(?!$)(([-+]?\d+Y)|([-+]?\d+\.\d+Y$))?(([-+]?\d+M)|([-+]?\d+\.\d+M$))?(([-+]?\d+W)|([-+]?\d+\.\d+W$))?(([-+]?\d+D)|([-+]?\d+\.\d+D$))?(T(?=[\d+-])(([-+]?\d+H)|([-+]?\d+\.\d+H$))?(([-+]?\d+M)|([-+]?\d+\.\d+M$))?([-+]?\d+(\.\d+)?S)?)??$'
+                    if ($_ -match $regex) {
+                        return $true
+                    } else {
+                        throw 'Invaid To time - should be either a [datetime] or a ISO_8601 duration'
+                    }
                 }
-            }
-        })]
+            })]
         $To,
 
         [Parameter(Mandatory = $false, ParameterSetName = 'CustomQuery')]
-        [string]$queryName="AdHoc",
+        [string]$queryName = 'AdHoc',
 
         [Parameter(Mandatory = $false, ParameterSetName = 'CustomQuery')]
         [Parameter(Mandatory = $false, ParameterSetName = 'SavedQuery')]
@@ -151,68 +151,67 @@ function Invoke-SophosCentralXDRQueryRun {
     )
     $uri = [System.Uri]::New($SCRIPT:SophosCentral.RegionEndpoint + '/xdr-query/v1/queries/runs')
     if ($PSCmdlet.ParameterSetName -eq 'CustomBody') {
-        Write-Verbose "Custom Body"
-        $body=$customBody
+        Write-Verbose 'Custom Body'
+        $body = $customBody
     } else {
-        $body=@{}
+        $body = @{}
         # force times into format acceptable to Sophos
         if ($variables) {
             foreach ($var in $variables) {
-                if ($var.dataType -eq "datetime") {
+                if ($var.dataType -eq 'datetime') {
                     try {
-                            $var.value=$var.value|get-date -AsUTC -Format 'yyyy-MM-dd"t"hh:mm:ssZ' -ErrorAction Stop
-                    }
-                    catch {    
+                        $var.value = $var.value | Get-Date -AsUTC -Format 'yyyy-MM-dd"t"hh:mm:ssZ' -ErrorAction Stop
+                    } catch {    
                         throw "Invalid dateTime variable format for variable $($var.name)"
                     }
                 }
             }
         }
-        $body.variables=$variables
+        $body.variables = $variables
         if ($From) {
-            if ($From.GetType().name -eq "DateTime") {
-                $body.from=$From|get-date -AsUTC -Format 'yyyy-MM-dd"t"hh:mm:ssZ'
+            if ($From.GetType().name -eq 'DateTime') {
+                $body.from = $From | Get-Date -AsUTC -Format 'yyyy-MM-dd"t"hh:mm:ssZ'
             } else {
-                $body.from=$From
+                $body.from = $From
             }
         }
         if ($To) {
-            if ($To.GetType().name -eq "DateTime") {
-                $body.to=$To|get-date -AsUTC -Format 'yyyy-MM-dd"t"hh:mm:ssZ'
+            if ($To.GetType().name -eq 'DateTime') {
+                $body.to = $To | Get-Date -AsUTC -Format 'yyyy-MM-dd"t"hh:mm:ssZ'
             } else {
-                $body.to=$To
+                $body.to = $To
             }
         }
         if ($ids) {
-            $endpointFilters+=@{ids=$ids}
+            $endpointFilters += @{ids = $ids }
         }   
         if ($endpointFilters) {
-            $body.matchEndpoints=@{
+            $body.matchEndpoints = @{
                 'filters' = @(
                     @{
-                        'ids'=$ids
+                        'ids' = $ids
                     }
                 )
             }
         }
         if ($PSCmdlet.ParameterSetName -eq 'CustomQuery') {
-            Write-Verbose "Custom Query"
+            Write-Verbose 'Custom Query'
             $body.adHocQuery = @{
                 'template' = $query
-                'name' = $queryName
+                'name'     = $queryName
             }
         } else {     
-            Write-Verbose "Canned Query"
-            $body.savedQuery= @{
-                    'queryId' = $queryId
-                    'categoryId' = $categoryId
-                }
+            Write-Verbose 'Canned Query'
+            $body.savedQuery = @{
+                'queryId'    = $queryId
+                'categoryId' = $categoryId
+            }
             if ($variables) {
-                $body.variables=$variables
+                $body.variables = $variables
             }
         }
     }
-    Write-Verbose ($body|ConvertTo-Json -Depth 5)
+    Write-Verbose ($body | ConvertTo-Json -Depth 5)
     Write-Verbose $uri
     Invoke-SophosCentralWebRequest -Uri $uri -Method Post -Body $Body
 }
