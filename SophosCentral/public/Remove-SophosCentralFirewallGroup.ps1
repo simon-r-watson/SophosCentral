@@ -20,13 +20,19 @@ function Remove-SophosCentralFirewallGroup {
 
         [switch]$Force
     )
-    Test-SophosCentralConnected
     
-    foreach ($group in $GroupID) {
-        $uri = [System.Uri]::New($SCRIPT:SophosCentral.RegionEndpoint + '/firewall/v1/firewall-groups/' + $group)
-        if ($Force -or $PSCmdlet.ShouldProcess('Remove', $group )) {
-            Invoke-SophosCentralWebRequest -Uri $uri -Method Delete
-        }
+    begin {
+        Show-UntestedWarning
     }
     
+    process {
+        foreach ($group in $GroupID) {
+            $uri = [System.Uri]::New($SCRIPT:SophosCentral.RegionEndpoint + '/firewall/v1/firewall-groups/' + $group)
+            if ($Force -or $PSCmdlet.ShouldProcess('Remove', $group )) {
+                Invoke-SophosCentralWebRequest -Uri $uri -Method Delete
+            }
+        }
+    }
+
+    end { }
 }
