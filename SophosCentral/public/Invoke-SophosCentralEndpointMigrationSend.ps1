@@ -43,26 +43,30 @@ function Invoke-SophosCentralEndpointMigrationSend {
 
         [switch]$Force
     )
-    Test-SophosCentralConnected
-        
-    Show-UntestedWarning
-    
-    if ($SourceTenantID -ne $SCRIPT:SophosCentral.CustomerTenantID) {
-        try {
-            Write-Warning "Connecting to $($SourceTenantID), this connection will overwrite the tenant you were connected to previously ($($SCRIPT:SophosCentral.CustomerTenantName))"
-            Connect-SophosCentralCustomerTenant -CustomerTenantID $SourceTenantID
-        } catch {
-            throw 'Unable to connect to the source tenant, check the ID is correct and you have the correct permissions to it'
-        }
-    }
-    
-    $body = @{
-        'token'     = $MigrationToken
-        'endpoints' = $EndpointID
+    begin {
+        Test-SophosCentralConnected
     }
 
-    $uri = [System.Uri]::New($SCRIPT:SophosCentral.RegionEndpoint + '/endpoint/v1/migrations/' + $MigrationID)
-    if ($Force -or $PSCmdlet.ShouldProcess('Create Send Job', $SourceTenantID )) {
-        Invoke-SophosCentralWebRequest -Uri $uri -Method Put -Body $body
+    process {
+        if ($SourceTenantID -ne $SCRIPT:SophosCentral.CustomerTenantID) {
+            try {
+                Write-Warning "Connecting to $($SourceTenantID), this connection will overwrite the tenant you were connected to previously ($($SCRIPT:SophosCentral.CustomerTenantName))"
+                Connect-SophosCentralCustomerTenant -CustomerTenantID $SourceTenantID
+            } catch {
+                throw 'Unable to connect to the source tenant, check the ID is correct and you have the correct permissions to it'
+            }
+        }
+
+        $body = @{
+            'token'     = $MigrationToken
+            'endpoints' = $EndpointID
+        }
+
+        $uri = [System.Uri]::New($SCRIPT:SophosCentral.RegionEndpoint + '/endpoint/v1/migrations/' + $MigrationID)
+        if ($Force -or $PSCmdlet.ShouldProcess('Create Send Job', $SourceTenantID )) {
+            Invoke-SophosCentralWebRequest -Uri $uri -Method Put -Body $body
+        }
     }
+
+    end { }
 }
