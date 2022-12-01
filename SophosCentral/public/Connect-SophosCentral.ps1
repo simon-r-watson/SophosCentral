@@ -53,6 +53,7 @@ function Connect-SophosCentral {
         https://developer.sophos.com/getting-started
     #>
     [CmdletBinding()]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('AvoidUsingConvertToSecureStringWithPlainText', '', Justification = 'SecureStrings main usage is to stop items from appearing in the console, and not encrypting memory', Scope = 'Function')]
     param (
         [Parameter(Mandatory = $true,
             ParameterSetName = 'StdAuth',
@@ -62,7 +63,7 @@ function Connect-SophosCentral {
         [Parameter(ParameterSetName = 'StdAuth',
             HelpMessage = 'The client secret from the Sophos Central API credential/service principal')]
         [SecureString]$ClientSecret,
-        
+
         [Parameter(ParameterSetName = 'StdAuth',
             HelpMessage = 'Internal use (for this module) only. Used to generate a new access token when the current one expires')]
         [Switch]$AccessTokenOnly,
@@ -111,7 +112,7 @@ function Connect-SophosCentral {
         } catch {
             throw "Error requesting access token: $($_)"
         }
-    
+
         if ($response.Content) {
             $authDetails = $response.Content | ConvertFrom-Json
             $expiresAt = (Get-Date).AddSeconds($authDetails.expires_in - 60)
@@ -134,7 +135,7 @@ function Connect-SophosCentral {
                 $SCRIPT:SophosCentral | Add-Member -MemberType NoteProperty -Name client_secret -Value $ClientSecret
             }
         }
-    } elseif ($PsCmdlet.ParameterSetName -eq 'SecretVaultAuth') {
+    } elseif ($PsCmdlet.ParameterSetName -eq 'SecretVaultAuth' -or $SecretVault) {
         #verify modules installed
         if ($AzKeyVault -eq $true) {
             $modules = 'Microsoft.PowerShell.SecretManagement', 'Az', 'Az.KeyVault'
@@ -161,7 +162,7 @@ function Connect-SophosCentral {
                 if ($null -eq $context.Account) {
                     Connect-AzAccount | Out-Null
                 }
-                
+
             } catch {
                 throw 'Error connecting to Azure PowerShell'
             }

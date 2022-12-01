@@ -19,5 +19,7 @@
     "uncategorized",
     "virt"
   ],
-  "cmake.configureOnOpen": false
+  "cmake.configureOnOpen": false,
+  "powershell.scriptAnalysis.enable": true,
+  "powershell.scriptAnalysis.settingsPath": "./.vscode/PSScriptAnalyzerSettings.psd1"
 }
