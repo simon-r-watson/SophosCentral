@@ -1,15 +1,16 @@
-function Get-SophosCentralLiveDiscoverQueryCategories {
+function Get-SophosCentralLiveDiscoverQueryCategory {
     <#
     .SYNOPSIS
         Get queries matching the given filters.
     .DESCRIPTION
         Get queries matching the given filters.
     .EXAMPLE
-       Get-SophosCentralLiveDiscoverQueryCategories
+       Get-SophosCentralLiveDiscoverQueryCategory
     .LINK
         https://developer.sophos.com/docs/live-discover-v1/1/routes/queries/get
     #>
     [CmdletBinding()]
+    [Alias('Get-SophosCentralLiveDiscoverQueryCategories')]
     param (  
         [Parameter(Mandatory = $false)]
         [array]$Fields,
