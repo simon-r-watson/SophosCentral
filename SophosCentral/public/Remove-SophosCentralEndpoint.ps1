@@ -20,12 +20,19 @@ function Remove-SophosCentralEndpoint {
 
         [switch]$Force
     )
-    Test-SophosCentralConnected
     
-    foreach ($endpoint in $EndpointID) {
-        $uri = [System.Uri]::New($SCRIPT:SophosCentral.RegionEndpoint + '/endpoint/v1/endpoints/' + $endpoint)
-        if ($Force -or $PSCmdlet.ShouldProcess('Remove Endpoint', $Endpoint)) {
-            Invoke-SophosCentralWebRequest -Uri $uri -Method Delete
+    begin {
+        Test-SophosCentralConnected
+    }
+    
+    process {
+        foreach ($endpoint in $EndpointID) {
+            $uri = [System.Uri]::New($SCRIPT:SophosCentral.RegionEndpoint + '/endpoint/v1/endpoints/' + $endpoint)
+            if ($Force -or $PSCmdlet.ShouldProcess('Remove Endpoint', $Endpoint)) {
+                Invoke-SophosCentralWebRequest -Uri $uri -Method Delete
+            }
         }
     }
+
+    end { }
 }
