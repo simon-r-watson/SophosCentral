@@ -21,13 +21,19 @@ function Remove-SophosCentralXDRQueryRun {
         [switch]$Force
     )
     
-    Show-UntestedWarning
-
-    foreach ($run in $RunID) {
-        $uriChild = "/xdr-query/v1/queries/runs/$($run)/cancel"
-        $uri = [System.Uri]::New($SCRIPT:SophosCentral.RegionEndpoint + $uriChild)
-        if ($Force -or $PSCmdlet.ShouldProcess('Remove', $run)) {
-            Invoke-SophosCentralWebRequest -Uri $uri -Method Post
+    begin {
+        Show-UntestedWarning
+    }
+    
+    process {
+        foreach ($run in $RunID) {
+            $uriChild = "/xdr-query/v1/queries/runs/$($run)/cancel"
+            $uri = [System.Uri]::New($SCRIPT:SophosCentral.RegionEndpoint + $uriChild)
+            if ($Force -or $PSCmdlet.ShouldProcess('Remove', $run)) {
+                Invoke-SophosCentralWebRequest -Uri $uri -Method Post
+            }
         }
     }
+
+    end { }
 }
