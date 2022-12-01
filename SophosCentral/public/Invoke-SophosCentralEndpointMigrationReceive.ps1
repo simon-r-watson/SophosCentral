@@ -38,26 +38,29 @@ function Invoke-SophosCentralEndpointMigrationReceive {
 
         [switch]$Force
     )
-    Test-SophosCentralConnected
-        
-    Show-UntestedWarning
-    
-    if ($DestinationTenantID -ne $SCRIPT:SophosCentral.CustomerTenantID) {
-        try {
-            Write-Warning "Connecting to $($DestinationTenantID), this connection will overwrite the tenant you were connected to previously ($($SCRIPT:SophosCentral.CustomerTenantName))"
-            Connect-SophosCentralCustomerTenant -CustomerTenantID $DestinationTenantId
-        } catch {
-            throw 'Unable to connect to the destination tenant, check the ID is correct and you have the correct permissions to it'
-        }
-    }
-    
-    $body = @{
-        'fromTenant' = $SourceTenantID
-        'endpoints'  = $EndpointID
+    begin {
+        Test-SophosCentralConnected
     }
 
-    $uri = [System.Uri]::New($SCRIPT:SophosCentral.RegionEndpoint + '/endpoint/v1/migrations')
-    if ($Force -or $PSCmdlet.ShouldProcess('Create Receive Job', $DestinationTenantID )) {
-        Invoke-SophosCentralWebRequest -Uri $uri -Method Post -Body $body
+    process {
+        if ($DestinationTenantID -ne $SCRIPT:SophosCentral.CustomerTenantID) {
+            try {
+                Write-Warning "Connecting to $($DestinationTenantID), this connection will overwrite the tenant you were connected to previously ($($SCRIPT:SophosCentral.CustomerTenantName))"
+                Connect-SophosCentralCustomerTenant -CustomerTenantID $DestinationTenantId
+            } catch {
+                throw 'Unable to connect to the destination tenant, check the ID is correct and you have the correct permissions to it'
+            }
+        }
+
+        $body = @{
+            'fromTenant' = $SourceTenantID
+            'endpoints'  = $EndpointID
+        }
+
+        $uri = [System.Uri]::New($SCRIPT:SophosCentral.RegionEndpoint + '/endpoint/v1/migrations')
+        if ($Force -or $PSCmdlet.ShouldProcess('Create Receive Job', $DestinationTenantID )) {
+            Invoke-SophosCentralWebRequest -Uri $uri -Method Post -Body $body
+        }
     }
+    end { }
 }
