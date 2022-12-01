@@ -21,5 +21,9 @@
   ],
   "cmake.configureOnOpen": false,
   "powershell.scriptAnalysis.enable": true,
-  "powershell.scriptAnalysis.settingsPath": "./.vscode/PSScriptAnalyzerSettings.psd1"
+  "powershell.scriptAnalysis.settingsPath": "./.vscode/PSScriptAnalyzerSettings.psd1",
+  "files.trimTrailingWhitespace": true,
+  "files.encoding": "utf8bom",
+  "files.insertFinalNewline": true,
+  "files.trimFinalNewlines": true
 }
