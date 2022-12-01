@@ -17,25 +17,23 @@ function Get-SophosCentralEndpointPolicy {
     #>
     [CmdletBinding()]
     [Alias('Get-SophosCentralEndpointPolicies')]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('UseProcessBlockForPipelineCommand', 'All', Justification = 'We do not need to use the variable', Scope = 'Function')]
     param (
         [Parameter(Mandatory = $false,
-            ValueFromPipelineByPropertyName = $true,
             ParameterSetName = 'ID')]
         [Alias('ID')]
         [string]$PolicyId,
 
         [Parameter(Mandatory = $false,
-            ValueFromPipelineByPropertyName = $true,
             ParameterSetName = 'Base')]
         [switch]$BasePolicy,
 
         [Parameter(Mandatory = $false,
-            ValueFromPipelineByPropertyName = $true,
             ParameterSetName = 'All')]
         [switch]$All
     )
     Test-SophosCentralConnected
-    
+
     if ($BasePolicy) {
         $PolicyId = 'base'
     }
