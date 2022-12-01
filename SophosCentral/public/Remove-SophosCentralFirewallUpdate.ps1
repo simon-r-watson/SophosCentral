@@ -22,9 +22,9 @@ function Remove-SophosCentralFirewallUpdate {
     )
 
     begin {
-        Show-UntestedWarning
+        Test-SophosCentralConnected
     }
-    
+
     process {
         foreach ($firewall in $FirewallID) {
             $uri = [System.Uri]::New($SCRIPT:SophosCentral.RegionEndpoint + '/firewall/v1/firewalls/actions/firmware-upgrade?ids=' + $firewall)

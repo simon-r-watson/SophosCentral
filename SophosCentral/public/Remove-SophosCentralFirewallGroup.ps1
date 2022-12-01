@@ -22,7 +22,7 @@ function Remove-SophosCentralFirewallGroup {
     )
     
     begin {
-        Show-UntestedWarning
+        Test-SophosCentralConnected
     }
     
     process {

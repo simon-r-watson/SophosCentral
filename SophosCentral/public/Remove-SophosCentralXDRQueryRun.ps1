@@ -22,7 +22,7 @@ function Remove-SophosCentralXDRQueryRun {
     )
     
     begin {
-        Show-UntestedWarning
+        Test-SophosCentralConnected
     }
     
     process {
