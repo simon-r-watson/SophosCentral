@@ -13,7 +13,7 @@ function Invoke-SophosCentralFirewallUpdate {
     .EXAMPLE
         Invoke-SophosCentralFirewallUpdate -FirewallID "6d41e78e-0360-4de3-8669-bb7b797ee515" -UpgradeToVersion 'some-version'
     .EXAMPLE
-        Invoke-SophosCentralFirewallUpdate -EndpointID (Get-SophosCentralEndpoint).ID
+        Invoke-SophosCentralFirewallUpdate -FirewallID "6d41e78e-0360-4de3-8669-bb7b797ee515" -UpgradeToVersion 'some-version' -UpgradeAt (Get-Date).AddHours(8)
     .LINK
         https://developer.sophos.com/docs/endpoint-v1/1/routes/endpoints/%7BendpointId%7D/update-checks/post
     #>
@@ -32,7 +32,7 @@ function Invoke-SophosCentralFirewallUpdate {
     )
     begin {
         Test-SophosCentralConnected
-    
+
         $uri = [System.Uri]::New($SCRIPT:SophosCentral.RegionEndpoint + '/firewall/v1/firewalls/actions/firmware-upgrade')
         $body = @{
             firewalls = @()
@@ -44,7 +44,10 @@ function Invoke-SophosCentralFirewallUpdate {
                 id               = $firewall
                 upgradeToVersion = $UpgradeToVersion
             }
-            if ($UpgradeAt) { $firewallHash.Add('upgradeAt', $UpgradeAt) }
+            if ($UpgradeAt) {
+                $UpgradeAt = $UpgradeAt.ToUniversalTime().ToString('u').Replace(' ', 'T')
+                $firewallHash.Add('upgradeAt', $UpgradeAt)
+            }
             $body['firewalls'] += $firewallHash
         }
         if ($Force -or $PSCmdlet.ShouldProcess('Update', ($FirewallID -join ', '))) {
