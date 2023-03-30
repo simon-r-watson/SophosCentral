@@ -66,7 +66,7 @@ Connect-SophosCentral -ClientID $ClientID -ClientSecret $ClientSecret
 ### Connect to a customer tenant (partners) or sub estate (enterprise)
 
 ``` powershell
-Connect-SophosCentralCustomerTenant -CustomerNameSearch "Contoso*" 
+Connect-SophosCentralCustomerTenant -CustomerNameSearch "Contoso*"
 ```
 
 ### Get Alerts
@@ -107,7 +107,7 @@ Get-SophosCentralEndpoint -HealthStatus 'bad', 'suspicious', 'unknown'
 
 ### Enable Tamper Protection on all endpoints
 
-* It should also be enabled Globally in the tenant too
+*  You should also enable Globally in the tenant too
 
 ``` powershell
 Get-SophosCentralEndpoint -TamperProtectionEnabled $false | Set-SophosCentralEndpointTamperProtection -Enabled $true
@@ -123,6 +123,18 @@ Get-SophosCentralEndpoint -TamperProtectionEnabled $false
 
 ``` powershell
 Get-SophosCentralEndpoint -LastSeenBefore '-P90D'
+```
+
+### Trigger a scan of all endpoints
+
+``` powershell
+Get-SophosCentralEndpoint | Invoke-SophosCentralEndpointScan
+```
+
+### Trigger a scan of bad/suspicious endpoints
+
+``` powershell
+Get-SophosCentralEndpoint -HealthStatus 'bad', 'suspicious' | Invoke-SophosCentralEndpointScan
 ```
 
 ### Audit Customer Tenant Settings
