@@ -89,12 +89,14 @@ function Get-SophosCentralEndpoint {
         [ValidateScript({
                 if ($_.GetType().Name -eq 'DateTime') {
                     return $true
-                } else {
+                }
+                else {
                     #match this duration format https://en.wikipedia.org/wiki/ISO_8601#Durations
                     $regex = '^[-+]?P(?!$)(([-+]?\d+Y)|([-+]?\d+\.\d+Y$))?(([-+]?\d+M)|([-+]?\d+\.\d+M$))?(([-+]?\d+W)|([-+]?\d+\.\d+W$))?(([-+]?\d+D)|([-+]?\d+\.\d+D$))?(T(?=[\d+-])(([-+]?\d+H)|([-+]?\d+\.\d+H$))?(([-+]?\d+M)|([-+]?\d+\.\d+M$))?([-+]?\d+(\.\d+)?S)?)??$'
                     if ($_ -match $regex) {
                         return $true
-                    } else {
+                    }
+                    else {
                         throw "See 'Get-Help Get-SophosCentralEndpoint -Examples' for some examples"
                     }
                 }
@@ -104,12 +106,14 @@ function Get-SophosCentralEndpoint {
         [ValidateScript({
                 if ($_.GetType().Name -eq 'DateTime') {
                     return $true
-                } else {
+                }
+                else {
                     #match this duration format https://en.wikipedia.org/wiki/ISO_8601#Durations
                     $regex = '^[-+]?P(?!$)(([-+]?\d+Y)|([-+]?\d+\.\d+Y$))?(([-+]?\d+M)|([-+]?\d+\.\d+M$))?(([-+]?\d+W)|([-+]?\d+\.\d+W$))?(([-+]?\d+D)|([-+]?\d+\.\d+D$))?(T(?=[\d+-])(([-+]?\d+H)|([-+]?\d+\.\d+H$))?(([-+]?\d+M)|([-+]?\d+\.\d+M$))?([-+]?\d+(\.\d+)?S)?)??$'
                     if ($_ -match $regex) {
                         return $true
-                    } else {
+                    }
+                    else {
                         throw "See 'Get-Help Get-SophosCentralEndpoint -Examples' for some examples"
                     }
                 }
