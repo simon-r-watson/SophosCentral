@@ -24,6 +24,8 @@ function Get-SophosCentralEndpoint {
         Find endpoints last seen before this. Accepts either [datetime] or a string in the ISO 8601 Duration format (https://en.wikipedia.org/wiki/ISO_8601#Durations)
     .PARAMETER LastSeenAfter
         Find endpoints last seen after this. Accepts either [datetime] or a string in the ISO 8601 Duration format (https://en.wikipedia.org/wiki/ISO_8601#Durations)
+    .PARAMETER ID
+        Find endpoints with the specified IDs.
     .EXAMPLE
         Get-SophosCentralEndpoint
 
@@ -118,9 +120,26 @@ function Get-SophosCentralEndpoint {
                     }
                 }
             })]
-        $LastSeenAfter
+        $LastSeenAfter,
+
+        [ValidateScript({
+                if ($false -eq [System.Guid]::TryParse($_, $([ref][guid]::Empty))) {
+                    throw 'Not a valid GUID'
+                }
+                else {
+                    return $true
+                }
+            })]
+        [string[]]
+        $ID
     )
     Test-SophosCentralConnected
+
+    # ID is ids in query string, update PSBoundParameters to match
+    if ($ID.count -gt 0) {
+        $PsBoundParameters.Add('ids', $PsBoundParameters['ID'])
+        $null = $PsBoundParameters.Remove('ID')
+    }
 
     $uriTemp = [System.Uri]::New($SCRIPT:SophosCentral.RegionEndpoint + '/endpoint/v1/endpoints')
     $uri = New-UriWithQuery -Uri $uriTemp -OriginalPsBoundParameters $PsBoundParameters
