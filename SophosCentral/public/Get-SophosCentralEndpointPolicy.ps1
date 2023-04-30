@@ -39,7 +39,10 @@ function Get-SophosCentralEndpointPolicy {
     }
 
     $uriChild = '/endpoint/v1/policies'
-    if (-not([string]::IsNullOrEmpty($PolicyId))) {
+    if ($All) {
+        $uriChild = $uriChild + '?pageTotal=true'
+    }
+    elseif (-not([string]::IsNullOrEmpty($PolicyId))) {
         $uriChild = "$($uriChild)/$($PolicyId)"
     }
     $uri = [System.Uri]::New($SCRIPT:SophosCentral.RegionEndpoint + $uriChild)
