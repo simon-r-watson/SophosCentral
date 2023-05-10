@@ -24,6 +24,8 @@ function Get-SophosCentralEndpoint {
         Find endpoints last seen before this. Accepts either [datetime] or a string in the ISO 8601 Duration format (https://en.wikipedia.org/wiki/ISO_8601#Durations)
     .PARAMETER LastSeenAfter
         Find endpoints last seen after this. Accepts either [datetime] or a string in the ISO 8601 Duration format (https://en.wikipedia.org/wiki/ISO_8601#Durations)
+    .PARAMETER ID
+        Find endpoints with the specified IDs.
     .EXAMPLE
         Get-SophosCentralEndpoint
 
@@ -89,12 +91,14 @@ function Get-SophosCentralEndpoint {
         [ValidateScript({
                 if ($_.GetType().Name -eq 'DateTime') {
                     return $true
-                } else {
+                }
+                else {
                     #match this duration format https://en.wikipedia.org/wiki/ISO_8601#Durations
                     $regex = '^[-+]?P(?!$)(([-+]?\d+Y)|([-+]?\d+\.\d+Y$))?(([-+]?\d+M)|([-+]?\d+\.\d+M$))?(([-+]?\d+W)|([-+]?\d+\.\d+W$))?(([-+]?\d+D)|([-+]?\d+\.\d+D$))?(T(?=[\d+-])(([-+]?\d+H)|([-+]?\d+\.\d+H$))?(([-+]?\d+M)|([-+]?\d+\.\d+M$))?([-+]?\d+(\.\d+)?S)?)??$'
                     if ($_ -match $regex) {
                         return $true
-                    } else {
+                    }
+                    else {
                         throw "See 'Get-Help Get-SophosCentralEndpoint -Examples' for some examples"
                     }
                 }
@@ -104,19 +108,38 @@ function Get-SophosCentralEndpoint {
         [ValidateScript({
                 if ($_.GetType().Name -eq 'DateTime') {
                     return $true
-                } else {
+                }
+                else {
                     #match this duration format https://en.wikipedia.org/wiki/ISO_8601#Durations
                     $regex = '^[-+]?P(?!$)(([-+]?\d+Y)|([-+]?\d+\.\d+Y$))?(([-+]?\d+M)|([-+]?\d+\.\d+M$))?(([-+]?\d+W)|([-+]?\d+\.\d+W$))?(([-+]?\d+D)|([-+]?\d+\.\d+D$))?(T(?=[\d+-])(([-+]?\d+H)|([-+]?\d+\.\d+H$))?(([-+]?\d+M)|([-+]?\d+\.\d+M$))?([-+]?\d+(\.\d+)?S)?)??$'
                     if ($_ -match $regex) {
                         return $true
-                    } else {
+                    }
+                    else {
                         throw "See 'Get-Help Get-SophosCentralEndpoint -Examples' for some examples"
                     }
                 }
             })]
-        $LastSeenAfter
+        $LastSeenAfter,
+
+        [ValidateScript({
+                if ($false -eq [System.Guid]::TryParse($_, $([ref][guid]::Empty))) {
+                    throw 'Not a valid GUID'
+                }
+                else {
+                    return $true
+                }
+            })]
+        [string[]]
+        $ID
     )
     Test-SophosCentralConnected
+
+    # ID is ids in query string, update PSBoundParameters to match
+    if ($ID.count -gt 0) {
+        $PsBoundParameters.Add('ids', $PsBoundParameters['ID'])
+        $null = $PsBoundParameters.Remove('ID')
+    }
 
     $uriTemp = [System.Uri]::New($SCRIPT:SophosCentral.RegionEndpoint + '/endpoint/v1/endpoints')
     $uri = New-UriWithQuery -Uri $uriTemp -OriginalPsBoundParameters $PsBoundParameters
