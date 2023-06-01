@@ -29,7 +29,7 @@ function Connect-SophosCentralCustomerTenant {
 
         Connect to Contoso and perform connection test
     .EXAMPLE
-        Connect-SophosCentralCustomerTenant -CustomerNameSearch "Contoso*" 
+        Connect-SophosCentralCustomerTenant -CustomerNameSearch "Contoso*" -ForceTenantRefresh
 
         Connect to Contoso whilst refreshing the cache of tenants stored in memory
     .LINK
