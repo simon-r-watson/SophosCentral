@@ -30,30 +30,67 @@ function Get-SophosCentralEmailQuarantine {
         Return all rows where email has at least one attachment.
 
     .EXAMPLE
-        Get-SophosCentralEndpoint
+        Get-SophosCentralEmailQuarantine -BeginDate (Get-Date).AddDays(-7) -EndDate (Get-Date) -Direction inbound
 
-        List all endpoints in the tenant
+        List all quarantined inbound emails in the last 7 days
     .LINK
         https://developer.sophos.com/docs/email-v1/1/routes/quarantine/messages/search/post
     #>
     [CmdletBinding()]
     param (
+        [Parameter(ParameterSetName = 'Quarantine')]
+        [switch]$Quarantine,
+
+        [Parameter(ParameterSetName = 'PostDelivery')]
+        [switch]$PostDelivery,
+
+        [Parameter(Mandatory = $true, ParameterSetName = 'PostDelivery')]
+        [Parameter(Mandatory = $true, ParameterSetName = 'Quarantine')]
         [datetime]$BeginDate,
+
+        [Parameter(Mandatory = $true, ParameterSetName = 'PostDelivery')]
+        [Parameter(Mandatory = $true, ParameterSetName = 'Quarantine')]
         [datetime]$EndDate,
+
+        [Parameter(ParameterSetName = 'PostDelivery')]
+        [Parameter(ParameterSetName = 'Quarantine')]
         [string]$ID,
+
+        [Parameter(ParameterSetName = 'PostDelivery')]
+        [Parameter(ParameterSetName = 'Quarantine')]
         [string]$FromContains,
+
+        [Parameter(ParameterSetName = 'PostDelivery')]
+        [Parameter(ParameterSetName = 'Quarantine')]
         [string]$ToContains,
+
+        [Parameter(ParameterSetName = 'PostDelivery')]
+        [Parameter(ParameterSetName = 'Quarantine')]
         [string]$SubjectContains,
+
+        [Parameter(ParameterSetName = 'PostDelivery')]
+        [Parameter(ParameterSetName = 'Quarantine')]
         [string]$AttachmentNameContains,
+
+        [Parameter(ParameterSetName = 'PostDelivery')]
+        [Parameter(ParameterSetName = 'Quarantine')]
         [int]$SizeInMBGreaterThan,
+
+        [Parameter(ParameterSetName = 'PostDelivery')]
+        [Parameter(ParameterSetName = 'Quarantine')]
         [int]$SizeInMBLowerThan,
 
+        [Parameter(ParameterSetName = 'Quarantine')]
         [ValidateSet('inbound', 'outbound')]
         [string]$Direction,
 
+        [Parameter(ParameterSetName = 'PostDelivery')]
+        [Parameter(ParameterSetName = 'Quarantine')]
         [ValidateSet('mailflow', 'gateway')]
         [string]$ProductType,
 
+        [Parameter(ParameterSetName = 'PostDelivery')]
+        [Parameter(ParameterSetName = 'Quarantine')]
         [bool]$HasAnyAttachment
     )
     Test-SophosCentralConnected
@@ -78,7 +115,13 @@ function Get-SophosCentralEmailQuarantine {
         $body.Add('filter', $filter)
     }
 
-    $uri = [System.Uri]::New($SCRIPT:SophosCentral.RegionEndpoint + '/email/v1/quarantine/messages/search')
+    if ($PostDelivery) {
+        $queryPath = '/email/v1/post-delivery-quarantine/messages/search'
+    } else {
+        $queryPath = '/email/v1/quarantine/messages/search'
+    }
+
+    $uri = [System.Uri]::New($SCRIPT:SophosCentral.RegionEndpoint + $queryPath)
 
     Invoke-SophosCentralWebRequest -Uri $uri -Method Post -Body $body
 }
