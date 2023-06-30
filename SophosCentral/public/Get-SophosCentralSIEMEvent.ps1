@@ -1,4 +1,4 @@
-﻿function Get-SophosCentralEvent {
+﻿function Get-SophosCentralSIEMEvent {
     <#
     .SYNOPSIS
         Get events within the last 24 hours.
@@ -15,21 +15,22 @@
 
         Get the most recent events
     .EXAMPLE
-        Get-SophosCentralEvent -FromDate (Get-Date).AddMinutes(-15)
+        Get-SophosCentralSIEMEvent -FromDate (Get-Date).AddMinutes(-15)
 
         Get events from the last 15 minutes
     .EXAMPLE
-        Get-SophosCentralEvent -ExcludeType 'Event::Endpoint::UpdateSuccess', 'Event::Endpoint::Application::Detected'
+        Get-SophosCentralSIEMEvent -ExcludeType 'Event::Endpoint::UpdateSuccess', 'Event::Endpoint::Application::Detected'
 
         Get latest events excluding UpdateSuccess and Application Detected events
     .EXAMPLE
-        Get-SophosCentralEvent -Limit 205
+        Get-SophosCentralSIEMEvent -Limit 205
 
         Get 205 of the the most recent events
     .LINK
         https://developer.sophos.com/docs/siem-v1/1/routes/events/get
     #>
     [CmdletBinding(DefaultParameterSetName = 'nullParam')]
+    [Alias('Get-SophosCentralSIEMEvent')]
     param (
         [ValidateRange(200, 1000)]
         [int]$Limit = 200,
