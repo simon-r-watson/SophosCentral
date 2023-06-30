@@ -32,7 +32,10 @@ function Get-SophosCentralEmailQuarantine {
         Return all rows where the message product type is mailflow or gateway.
     .PARAMETER HasAnyAttachment
         Return all rows where email has at least one attachment.
+    .PARAMETER Reason
+        Return all rows where the message has the provided reason.
 
+        "bulk", "dataControl", "dkim", "dmarc", "headerAnomaly", "domainAnomaly", "impersonation", "intelixMalicious", "intelixSuspicious", "intelixUnscannable", "maliciousUrl", "malware", "s/mime", "spam", "spf", "suspectedSpam", "unscannable"
     .EXAMPLE
         Get-SophosCentralEmailQuarantine -BeginDate (Get-Date).AddDays(-7) -EndDate (Get-Date) -Direction inbound
 
@@ -95,7 +98,12 @@ function Get-SophosCentralEmailQuarantine {
 
         [Parameter(ParameterSetName = 'PostDelivery')]
         [Parameter(ParameterSetName = 'Quarantine')]
-        [bool]$HasAnyAttachment
+        [bool]$HasAnyAttachment,
+
+        [Parameter(ParameterSetName = 'PostDelivery')]
+        [Parameter(ParameterSetName = 'Quarantine')]
+        [ValidateSet('bulk', 'dataControl', 'dkim', 'dmarc', 'headerAnomaly', 'domainAnomaly', 'impersonation', 'intelixMalicious', 'intelixSuspicious', 'intelixUnscannable', 'maliciousUrl', 'malware', 's/mime', 'spam', 'spf', 'suspectedSpam', 'unscannable')]
+        [string]$Reason
     )
     Test-SophosCentralConnected
 
@@ -114,6 +122,7 @@ function Get-SophosCentralEmailQuarantine {
     if ($Direction) { $filter.Add('direction', $Direction) }
     if ($ProductType) { $filter.Add('productType', $productType) }
     if ($HasAnyAttachment) { $filter.Add('hasAnyAttachment', $HasAnyAttachment) }
+    if ($Reason) { $filter.Add('reason', $Reason) }
 
     if ($null -ne $filter) {
         $body.Add('filter', $filter)
