@@ -4,6 +4,10 @@ function Get-SophosCentralEmailQuarantine {
         Summary of all the quarantined messages matching your search and filter conditions.
     .DESCRIPTION
         Summary of all the quarantined messages matching your search and filter conditions.
+    .PARAMETER Quarantine
+        Query the standard quarantine.
+    .PARAMETER PostDelivery
+        Query the post-delivery quarantine.
     .PARAMETER BeginDate
         Messages quarantined on or after this date. Used with endDate.
     .PARAMETER EndDate
@@ -117,7 +121,7 @@ function Get-SophosCentralEmailQuarantine {
 
     if ($PostDelivery) {
         $queryPath = '/email/v1/post-delivery-quarantine/messages/search'
-    } else {
+    } elseif ($Quarantine) {
         $queryPath = '/email/v1/quarantine/messages/search'
     }
 
