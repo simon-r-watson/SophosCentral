@@ -12,7 +12,7 @@ function Get-SophosCentralEndpointAllowedItem {
         https://developer.sophos.com/docs/endpoint-v1/1/routes/settings/allowed-items/get
     #>
     [CmdletBinding()]
-
+    [Alias('Get-SophosCentralAllowedItem', 'Get-SophosCentralAllowedItems')]
     param (
 
     )

@@ -12,7 +12,7 @@ function Get-SophosCentralEndpointBlockedItem {
         https://developer.sophos.com/docs/endpoint-v1/1/routes/settings/blocked-items/get
     #>
     [CmdletBinding()]
-
+    [Alias('Get-SophosCentralBlockedItem', 'Get-SophosCentralBlockedItems')]
     param (
 
     )
