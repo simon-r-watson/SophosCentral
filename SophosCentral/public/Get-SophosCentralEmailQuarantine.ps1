@@ -37,7 +37,7 @@ function Get-SophosCentralEmailQuarantine {
 
         "bulk", "dataControl", "dkim", "dmarc", "headerAnomaly", "domainAnomaly", "impersonation", "intelixMalicious", "intelixSuspicious", "intelixUnscannable", "maliciousUrl", "malware", "s/mime", "spam", "spf", "suspectedSpam", "unscannable"
     .EXAMPLE
-        Get-SophosCentralEmailQuarantine -BeginDate (Get-Date).AddDays(-7) -EndDate (Get-Date) -Direction inbound
+        Get-SophosCentralEmailQuarantine -Quarantine -BeginDate (Get-Date).AddDays(-7) -EndDate (Get-Date) -Direction inbound
 
         List all quarantined inbound emails in the last 7 days
     .LINK
