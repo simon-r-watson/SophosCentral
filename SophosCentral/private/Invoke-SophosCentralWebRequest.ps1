@@ -9,7 +9,9 @@ function Invoke-SophosCentralWebRequest {
         [ValidateSet('Get', 'Post', 'Put', 'Patch', 'Delete')]
         [string]$Method = 'Get',
 
-        [System.Collections.Hashtable]$Body
+        [System.Collections.Hashtable]$Body,
+
+        [switch]$BuggyResponseNoItems
     )
 
     if ($PSVersionTable.PSVersion.Major -lt 7) {
@@ -53,6 +55,9 @@ function Invoke-SophosCentralWebRequest {
     if ($null -ne $response.items) {
         $response.items
     } else {
+        $response
+    }
+    if ($BuggyResponseNoItems) {
         $response
     }
 
