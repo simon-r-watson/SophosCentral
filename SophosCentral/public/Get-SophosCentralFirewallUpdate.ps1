@@ -20,7 +20,7 @@ function Get-SophosCentralFirewallUpdate {
     )
     begin {
         Test-SophosCentralConnected
-    
+
         $uri = [System.Uri]::New($SCRIPT:SophosCentral.RegionEndpoint + '/firewall/v1/firewalls/actions/firmware-upgrade-check')
         $body = @{
             firewalls = @()

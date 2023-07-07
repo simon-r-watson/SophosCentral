@@ -20,11 +20,11 @@ function Remove-SophosCentralEndpoint {
 
         [switch]$Force
     )
-    
+
     begin {
         Test-SophosCentralConnected
     }
-    
+
     process {
         foreach ($endpoint in $EndpointID) {
             $uri = [System.Uri]::New($SCRIPT:SophosCentral.RegionEndpoint + '/endpoint/v1/endpoints/' + $endpoint)

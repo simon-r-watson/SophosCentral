@@ -20,11 +20,11 @@ function Remove-SophosCentralXDRQueryRun {
 
         [switch]$Force
     )
-    
+
     begin {
         Test-SophosCentralConnected
     }
-    
+
     process {
         foreach ($run in $RunID) {
             $uriChild = "/xdr-query/v1/queries/runs/$($run)/cancel"

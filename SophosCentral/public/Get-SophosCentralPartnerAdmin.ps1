@@ -13,7 +13,7 @@ function Get-SophosCentralPartnerAdmin {
     param (
     )
     Test-SophosCentralConnected
-    
+
     if ((Test-SophosPartner) -eq $false) {
         throw 'You are not currently logged in using a Sophos Central Partner Service Principal'
     }
@@ -23,7 +23,7 @@ function Get-SophosCentralPartnerAdmin {
     } catch {
         throw $_
     }
-    
+
     $uri = [System.Uri]::New('https://api.central.sophos.com/partner/v1/admins')
     Invoke-SophosCentralWebRequest -Uri $uri -CustomHeader $header
 }

@@ -14,7 +14,7 @@ function Get-SophosCentralUserGroup {
     param (
     )
     Test-SophosCentralConnected
-    
+
     $uriChild = '/common/v1/directory/user-groups'
     $uri = [System.Uri]::New($SCRIPT:SophosCentral.RegionEndpoint + $uriChild)
     Invoke-SophosCentralWebRequest -Uri $uri

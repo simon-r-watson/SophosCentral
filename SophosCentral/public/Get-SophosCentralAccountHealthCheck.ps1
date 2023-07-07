@@ -13,7 +13,7 @@ function Get-SophosCentralAccountHealthCheck {
     param (
     )
     Test-SophosCentralConnected
-    
+
     $uri = [System.Uri]::New($SCRIPT:SophosCentral.RegionEndpoint + '/account-health-check/v1/health-check')
     Invoke-SophosCentralWebRequest -Uri $uri
 }

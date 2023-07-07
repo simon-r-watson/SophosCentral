@@ -22,7 +22,7 @@ function Invoke-SophosCentralEndpointUpdate {
     )
     begin {
         Test-SophosCentralConnected
-    
+
         $uriChild = '/endpoint/v1/endpoints/{0}/update-checks'
         $uriString = $SCRIPT:SophosCentral.RegionEndpoint + $uriChild
     }

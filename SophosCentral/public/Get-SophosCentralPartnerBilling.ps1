@@ -18,7 +18,7 @@ function Get-SophosCentralPartnerBilling {
             ParameterSetName = 'Custom')]
         [ValidateRange(1, 12)]
         [int]$Month,
-        
+
         [Parameter(Position = 1,
             Mandatory = $true,
             ParameterSetName = 'Custom')]
@@ -30,7 +30,7 @@ function Get-SophosCentralPartnerBilling {
         [switch]$LastMonth
     )
     Test-SophosCentralConnected
-    
+
     if ((Test-SophosPartner) -eq $false) {
         throw 'You are not currently logged in using a Sophos Central Partner Service Principal'
     }
@@ -46,7 +46,7 @@ function Get-SophosCentralPartnerBilling {
     } catch {
         throw $_
     }
-    
+
     $uri = [System.Uri]::New("https://api.central.sophos.com/partner/v1/billing/usage/$year/$month")
     Invoke-SophosCentralWebRequest -Uri $uri -CustomHeader $header
 }

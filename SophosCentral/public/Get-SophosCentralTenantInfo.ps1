@@ -10,7 +10,7 @@ function Get-SophosCentralTenantInfo {
         https://developer.sophos.com/docs/whoami-v1/1/routes/get
     #>
     Test-SophosCentralConnected
-    
+
     $uri = [System.Uri]::New('https://api.central.sophos.com/whoami/v1')
     $header = Get-SophosCentralAuthHeader -Initial
     Invoke-SophosCentralWebRequest -Uri $uri -CustomHeader $header

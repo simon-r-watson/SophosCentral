@@ -18,11 +18,11 @@ function New-SophosCentralAdmin {
         [Parameter(Mandatory = $true)]
         [ValidateScript({
                 if ($false -eq [System.Guid]::TryParse($_, $([ref][guid]::Empty))) {
-                    throw 'Not a valid GUID' 
+                    throw 'Not a valid GUID'
                 } else {
                     return $true
                 }
-                
+
             })]
         [string]$UserID,
 
@@ -30,7 +30,7 @@ function New-SophosCentralAdmin {
         [ValidateScript({
                 foreach ($role in $_) {
                     if ($false -eq [System.Guid]::TryParse($role, $([ref][guid]::Empty))) {
-                        throw 'Not a valid GUID' 
+                        throw 'Not a valid GUID'
                     } else {
                         return $true
                     }
@@ -41,7 +41,7 @@ function New-SophosCentralAdmin {
         [switch]$Force
     )
     Test-SophosCentralConnected
-    
+
     $uriChild = '/common/v1/admins'
     $uri = [System.Uri]::New($SCRIPT:SophosCentral.RegionEndpoint + $uriChild)
 

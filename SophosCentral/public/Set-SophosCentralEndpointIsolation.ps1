@@ -33,11 +33,11 @@ function Set-SophosCentralEndpointIsolation {
     )
     begin {
         Test-SophosCentralConnected
-    
+
         $uri = [System.Uri]::New($SCRIPT:SophosCentral.RegionEndpoint + '/endpoint/v1/endpoints/isolation')
     }
     process {
-        
+
         $body = @{
             enabled = $Enabled
             comment = $Comment
@@ -46,10 +46,10 @@ function Set-SophosCentralEndpointIsolation {
         foreach ($endpoint in $EndpointID) {
             $body['ids'] += $endpoint
         }
-        
+
         if ($Force -or $PSCmdlet.ShouldProcess('isolation', ($EndpointID -join ', '))) {
             Invoke-SophosCentralWebRequest -Uri $uri -Method Post -Body $body
-        } 
+        }
     }
-    
+
 }

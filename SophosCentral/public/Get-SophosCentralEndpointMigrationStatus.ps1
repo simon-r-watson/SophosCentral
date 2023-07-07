@@ -15,9 +15,9 @@ function Get-SophosCentralEndpointMigrationStatus {
         [string]$MigrationID
     )
     Test-SophosCentralConnected
-    
+
     Show-UntestedWarning
-    
+
     $uri = [System.Uri]::New($SCRIPT:SophosCentral.RegionEndpoint + "/endpoint/v1/migrations/$($MigrationID)/endpoints?pageTotal=true")
     Invoke-SophosCentralWebRequest -Uri $uri
 }

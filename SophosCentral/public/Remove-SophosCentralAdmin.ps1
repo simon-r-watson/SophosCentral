@@ -16,7 +16,7 @@ function Remove-SophosCentralAdmin {
         [string[]]$UserID
     )
     Test-SophosCentralConnected
-    
+
     foreach ($idTmp in $UserID) {
         $uri = [System.Uri]::New("$($SCRIPT:SophosCentral.RegionEndpoint)/common/v1/admins/$($idTmp)")
         if ($Force -or $PSCmdlet.ShouldProcess('Remove admin', $idTmp)) {

@@ -15,7 +15,7 @@ function New-SophosCentralCustomerTenant {
     param (
         [Parameter(Mandatory = $true)]
         [string]$Name,
-        
+
         [Parameter(Mandatory = $true)]
         [ValidateSet('US', 'IE', 'DE', 'CA', 'AU', 'JP')]
         [string]$DataGeography,
@@ -23,41 +23,41 @@ function New-SophosCentralCustomerTenant {
         [Parameter(Mandatory = $true)]
         [ValidateSet('trial', 'usage')]
         [string]$BillingType,
-        
+
         [Parameter(Mandatory = $true)]
         [string]$FirstName,
-        
+
         [Parameter(Mandatory = $true)]
         [string]$LastName,
-        
+
         [Parameter(Mandatory = $true)]
         [string]$Email,
-        
+
         [Parameter(Mandatory = $true)]
         [string]$Phone,
-        
+
         [Parameter(Mandatory = $true)]
         [string]$Address1,
-        
+
         [string]$Address2,
-        
+
         [string]$Address3,
-        
+
         [Parameter(Mandatory = $true)]
         [string]$City,
-        
+
         [string]$State,
-        
+
         [Parameter(Mandatory = $true)]
         [string]$CountryCode,
-        
+
         [Parameter(Mandatory = $true)]
         [string]$PostalCode,
-        
+
         [switch]$Force
     )
     Test-SophosCentralConnected
-    
+
     if ((Test-SophosPartner) -eq $false) {
         throw 'You are not currently logged in using a Sophos Central Partner Service Principal'
     }

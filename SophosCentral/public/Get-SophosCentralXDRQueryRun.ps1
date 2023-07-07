@@ -17,7 +17,7 @@ function Get-SophosCentralXDRQueryRun {
     .LINK
         https://developer.sophos.com/docs/xdr-query-v1/1/routes/queries/runs/%7BrunId%7D/results/get
     #>
-    [CmdletBinding(DefaultParameterSetName='nullParam')]
+    [CmdletBinding(DefaultParameterSetName = 'nullParam')]
     param (
         [Parameter(Mandatory = $true, ParameterSetName = 'Run ID')]
         [Parameter(Mandatory = $true, ParameterSetName = 'Results')]
@@ -26,7 +26,7 @@ function Get-SophosCentralXDRQueryRun {
         [Parameter(Mandatory = $true, ParameterSetName = 'Results')]
         [switch]$Results
     )
-    
+
     $uriChild = '/xdr-query/v1/queries/runs'
     if ($null -ne $RunID) {
         $uriChild = $uriChild + '/' + $RunID
@@ -35,7 +35,7 @@ function Get-SophosCentralXDRQueryRun {
         }
     }
     $uriChild = $uriChild + '?pageTotal=true'
-    
+
     $uri = [System.Uri]::New($SCRIPT:SophosCentral.RegionEndpoint + $uriChild)
     Invoke-SophosCentralWebRequest -Uri $uri
 }

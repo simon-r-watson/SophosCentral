@@ -33,15 +33,15 @@ function Set-SophosCentralAlertAction {
 
         [switch]$Force
     )
-    begin {   
+    begin {
         Test-SophosCentralConnected
-         
+
         $uriChild = '/common/v1/alerts/{0}/actions'
         $uriString = $SCRIPT:SophosCentral.RegionEndpoint + $uriChild
     }
     process {
         foreach ($alert in $AlertID) {
-            
+
             $uri = [System.Uri]::New($uriString -f $alert)
             $body = @{
                 action = $Action
@@ -52,7 +52,7 @@ function Set-SophosCentralAlertAction {
             if ($Force -or $PSCmdlet.ShouldProcess($alert, $Action)) {
                 Invoke-SophosCentralWebRequest -Uri $uri -Method Post -Body $body
             }
-            
+
         }
     }
 }

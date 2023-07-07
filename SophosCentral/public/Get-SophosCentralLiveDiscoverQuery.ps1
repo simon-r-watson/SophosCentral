@@ -20,8 +20,8 @@ function Get-SophosCentralLiveDiscoverQuery {
         [string]$search,
 
         [Parameter(Mandatory = $false)]
-        [array]$searchFields,        
-        
+        [array]$searchFields,
+
         [Parameter(Mandatory = $false)]
         [ValidateSet('categories', 'code', 'createdAt', 'dataSource', 'description', 'id', 'name', 'performance', 'supportedOSes', 'template', 'type', 'variables')]
         [array]$Fields,
@@ -35,7 +35,7 @@ function Get-SophosCentralLiveDiscoverQuery {
         $uriChild = $uriChild + '/' + $QueryID
     }
     $uriChild = $uriChild + '?pageTotal=true'
-    
+
     $uriTemp = [System.Uri]::New($SCRIPT:SophosCentral.RegionEndpoint + $uriChild)
     $uri = New-UriWithQuery -Uri $uriTemp -OriginalPsBoundParameters $PsBoundParameters
     Invoke-SophosCentralWebRequest -Uri $uri

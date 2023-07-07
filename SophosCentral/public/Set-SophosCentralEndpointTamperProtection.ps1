@@ -36,7 +36,7 @@ function Set-SophosCentralEndpointTamperProtection {
     )
     begin {
         Test-SophosCentralConnected
-    
+
         $uriChild = '/endpoint/v1/endpoints/{0}/tamper-protection'
         $uriString = $SCRIPT:SophosCentral.RegionEndpoint + $uriChild
     }
@@ -46,7 +46,7 @@ function Set-SophosCentralEndpointTamperProtection {
             $body = @{}
             if ($Enabled) { $body.Add('enabled', $Enabled) }
             if ($RegeneratePassword) { $body.Add('regeneratePassword', $RegeneratePassword) }
-            
+
             if ($Force -or $PSCmdlet.ShouldProcess($EndpointID, ($body.keys -join ', '))) {
                 Invoke-SophosCentralWebRequest -Uri $uri -Method Post -Body $body
             }

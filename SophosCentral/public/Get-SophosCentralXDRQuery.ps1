@@ -24,7 +24,7 @@ function Get-SophosCentralXDRQuery {
         $uriChild = $uriChild + '/' + $QueryID
     }
     $uriChild = $uriChild + '?pageTotal=true'
-    
+
     $uri = [System.Uri]::New($SCRIPT:SophosCentral.RegionEndpoint + $uriChild)
     Invoke-SophosCentralWebRequest -Uri $uri
 }

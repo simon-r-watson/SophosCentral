@@ -18,16 +18,16 @@ function New-SophosCentralAccessToken {
         [ValidateSet('sophosLinuxSensor')]
         [string]$Type,
 
-        [datetime]$ExipresAt
+        [datetime]$ExpiresAt
     )
     Test-SophosCentralConnected
-    
+
     $body = @{
         label = $Label
         type  = $Type
     }
-    if ($ExipresAt) { $body.Add('expiresAt', $ExipresAt) }
-    
+    if ($ExpiresAt) { $body.Add('expiresAt', $ExpiresAt) }
+
     $uri = [System.Uri]::New($SCRIPT:SophosCentral.GlobalEndpoint + '/accounts/v1/access-tokens')
     Invoke-SophosCentralWebRequest -Uri $uri -Body $body -Method Post
 }

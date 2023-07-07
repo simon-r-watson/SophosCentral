@@ -18,7 +18,7 @@ function Get-SophosCentralCustomerTenant {
     param (
     )
     Test-SophosCentralConnected
-    
+
     if (((Test-SophosPartner) -or (Test-SophosEnterprise)) -eq $false) {
         throw 'You are not currently logged in using a Sophos Central Partner/Enterprise Service Principal'
     }
@@ -36,6 +36,6 @@ function Get-SophosCentralCustomerTenant {
             $uri = [System.Uri]::New('https://api.central.sophos.com/organization/v1/tenants?pageTotal=true')
         }
     }
-    
+
     Invoke-SophosCentralWebRequest -Uri $uri -CustomHeader $header
 }

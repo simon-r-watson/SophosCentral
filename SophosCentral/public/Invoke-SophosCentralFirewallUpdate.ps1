@@ -45,7 +45,7 @@ function Invoke-SophosCentralFirewallUpdate {
                 upgradeToVersion = $UpgradeToVersion
             }
             if ($UpgradeAt) {
-                $UpgradeAt = $UpgradeAt.ToUniversalTime().ToString('u').Replace(' ', 'T')
+                $UpgradeAt = $UpgradeAt.ToString('u').Replace(' ', 'T')
                 $firewallHash.Add('upgradeAt', $UpgradeAt)
             }
             $body['firewalls'] += $firewallHash

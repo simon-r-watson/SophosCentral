@@ -15,7 +15,7 @@ function Get-SophosCentralFirewallGroup {
         [string]$Search
     )
     Test-SophosCentralConnected
-    
+
     $uriTemp = [System.Uri]::New($SCRIPT:SophosCentral.RegionEndpoint + '/firewall/v1/firewall-groups')
     $uri = New-UriWithQuery -Uri $uriTemp -OriginalPsBoundParameters $PsBoundParameters
 

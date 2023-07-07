@@ -11,7 +11,7 @@ function Get-SophosCentralUser {
     .EXAMPLE
         Get-SophosCentralUser -Search 'John'
 
-        Search for users full name containing John    
+        Search for users full name containing John
     .EXAMPLE
         Get-SophosCentralUser -Search 'Smith' -SearchField 'lastName'
 
@@ -41,13 +41,13 @@ function Get-SophosCentralUser {
 
         [ValidateScript({
                 if ($false -eq [System.Guid]::TryParse($_, $([ref][guid]::Empty))) {
-                    throw 'Not a valid GUID' 
+                    throw 'Not a valid GUID'
                 } else {
                     return $true
                 }
             })]
         [string]$ID,
-        
+
         [string]$Search,
 
         [ValidateSet('name', 'firstName', 'lastName', 'email', 'exchangeLogin')]
@@ -55,16 +55,16 @@ function Get-SophosCentralUser {
 
         [ValidateSet('custom', 'activeDirectory', 'azureActiveDirectory')]
         [string]$SourceType,
-        
+
         [ValidateScript({
                 if ($false -eq [System.Guid]::TryParse($_, $([ref][guid]::Empty))) {
-                    throw 'Not a valid GUID' 
+                    throw 'Not a valid GUID'
                 } else {
                     return $true
                 }
             })]
         [string]$GroupID,
-        
+
         [string]$Domain
     )
     Test-SophosCentralConnected

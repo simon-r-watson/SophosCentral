@@ -12,7 +12,7 @@ function Get-SophosCentralVerification {
     .LINK
         https://developer.sophos.com/docs/user-activity-verification-v1/1/routes/attestations/%7BattestationId%7D/get
     #>
-    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'Low')]
+    [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
         [ValidateScript({

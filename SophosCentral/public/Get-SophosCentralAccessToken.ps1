@@ -13,7 +13,7 @@ function Get-SophosCentralAccessToken {
     param (
     )
     Test-SophosCentralConnected
-    
+
     $uri = [System.Uri]::New($SCRIPT:SophosCentral.GlobalEndpoint + '/accounts/v1/access-tokens')
     Invoke-SophosCentralWebRequest -Uri $uri
 }

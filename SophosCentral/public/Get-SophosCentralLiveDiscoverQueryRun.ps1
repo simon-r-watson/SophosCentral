@@ -41,7 +41,7 @@ function Get-SophosCentralLiveDiscoverQueryRun {
         [Parameter(Mandatory = $false, ParameterSetName = 'Default')]
         [ValidateSet('notAvailable', 'succeeded', 'failed', 'timedOut')]
         [array]$Result,
-        
+
         [Parameter(Mandatory = $false, ParameterSetName = 'Default')]
         [ValidateSet('service', 'user')]
         [array]$createdByPrincipalType,
@@ -69,7 +69,7 @@ function Get-SophosCentralLiveDiscoverQueryRun {
         }
     }
     $uriChild = $uriChild + '?pageTotal=true'
-    
+
     $uriTemp = [System.Uri]::New($SCRIPT:SophosCentral.RegionEndpoint + $uriChild)
     $filteredPsBoundParameters = $PsBoundParameters
     #filter out parameters not needed for Query

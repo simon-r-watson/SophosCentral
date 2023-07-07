@@ -8,26 +8,26 @@ function Invoke-SophosCentralXDRQueryRun {
         The values in the example bodies below may not be correct (such as the variables sub hashtables), but the structure of the hashtable should be correct
     .PARAMETER CustomBody
         The query to run as a hashtable, see this for query options - https://developer.sophos.com/docs/xdr-query-v1/1/routes/queries/runs/post
-    
-    .PARAMETER categoryId	
+
+    .PARAMETER categoryId
         Query category ID.
 
-    .PARAMETER queryId (required)	
+    .PARAMETER queryId (required)
         Saved query ID.
 
-    .PARAMETER adHocQuery	
+    .PARAMETER adHocQuery
         Ad hoc query to run. Required if a saved query isn't supplied.
 
-    .PARAMETER name	
+    .PARAMETER name
         Name for the ad hoc query.
 
-    .PARAMETER template (required)	
+    .PARAMETER template (required)
         SQL statement for the query. This can contain replacement variables wrapped in $$ (double dollar sign) delimiters.
 
-    .PARAMETER variables	
-        Values of variables to be replaced in the template SQL. Array of hashes each containg the following keys:
+    .PARAMETER variables
+        Values of variables to be replaced in the template SQL. Array of hashes each containing the following keys:
             name        Variable name
-            dataType    Data types supported for EDR Data Lake queries. 
+            dataType    Data types supported for EDR Data Lake queries.
                         The following values are allowed:
                             double, integer, text, dateTime, boolean
             value	    String value of the variable.
@@ -35,13 +35,13 @@ function Invoke-SophosCentralXDRQueryRun {
                         The following values are allowed:
                             deviceId, deviceName, sophosPid, ipAddress, username, sha256, filePath, registryKey, url
 
-    .PARAMETER ids	
+    .PARAMETER ids
         array
-        Find endpoints with the specified IDs. Must contain from 1 to 1000 items. If not specfied then all endpoints are queried
-    .PARAMETER from	
+        Find endpoints with the specified IDs. Must contain from 1 to 1000 items. If not specified then all endpoints are queried
+    .PARAMETER from
         Start of time range that is applied when running the query (inclusive). It can be in ISO duration format, full UTC timestamp or date only.
-    .PARAMETER to	
-        End of time range that is applied when running the query (inclusive). It can be in ISO duration format, full UTC timestamp or date only.       
+    .PARAMETER to
+        End of time range that is applied when running the query (inclusive). It can be in ISO duration format, full UTC timestamp or date only.
     .EXAMPLE
         $body = @{
             'adHocQuery' = @{
@@ -94,7 +94,7 @@ function Invoke-SophosCentralXDRQueryRun {
     param (
         [Parameter(Mandatory = $false, ParameterSetName = 'SavedQuery')]
         [string]$categoryId,
-        
+
         [Parameter(Mandatory = $true, ParameterSetName = 'SavedQuery')]
         [string]$queryId,
 
@@ -115,7 +115,7 @@ function Invoke-SophosCentralXDRQueryRun {
                     if ($_ -match $regex) {
                         return $true
                     } else {
-                        throw 'Invaid From time - should be either a [datetime] or a ISO_8601 duration'
+                        throw 'Invalid From time - should be either a [datetime] or a ISO_8601 duration'
                     }
                 }
             })]
@@ -132,7 +132,7 @@ function Invoke-SophosCentralXDRQueryRun {
                     if ($_ -match $regex) {
                         return $true
                     } else {
-                        throw 'Invaid To time - should be either a [datetime] or a ISO_8601 duration'
+                        throw 'Invalid To time - should be either a [datetime] or a ISO_8601 duration'
                     }
                 }
             })]
@@ -144,7 +144,7 @@ function Invoke-SophosCentralXDRQueryRun {
         [Parameter(Mandatory = $false, ParameterSetName = 'CustomQuery')]
         [Parameter(Mandatory = $false, ParameterSetName = 'SavedQuery')]
         [array]$ids,
-        
+
         [Parameter(Mandatory = $false, ParameterSetName = 'CustomQuery')]
         [Parameter(Mandatory = $false, ParameterSetName = 'SavedQuery')]
         [array]$variables
@@ -161,7 +161,7 @@ function Invoke-SophosCentralXDRQueryRun {
                 if ($var.dataType -eq 'datetime') {
                     try {
                         $var.value = $var.value | Get-Date -AsUTC -Format 'yyyy-MM-dd"t"hh:mm:ssZ' -ErrorAction Stop
-                    } catch {    
+                    } catch {
                         throw "Invalid dateTime variable format for variable $($var.name)"
                     }
                 }
@@ -184,7 +184,7 @@ function Invoke-SophosCentralXDRQueryRun {
         }
         if ($ids) {
             $endpointFilters += @{ids = $ids }
-        }   
+        }
         if ($endpointFilters) {
             $body.matchEndpoints = @{
                 'filters' = @(
@@ -200,7 +200,7 @@ function Invoke-SophosCentralXDRQueryRun {
                 'template' = $query
                 'name'     = $queryName
             }
-        } else {     
+        } else {
             Write-Verbose 'Canned Query'
             $body.savedQuery = @{
                 'queryId'    = $queryId

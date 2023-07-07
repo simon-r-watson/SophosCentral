@@ -22,7 +22,7 @@ function Get-SophosCentralEndpointTamperProtection {
     )
     begin {
         Test-SophosCentralConnected
-    
+
         $uriChild = '/endpoint/v1/endpoints/{0}/tamper-protection'
         $uriString = $SCRIPT:SophosCentral.RegionEndpoint + $uriChild
     }

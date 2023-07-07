@@ -20,11 +20,11 @@ function Remove-SophosCentralFirewallGroup {
 
         [switch]$Force
     )
-    
+
     begin {
         Test-SophosCentralConnected
     }
-    
+
     process {
         foreach ($group in $GroupID) {
             $uri = [System.Uri]::New($SCRIPT:SophosCentral.RegionEndpoint + '/firewall/v1/firewall-groups/' + $group)

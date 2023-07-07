@@ -25,7 +25,7 @@ function Get-SophosCentralFirewall {
                 if ($_ -eq 'ungrouped') {
                     return $true
                 } elseif ($false -eq [System.Guid]::TryParse($_, $([ref][guid]::Empty))) {
-                    throw 'Not a valid GUID' 
+                    throw 'Not a valid GUID'
                 } else {
                     return $true
                 }
@@ -34,7 +34,7 @@ function Get-SophosCentralFirewall {
         [string]$Search
     )
     Test-SophosCentralConnected
-    
+
     $uriTemp = [System.Uri]::New($SCRIPT:SophosCentral.RegionEndpoint + '/firewall/v1/firewalls?pageTotal=true')
     $uri = New-UriWithQuery -Uri $uriTemp -OriginalPsBoundParameters $PsBoundParameters
     Invoke-SophosCentralWebRequest -Uri $uri

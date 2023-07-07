@@ -18,7 +18,7 @@ function Get-SophosCentralAdminRole {
         [string]$PrincipalType
     )
     Test-SophosCentralConnected
-    
+
     $uriChild = '/common/v1/roles'
     $uriTemp = [System.Uri]::New($SCRIPT:SophosCentral.RegionEndpoint + $uriChild)
     $uri = New-UriWithQuery -Uri $uriTemp -OriginalPsBoundParameters $PsBoundParameters

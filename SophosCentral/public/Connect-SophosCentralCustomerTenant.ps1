@@ -55,7 +55,7 @@ function Connect-SophosCentralCustomerTenant {
         [switch]$ForceTenantRefresh
     )
     Test-SophosCentralConnected
-    
+
     if (((Test-SophosPartner) -or (Test-SophosEnterprise)) -eq $false) {
         throw 'You are not currently logged in using a Sophos Central Partner/Enterprise Service Principal'
     } else {
@@ -106,7 +106,7 @@ function Connect-SophosCentralCustomerTenant {
                 throw "Unable to connect to the tenant, you may not have permissions to the tenant.`n`n $($_)"
             }
         }
-        
+
     } else {
         throw 'Tenant does not exist'
     }

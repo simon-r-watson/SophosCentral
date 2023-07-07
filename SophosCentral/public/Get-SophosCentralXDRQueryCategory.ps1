@@ -14,7 +14,7 @@ function Get-SophosCentralXDRQueryCategory {
         [Parameter(Mandatory = $false)]
         [string]$CategoryID
     )
-    
+
     Show-UntestedWarning
 
     $uriChild = '/xdr-query/v1/queries/categories'

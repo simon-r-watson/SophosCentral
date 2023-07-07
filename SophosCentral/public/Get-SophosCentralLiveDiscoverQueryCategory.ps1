@@ -11,7 +11,7 @@ function Get-SophosCentralLiveDiscoverQueryCategory {
     #>
     [CmdletBinding()]
     [Alias('Get-SophosCentralLiveDiscoverQueryCategories')]
-    param (  
+    param (
         [Parameter(Mandatory = $false)]
         [array]$Fields,
 
@@ -26,7 +26,7 @@ function Get-SophosCentralLiveDiscoverQueryCategory {
     $uriChild = $uriChild + '?pageTotal=true'
     $uriTemp = [System.Uri]::New($SCRIPT:SophosCentral.RegionEndpoint + $uriChild)
     $uri = New-UriWithQuery -Uri $uriTemp -OriginalPsBoundParameters $PsBoundParameters
-    
+
     Invoke-SophosCentralWebRequest -Uri $uri
-    
+
 }

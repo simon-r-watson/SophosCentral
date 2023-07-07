@@ -22,7 +22,7 @@ function Invoke-SophosCentralFirewallApproval {
     )
     begin {
         Test-SophosCentralConnected
-    
+
         $uriTemp = $SCRIPT:SophosCentral.RegionEndpoint + '/firewall/v1/firewalls/{0}/action '
         $body = @{
             action = 'approveManagement'
@@ -35,6 +35,6 @@ function Invoke-SophosCentralFirewallApproval {
                 Invoke-SophosCentralWebRequest -Uri $uri -Method Post -Body $body
             }
         }
-        
+
     }
 }
