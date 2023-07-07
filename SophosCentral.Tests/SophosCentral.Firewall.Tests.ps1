@@ -4,7 +4,7 @@
     .DESCRIPTION
         Manually run tests, long term these will be moved to a GitHub action
 
-        To run these tests, first update testConfig.json with the your Azure Key Vault name, Azure Key Vault client id/secret name, 
+        To run these tests, first update testConfig.json with the your Azure Key Vault name, Azure Key Vault client id/secret name,
         Azure subscription id, and the sub tenant to use for testing (it must have the name and ID, otherwise those tests will fail).
 
         These tests need the following modules
@@ -32,8 +32,9 @@ BeforeAll {
         if ($context.Subscription -ne $config.AzSubscriptionID) {
             Set-AzContext -Subscription $config.AzSubscriptionID
         }
-        
+
         $clientID = Get-AzKeyVaultSecret -VaultName $config.AzKeyVaultName -Name $config.AzKeyVaultClientIDName -AsPlainText
+        [Diagnostics.CodeAnalysis.SuppressMessageAttribute('AvoidUsingConvertToSecureStringWithPlainText', '', Justification = 'SecureStrings main usage is to stop items from appearing in the console, and not encrypting memory')]
         $clientSecret = Get-AzKeyVaultSecret -VaultName $config.AzKeyVaultName -Name $config.AzKeyVaultClientSecretName -AsPlainText | ConvertTo-SecureString -AsPlainText -Force
     } catch {
         throw "error retrieving secrets from Azure Key Vault: $($_)"
@@ -69,13 +70,13 @@ Describe 'Get-SophosCentralFirewall' {
     It 'Given search groupid as a valid GUID, it should not throw' {
         {
             Get-SophosCentralFirewall -GroupId 'e25ec1f2-04f5-477e-a10d-71f2e039ebaf'
-        } | Should -Not -Throw 
+        } | Should -Not -Throw
     }
 
     It 'Given search groupid as ungrouped, it should not throw' {
         {
             Get-SophosCentralFirewall -GroupId 'ungrouped'
-        } | Should -Not -Throw 
+        } | Should -Not -Throw
     }
 }
 
@@ -100,12 +101,12 @@ Describe 'Get-SophosCentralFirewallGroup' {
     It 'Given search RecurseSubgroups, it should not throw' {
         {
             Get-SophosCentralFirewallGroup -RecurseSubgroups $true
-        } | Should -Not -Throw 
+        } | Should -Not -Throw
     }
 
     It 'Given search Search, it should not throw' {
         {
             Get-SophosCentralFirewallGroup -Search 'test'
-        } | Should -Not -Throw 
+        } | Should -Not -Throw
     }
 }

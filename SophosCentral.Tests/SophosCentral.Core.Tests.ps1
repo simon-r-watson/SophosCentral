@@ -4,7 +4,7 @@
     .DESCRIPTION
         Manually run tests, long term these will be moved to a GitHub action
 
-        To run these tests, first update testConfig.json with the your Azure Key Vault name, Azure Key Vault client id/secret name, 
+        To run these tests, first update testConfig.json with the your Azure Key Vault name, Azure Key Vault client id/secret name,
         Azure subscription id, and the sub tenant to use for testing (it must have the name and ID, otherwise those tests will fail).
 
         These tests need the following modules
@@ -32,8 +32,9 @@ BeforeAll {
         if ($context.Subscription -ne $config.AzSubscriptionID) {
             Set-AzContext -Subscription $config.AzSubscriptionID
         }
-        
+
         $clientID = Get-AzKeyVaultSecret -VaultName $config.AzKeyVaultName -Name $config.AzKeyVaultClientIDName -AsPlainText
+        [Diagnostics.CodeAnalysis.SuppressMessageAttribute('AvoidUsingConvertToSecureStringWithPlainText', '', Justification = 'SecureStrings main usage is to stop items from appearing in the console, and not encrypting memory')]
         $clientSecret = Get-AzKeyVaultSecret -VaultName $config.AzKeyVaultName -Name $config.AzKeyVaultClientSecretName -AsPlainText | ConvertTo-SecureString -AsPlainText -Force
     } catch {
         throw "error retrieving secrets from Azure Key Vault: $($_)"
@@ -77,7 +78,7 @@ Describe 'Connect-SophosCentralCustomerTenant' {
         if ((Test-SophosPartner) -or (Test-SophosEnterprise)) {
             {
                 $connection = Connect-SophosCentralCustomerTenant -CustomerTenantID '3ca9b8e4-6d9a-407f-9c3d-186408a145be'
-                $connection 
+                $connection
             } | Should -Throw
         } else {
             Set-ItResult -Skipped -Because 'Not a partner/enterprise tenant'
@@ -97,11 +98,11 @@ Describe 'Connect-SophosCentralCustomerTenant' {
 
     It 'Fails to connect when more than one customer match the name search, error' {
         if ((Test-SophosPartner) -or (Test-SophosEnterprise)) {
-            { 
+            {
                 $connection = Connect-SophosCentralCustomerTenant -CustomerNameSearch 'e'
                 $connection
             } | Should -Throw
-        
+
         } else {
             Set-ItResult -Skipped -Because 'Not a partner/enterprise tenant'
         }
@@ -180,7 +181,7 @@ Describe 'Get-SophosCentralEndpoint' {
     }
 
     It 'Given HealthStatus is xxx, it throws an exception' {
-        {   
+        {
             Get-SophosCentralEndpoint -HealthStatus xxx
         } | Should -Throw
     }
@@ -211,7 +212,7 @@ Describe 'Get-SophosCentralEndpoint' {
     }
 
     It 'Given Type is xxx, it throws an exception' {
-        {   
+        {
             Get-SophosCentralEndpoint -Type xxx
         } | Should -Throw
     }
@@ -230,7 +231,7 @@ Describe 'Get-SophosCentralEndpoint' {
     }
 
     It 'Given TamperProtection is xxx, it throws an exception' {
-        {   
+        {
             Get-SophosCentralEndpoint -TamperProtection xxx
         } | Should -Throw
     }
@@ -493,6 +494,7 @@ Describe 'Get-SophosCentralAlert' {
 Describe 'Unprotect-Secret' {
     It 'Should convert known secret to a string' {
         $text = (New-Guid).Guid
+        [Diagnostics.CodeAnalysis.SuppressMessageAttribute('AvoidUsingConvertToSecureStringWithPlainText', '', Justification = 'SecureStrings main usage is to stop items from appearing in the console, and not encrypting memory')]
         $secret = $text | ConvertTo-SecureString -AsPlainText -Force
         Unprotect-Secret -Secret $secret | Should -BeExactly $text
     }
