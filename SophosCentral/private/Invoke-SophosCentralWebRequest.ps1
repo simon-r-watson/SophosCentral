@@ -3,10 +3,10 @@ function Invoke-SophosCentralWebRequest {
     param (
         [Parameter(Mandatory = $true)]
         [System.URI]$Uri,
-        
+
         [System.Collections.Hashtable]$CustomHeader,
 
-        [ValidateSet('Get', 'Post', 'Put', 'Delete')]
+        [ValidateSet('Get', 'Post', 'Put', 'Patch', 'Delete')]
         [string]$Method = 'Get',
 
         [System.Collections.Hashtable]$Body
@@ -15,7 +15,7 @@ function Invoke-SophosCentralWebRequest {
     if ($PSVersionTable.PSVersion.Major -lt 7) {
         Write-Warning 'Unsupported version of PowerShell detected'
     }
-    
+
     if ($null -ne $CustomHeader) {
         $header = $CustomHeader
     } else {
@@ -55,7 +55,7 @@ function Invoke-SophosCentralWebRequest {
     } else {
         $response
     }
-    
+
     #pagination
     $finished = $false
     if ($response.pages.total -gt 1) {
@@ -64,7 +64,7 @@ function Invoke-SophosCentralWebRequest {
         #doco says the initial page is 1, so the following pages start at 2 onwards
         for ($i = 2; $i -le $response.pages.total; $i++) {
             $webRequest['Uri'] = $uri.AbsoluteUri.Replace('pageTotal=true', "page=$($i.ToString())")
-            
+
             $responseLoop = Invoke-RestMethod @webRequest
             if ($null -ne $response.items) {
                 $responseLoop.items
