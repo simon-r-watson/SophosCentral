@@ -29,7 +29,7 @@ function Connect-SophosCentral {
         Internal use (for this module) only. Used to generate a new access token when the current one expires
     .PARAMETER SecretVaultName
         Name of the secret vault, defaults to AzKV
-    .PARAMETER SecretVaultClientIDName 
+    .PARAMETER SecretVaultClientIDName
         Name of the secret containing the client ID in the vault
     .PARAMETER SecretVaultClientSecretName
         Name of the secret containing the client secret in the vault
@@ -53,7 +53,7 @@ function Connect-SophosCentral {
         https://developer.sophos.com/getting-started
     #>
     [CmdletBinding()]
-    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('AvoidUsingConvertToSecureStringWithPlainText', '', Justification = 'SecureStrings main usage is to stop items from appearing in the console, and not encrypting memory', Scope = 'Function')]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingConvertToSecureStringWithPlainText', '', Justification = 'SecureStrings main usage is to stop items from appearing in the console, and not encrypting memory')]
     param (
         [Parameter(Mandatory = $true,
             ParameterSetName = 'StdAuth',
