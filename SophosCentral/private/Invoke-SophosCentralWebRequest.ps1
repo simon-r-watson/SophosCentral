@@ -36,7 +36,7 @@ function Invoke-SophosCentralWebRequest {
         UseBasicParsing = $true
         Method          = $Method
     }
-    if (($null -eq $body) -and ($Method -in ('Post', 'Put'))) {
+    if (($null -eq $body) -and ($Method -in ('Post', 'Put', 'Patch'))) {
         #API endpoints that use a 'post'/'put' require a body. If no body is present it will give an error back, so supply an empty body
         $bodyTmp = @{} | ConvertTo-Json
         $webRequest.Add('Body', $bodyTmp)

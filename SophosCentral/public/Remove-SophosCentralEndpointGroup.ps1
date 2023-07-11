@@ -29,7 +29,7 @@ function Remove-SophosCentralEndpointGroup {
 
     $uri = [System.Uri]::New($SCRIPT:SophosCentral.RegionEndpoint + '/endpoint/v1/endpoint-groups/' + $ID)
 
-    if ($Force -or $PSCmdlet.ShouldProcess('Remove group', ($Name))) {
+    if ($Force -or $PSCmdlet.ShouldProcess($ID, ('Remove group'))) {
         Invoke-SophosCentralWebRequest -Uri $uri -Method Delete -Body $body
     }
 }

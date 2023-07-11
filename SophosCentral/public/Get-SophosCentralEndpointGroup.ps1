@@ -37,7 +37,10 @@ function Get-SophosCentralEndpointGroup {
 
         [Parameter(Mandatory = $false, ParameterSetName = 'Type')]
         [ValidateSet('computer', 'server')]
-        [string]$Type
+        [string]$Type,
+
+        [Parameter(Mandatory = $false, ParameterSetName = 'All')]
+        [switch]$All
     )
     Test-SophosCentralConnected
 
